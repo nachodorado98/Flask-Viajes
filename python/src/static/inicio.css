@@ -1,0 +1,155 @@
+body, h1, h2, h3, p, ul, li, table {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+header {
+    background-color: #ff6b6b;
+    color: #fff;
+    padding: 10px 20px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav h1 {
+    font-size: 1.75em;
+}
+
+nav ul {
+    list-style-type: none;
+}
+
+nav ul li {
+    display: inline;
+    margin-left: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+}
+
+main {
+    padding: 20px;
+    text-align: center;
+}
+
+h2 {
+    color: #fff;
+    font-size: 44px;
+    text-align: center;
+}
+
+.h2-contenedor {
+    background-color: #ff8484;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contenedor-tabla {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    font-size: 18px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+th {
+    background-color: #ff6b6b;
+    color: #fff;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+tbody tr:hover {
+    background-color: #fff0f0;
+}
+
+.codigo-button {
+    text-decoration: none;
+    color: #fff;
+    background-color: #ff6b6b;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    font-size: 18px;
+    display: inline-block;
+}
+
+.codigo-button:hover {
+    color: #333;
+    transform: scale(1.05);
+}
+
+.ciudad-button {
+    text-decoration: none;
+    color: #333;
+    background-color: #f7f7f7;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.01s ease;
+    font-size: 18px;
+    display: inline-block;
+}
+
+.ciudad-button:hover {
+    color: #333;
+    transform: scale(1.1);
+}
+
+.mensaje-no-viajes {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 22px;
+    text-align: center;
+}
+
+.nuevo-viaje-button {
+   text-decoration: none;
+   color: #fff;
+   background-color: #ff6b6b;
+   padding: 8px 16px;
+   border-radius: 5px;
+   transition: background-color 0.3s ease, transform 0.1s ease;
+   font-size: 24px;
+}
+
+.nuevo-viaje-button:hover {
+    color: #333;
+    transform: scale(1.05);
+}
+
+footer {
+    background-color: #ff6b6b;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

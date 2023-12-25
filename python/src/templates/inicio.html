@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viajes App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='inicio.css') }}">
+</head>
+<body>
+ <header>
+        <nav>
+            <h1>Viajes App</h1>
+            <ul>
+                <li><a href="/">Inicio</a></li>
+                <li><a href="#">Añadir Nuevo Viaje</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="h2-contenedor">
+            <h2>Viajes Realizados</h2>
+        </div>
+        {% if viajes %}
+            <div class="contenedor-tabla">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Viaje</th>
+                            <th>Ciudad</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for viaje in viajes %}
+                            <tr>
+                                <td><a class="codigo-button" href="#">{{ viaje[0] }}</a></td>
+                                <td><a class="ciudad-button" href="#">{{ viaje[1] }}</a></td>
+                                <td>{{ viaje[3] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="contenedor-no-viajes">
+                <p class="mensaje-no-viajes">No hay viajes realizados...</p>
+                <a href="#" class="nuevo-viaje-button">Añadir Viaje Realizado</a>
+            </div>
+        {% endif %}
+    </main>
+</body>
+<footer>
+        <p>&copy; 2023 Viajes App</p>
+    </footer>
+</html>
