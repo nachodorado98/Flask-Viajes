@@ -2,10 +2,10 @@ from flask import Blueprint, render_template
 
 from src.database.conexion import Conexion
 
-bp=Blueprint("blueprint", __name__)
+bp_inicio=Blueprint("inicio", __name__)
 
 # Vista de la pagina principal
-@bp.route("/", methods=["GET"])
+@bp_inicio.route("/", methods=["GET"])
 def inicio()->str:
 
 	conexion=Conexion()

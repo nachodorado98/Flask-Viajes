@@ -142,6 +142,7 @@ tbody tr:hover {
 .nuevo-viaje-button:hover {
     color: #333;
     transform: scale(1.05);
+    background-color: #e74c3c;
 }
 
 footer {
@@ -152,4 +153,130 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
+}
+
+
+
+.formulario-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+.formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.seccion {
+    margin: 0 20px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+select,
+input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.boton-anadir {
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #ff6b6b;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+}
+
+.boton-anadir:hover {
+    background-color: #e74c3c;
+    color: #333;
+}
+
+.linea-separadora {
+    margin: 10px 0;
+    border: 1px solid #ddd;
+}
+
+
+
+.contenedor-resumen {
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+}
+
+p {
+    margin-bottom: 12px;
+     font-size: 22px;
+}
+
+strong {
+    color: #ff6b6b;
+    margin-right: 5px;
+     font-size: 25px;
+}
+
+.botones {
+    margin-top: 20px;
+}
+
+.boton-confirmar,
+.boton-cancelar {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.boton-confirmar {
+    background-color: #ff6b6b;
+    color: #fff;
+    border: 1px solid;
+    margin-bottom: 10px;
+}
+
+.boton-cancelar {
+    background-color: #cecece;
+    color: #fff;
+}
+
+.boton-confirmar:hover {
+    opacity: 0.8;
+    background-color: #4caf50;
+}
+
+.boton-cancelar:hover {
+    opacity: 0.8;
+    color: #333;
 }

@@ -25,15 +25,15 @@ class Conexion:
 		self.c.close()
 		self.bbdd.close()
 
-	# Metodo para cconfirmar una accion
+	# Metodo para confirmar una accion
 	def confirmar(self)->None:
 
 		self.bbdd.commit()
 
-	# Metodo para obtener las lineas recorridas
+	# Metodo para obtener los viajes recorridas
 	def obtenerViajes(self)->Optional[List[tuple]]:
 
-		self.c.execute("""SELECT v.Id_Viaje, c.Ciudad, c.CodCiudad, v.Ida, v.Vuelta
+		self.c.execute("""SELECT v.Id_Viaje, c.Ciudad, c.CodCiudad, c.Pais, v.Ida, v.Vuelta
 							FROM viajes v
 							JOIN ciudades c
 							USING (CodCiudad)""")
@@ -47,6 +47,32 @@ class Conexion:
 
 			vuelta=datos["ida"].strftime("%d/%m/%Y")
 
-			return datos["id_viaje"], datos["ciudad"], datos["codciudad"], f"{ida} - {vuelta}"
+			return datos["id_viaje"], datos["ciudad"], datos["codciudad"], datos["pais"], f"{ida} - {vuelta}"
 
 		return list(map(convertirDatos, viajes)) if viajes else None
+
+	# Metodo para obtener los paises existentes
+	def paises_existentes(self)->List[str]:
+
+		self.c.execute("""SELECT Pais
+	                 		FROM ciudades 
+	                 		GROUP BY Pais
+	                 		ORDER BY Pais""")
+
+		paises=self.c.fetchall()
+
+		return list(map(lambda pais: pais["pais"], paises))
+
+	# Metodo para obtener las ciudades existentes a partir de un pais
+	def ciudades_existentes(self, pais:str, poblacion:int=0)->List[str]:
+
+		self.c.execute("""SELECT Ciudad
+	                 		FROM ciudades 
+	                 		WHERE Pais=%s
+	                 		AND Poblacion>=%s
+	                 		ORDER BY Ciudad""",
+	                 		(pais,poblacion))
+
+		ciudades=self.c.fetchall()
+
+		return list(map(lambda ciudad: ciudad["ciudad"], ciudades))

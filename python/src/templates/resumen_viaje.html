@@ -1,0 +1,36 @@
+{% extends 'inicio.html' %}
+
+{% block titulo %}Resumen viaje realizado{% endblock titulo %}
+
+{% block principal %}
+
+<div class="contenedor-resumen">
+	
+	<p><strong>Pais del Destino:</strong> {{ pais }}</p>
+	<p><strong>Ciudad del Destino:</strong> {{ ciudad }}</p>
+	<p><strong>Fecha de Ida:</strong> {{ ida }}</p>
+	<p><strong>Fecha de Vuelta:</strong> {{ vuelta }}</p>
+	<p><strong>Nombre del Hotel:</strong> {{ hotel }}</p>
+	<p><strong>Pagina Web del Hotel:</strong> {{ web }}</p>
+	<p><strong>Transporte:</strong> {{ transporte }}</p>
+	<p><strong>Comentario:</strong> {{ comentario }}</p>
+
+	<div class="botones">
+        <form action="#" method="post">
+            <input type="hidden" name="pais" value="{{ pais }}">
+            <input type="hidden" name="ciudad" value="{{ ciudad }}">
+            <input type="hidden" name="ida" value="{{ ida }}">
+            <input type="hidden" name="vuelta" value="{{ vuelta }}">
+            <input type="hidden" name="hotel" value="{{ hotel }}">
+            <input type="hidden" name="web" value="{{ web }}">
+            <input type="hidden" name="transporte" value="{{ transporte }}">
+            <input type="hidden" name="comentario" value="{{ comentario }}">
+
+            <button type="submit" class="boton-confirmar">Confirmar</button>
+        </form>
+        <a href="/anadir_viaje" class="boton-cancelar">Cancelar</a>
+    </div>
+
+</div>
+
+{% endblock principal %}

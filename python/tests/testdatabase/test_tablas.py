@@ -49,4 +49,23 @@ def test_obtener_viajes_existentes(conexion):
 
 		assert viaje[2]==(numero+1)
 
+def test_obtener_paises_existentes(conexion):
 
+	paises=conexion.paises_existentes()
+
+	assert len(paises)==239
+
+def test_obtener_ciudades_existentes(conexion):
+
+	ciudades=conexion.ciudades_existentes("España")
+
+	assert len(ciudades)==1135
+
+@pytest.mark.parametrize(["poblacion", "cantidad"],
+	[(10000, 650),(100000, 61),(1000000, 2)]
+)
+def test_obtener_ciudades_existentes_poblacion_limite(conexion, poblacion, cantidad):
+
+	ciudades=conexion.ciudades_existentes("España", poblacion)
+
+	assert len(ciudades)==cantidad

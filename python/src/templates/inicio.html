@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viajes App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='inicio.css') }}">
+    <script src="{{ url_for('static', filename='formulario.js') }}"></script>
 </head>
 <body>
  <header>
@@ -12,15 +13,18 @@
             <h1>Viajes App</h1>
             <ul>
                 <li><a href="/">Inicio</a></li>
-                <li><a href="#">Añadir Nuevo Viaje</a></li>
+                <li><a href="/anadir_viaje">Añadir Nuevo Viaje</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
         <div class="h2-contenedor">
-            <h2>Viajes Realizados</h2>
+            <h2>{% block titulo %}Viajes Realizados{% endblock titulo %}</h2>
         </div>
+
+        {% block principal %}
+
         {% if viajes %}
             <div class="contenedor-tabla">
                 <table>
@@ -28,6 +32,7 @@
                         <tr>
                             <th>Viaje</th>
                             <th>Ciudad</th>
+                            <th>Pais</th>
                             <th>Fecha</th>
                         </tr>
                     </thead>
@@ -37,6 +42,7 @@
                                 <td><a class="codigo-button" href="#">{{ viaje[0] }}</a></td>
                                 <td><a class="ciudad-button" href="#">{{ viaje[1] }}</a></td>
                                 <td>{{ viaje[3] }}</td>
+                                <td>{{ viaje[4] }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -45,9 +51,12 @@
         {% else %}
             <div class="contenedor-no-viajes">
                 <p class="mensaje-no-viajes">No hay viajes realizados...</p>
-                <a href="#" class="nuevo-viaje-button">Añadir Viaje Realizado</a>
+                <a href="/anadir_viaje" class="nuevo-viaje-button">Añadir Viaje Realizado</a>
             </div>
         {% endif %}
+
+        {% endblock principal %}
+
     </main>
 </body>
 <footer>

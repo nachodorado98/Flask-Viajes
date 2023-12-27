@@ -1,0 +1,75 @@
+{% extends 'inicio.html' %}
+
+{% block titulo %}Añadir viaje realizado{% endblock titulo %}
+
+{% block principal %}
+
+<div class="formulario-container">
+	<form action="/comprobar_viaje" method="POST" class="formulario">
+
+		<div class="seccion">
+
+			<h3>Destino</h3>
+
+			<label for="pais">País:</label>
+			<select id="pais" name="pais"  onchange="actualizarCiudades()" required>
+				<option value="" selected disabled hidden>Selecciona un país</option>
+				{% for pais in paises %}
+	            	<option value="{{ pais }}">{{ pais }}</option>
+	            {% endfor %}
+	        </select>
+
+	        <label for="ciudad">Ciudad:</label>
+	        <select id="ciudad" name="ciudad" required></select>
+
+	    </div>
+
+	    <hr class="linea-separadora">
+
+	    <div class="seccion">
+
+	        <h3>Fechas</h3>
+
+	        <label for="fecha-ida">Fecha de Ida:</label>
+	        <input type="date" id="fecha-ida" name="fecha-ida" required>
+
+	        <label for="fecha-vuelta">Fecha de Vuelta:</label>
+	        <input type="date" id="fecha-vuelta" name="fecha-vuelta" required>
+
+	    </div>
+
+	    <hr class="linea-separadora">
+
+	    <div class="seccion">
+
+	        <h3>Detalles del Viaje</h3>
+
+	        <label for="nombre-hotel">Nombre del Hotel:</label>
+	        <input type="text" id="nombre-hotel" name="nombre-hotel" autocomplete="off" required>
+
+	        <label for="pagina-web-hotel">Página Web del Hotel:</label>
+	        <input type="text" id="pagina-web-hotel" name="pagina-web-hotel" autocomplete="off" required>
+
+	        <label for="transporte">Transporte:</label>
+	        <select id="transporte" name="transporte" required>
+	        	<option value="" selected disabled hidden>Selecciona un transporte</option>
+	        	<option value="Avion">Avion</option>
+	        	<option value="Autobus">Autobus</option>
+	        	<option value="Autobus verde">Autobus verde</option>
+	        	<option value="Autobus EMT">Autobus EMT</option>
+	        	<option value="Tren/AVE">Tren/Ave</option>
+	        	<option value="La Renfe">La Renfe</option>
+	        	<option value="Andando">Andando</option>
+	        	<option value="Coche">Coche</option>
+	        </select>
+
+	        <label for="comentario">Comentario:</label>
+	        <input type="text" id="comentario" name="comentario" autocomplete="off">
+
+	    </div>
+
+	    <button type="submit" class="boton-anadir">Añadir Viaje</button>
+    </form>
+</div>
+
+{% endblock principal %}
