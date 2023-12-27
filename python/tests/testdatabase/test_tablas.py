@@ -49,6 +49,8 @@ def test_obtener_viajes_existentes(conexion):
 
 		assert viaje[2]==(numero+1)
 
+	assert viajes[0][0]<viajes[-1][0]
+
 def test_obtener_paises_existentes(conexion):
 
 	paises=conexion.paises_existentes()
@@ -69,3 +71,56 @@ def test_obtener_ciudades_existentes_poblacion_limite(conexion, poblacion, canti
 	ciudades=conexion.ciudades_existentes("España", poblacion)
 
 	assert len(ciudades)==cantidad
+
+@pytest.mark.parametrize(["ciudad", "codigo_ciudad"],
+	[("Tokyo",1), ("delhi",3), ("LONDON",34), ("porto",2438), ("Barcelona", 160)]
+)
+def test_obtener_codigo_ciudad(conexion, ciudad, codigo_ciudad):
+
+	assert conexion.obtenerCodCiudad(ciudad)==codigo_ciudad
+
+@pytest.mark.parametrize(["ciudad",],
+	[("jkjkjkjjk",), ("MADRIZ",), ("barna",)]
+)
+def test_obtener_codigo_ciudad_no_existe(conexion, ciudad):
+
+	assert conexion.obtenerCodCiudad(ciudad) is None
+
+@pytest.mark.parametrize(["codigo_ciudad", "ida", "vuelta", "hotel", "web", "transporte", "comentario"],
+	[
+		(1, "2019-06-22", "2019-06-22", "Hotel", "Web", "Transporte", None),
+		(34, "2019-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "comentario"),
+		(160, "2023-06-22", "2019-06-22", "Hotel", "Web", "Transporte", None),
+		(2438, "2023-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "asdfghjkl")
+	]
+)
+def test_insertar_viaje(conexion, codigo_ciudad, ida, vuelta, hotel, web, transporte, comentario):
+
+	conexion.insertarViaje(codigo_ciudad, ida, vuelta, hotel, web, transporte, comentario)
+
+	conexion.c.execute("SELECT * FROM viajes")
+
+	viajes=conexion.c.fetchall()
+
+	viaje=viajes[0]
+
+	assert len(viajes)==1
+	assert viaje["codciudad"]==codigo_ciudad
+	assert viaje["ida"].strftime("%Y-%m-%d")==ida
+	assert viaje["vuelta"].strftime("%Y-%m-%d")==vuelta
+	assert viaje["hotel"]==hotel
+	assert viaje["web"]==web
+	assert viaje["transporte"]==transporte
+	assert viaje["comentarios"]==comentario
+
+def test_insertar_viaje_multiples(conexion):
+
+	for _ in range(5):
+
+		conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "comentario"),
+
+	conexion.c.execute("SELECT * FROM viajes")
+
+	viajes=conexion.c.fetchall()
+
+	assert len(viajes)==5

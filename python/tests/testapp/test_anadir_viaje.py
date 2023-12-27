@@ -6,7 +6,7 @@ def test_pagina_anadir_viaje(cliente, conexion):
 
 	contenido=respuesta.data.decode()
 
-	respuesta.status_code==200
+	assert respuesta.status_code==200
 	assert "Añadir viaje realizado" in contenido
 	assert "<h3>Destino</h3>" in contenido
 	assert "<h3>Fechas</h3>" in contenido
@@ -100,7 +100,7 @@ def test_pagina_comprobar_viaje_comentario(cliente, conexion):
 
 	contenido=respuesta.data.decode()
 
-	respuesta.status_code==200
+	assert respuesta.status_code==200
 	assert "Resumen" in contenido
 	assert "España" in contenido
 	assert "Madrid" in contenido
@@ -132,7 +132,7 @@ def test_pagina_comprobar_viaje(cliente, conexion, ida, vuelta, web):
 
 	contenido=respuesta.data.decode()
 
-	respuesta.status_code==200
+	assert respuesta.status_code==200
 	assert "Resumen" in contenido
 	assert "España" in contenido
 	assert "Madrid" in contenido
@@ -141,3 +141,93 @@ def test_pagina_comprobar_viaje(cliente, conexion, ida, vuelta, web):
 	assert "Hotel" in contenido
 	assert web in contenido
 	assert "Transporte" in contenido
+
+def test_pagina_insertar_viaje_ciudad_no_existe(cliente, conexion):
+
+	data={"pais":"España",
+		"ciudad":"Londothgjhn",
+		"fecha-ida":"2019-6-22",
+		"fecha-vuelta":"2019-6-22",
+		"nombre-hotel":"Hotel",
+		"pagina-web-hotel":"www.mihotel.es",
+		"transporte":"Transporte",
+		"comentario":"Comentario"}
+
+	respuesta=cliente.post("/insertar_viaje", data=data)
+
+	contenido=respuesta.data.decode()
+
+	assert respuesta.status_code==302
+	assert respuesta.location=="/anadir_viaje"
+	assert "Redirecting..." in contenido
+
+def test_pagina_insertar_viaje(cliente, conexion):
+
+	data={"pais":"España",
+		"ciudad":"London",
+		"fecha-ida":"2019-6-22",
+		"fecha-vuelta":"2019-6-22",
+		"nombre-hotel":"Hotel",
+		"pagina-web-hotel":"www.mihotel.es",
+		"transporte":"Transporte",
+		"comentario":"Comentario"}
+
+	respuesta=cliente.post("/insertar_viaje", data=data)
+
+	contenido=respuesta.data.decode()
+
+	assert respuesta.status_code==302
+	assert respuesta.location=="/"
+	assert "Redirecting..." in contenido
+
+	conexion.c.execute("SELECT * FROM viajes")
+
+	assert len(conexion.c.fetchall())==1
+
+def test_pagina_insertar_viajes_multiples(cliente, conexion):
+
+	data={"pais":"España",
+		"ciudad":"London",
+		"fecha-ida":"2019-6-22",
+		"fecha-vuelta":"2019-6-22",
+		"nombre-hotel":"Hotel",
+		"pagina-web-hotel":"www.mihotel.es",
+		"transporte":"Transporte",
+		"comentario":"Comentario"}
+
+	cliente.post("/insertar_viaje", data=data)
+	cliente.post("/insertar_viaje", data=data)
+	cliente.post("/insertar_viaje", data=data)
+	cliente.post("/insertar_viaje", data=data)
+
+	conexion.c.execute("SELECT * FROM viajes")
+
+	assert len(conexion.c.fetchall())==4
+
+def test_funcionalidad_completa_insertar_viaje(cliente, conexion):
+
+	data={"pais":"España",
+		"ciudad":"Madrid",
+		"fecha-ida":"2019-06-22",
+		"fecha-vuelta":"2019-06-22",
+		"nombre-hotel":"Hotel",
+		"pagina-web-hotel":"www.miweb.com",
+		"transporte":"Transporte"}
+
+	respuesta1=cliente.post("/comprobar_viaje", data=data)
+
+	contenido1=respuesta1.data.decode()
+
+	assert respuesta1.status_code==200
+	assert "Resumen" in contenido1
+
+	respuesta2=cliente.post("/insertar_viaje", data=data)
+
+	contenido2=respuesta2.data.decode()
+
+	assert respuesta2.status_code==302
+	assert respuesta2.location=="/"
+
+	conexion.c.execute("SELECT * FROM viajes")
+
+	assert len(conexion.c.fetchall())==1

@@ -36,7 +36,8 @@ class Conexion:
 		self.c.execute("""SELECT v.Id_Viaje, c.Ciudad, c.CodCiudad, c.Pais, v.Ida, v.Vuelta
 							FROM viajes v
 							JOIN ciudades c
-							USING (CodCiudad)""")
+							USING (CodCiudad)
+							ORDER BY v.Id_Viaje""")
 
 		viajes=self.c.fetchall()
 
@@ -45,7 +46,7 @@ class Conexion:
 
 			ida=datos["ida"].strftime("%d/%m/%Y")
 
-			vuelta=datos["ida"].strftime("%d/%m/%Y")
+			vuelta=datos["vuelta"].strftime("%d/%m/%Y")
 
 			return datos["id_viaje"], datos["ciudad"], datos["codciudad"], datos["pais"], f"{ida} - {vuelta}"
 
@@ -76,3 +77,33 @@ class Conexion:
 		ciudades=self.c.fetchall()
 
 		return list(map(lambda ciudad: ciudad["ciudad"], ciudades))
+
+	# Metodo para obtener el codigo de una ciudad
+	def obtenerCodCiudad(self, ciudad:str)->Optional[int]:
+
+		self.c.execute("""SELECT CodCiudad
+							FROM Ciudades
+							WHERE Ciudad=%s""",
+							(ciudad.title(),))
+
+		ciudad=self.c.fetchone()
+
+		return None if ciudad is None else ciudad["codciudad"]
+
+	# Metodo para insertar un viaje en la BBDD
+	def insertarViaje(self, codciudad:int, ida:str, vuelta:str, hotel:str, web:str, transporte:str, comentario:Optional[str])->None:
+
+		if comentario is None:
+
+			self.c.execute("""INSERT INTO viajes (CodCiudad, Ida, Vuelta, Hotel, Web, Transporte)
+								VALUES(%s, %s, %s, %s, %s, %s)""",
+								(codciudad, ida, vuelta, hotel, web, transporte))
+
+		else:
+
+			self.c.execute("""INSERT INTO viajes (CodCiudad, Ida, Vuelta, Hotel, Web, Transporte, Comentarios)
+								VALUES(%s, %s, %s, %s, %s, %s, %s)""",
+								(codciudad, ida, vuelta, hotel, web, transporte, comentario))
+
+
+		self.confirmar()

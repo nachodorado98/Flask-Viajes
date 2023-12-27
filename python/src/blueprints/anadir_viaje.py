@@ -60,3 +60,31 @@ def comprobarViaje():
 		return redirect(url_for("anadir_viaje.anadirViaje"))
 
 	return render_template("resumen_viaje.html", pais=pais, ciudad=ciudad, ida=ida, vuelta=vuelta, hotel=hotel, web=web, transporte=transporte, comentario=comentario)
+
+@bp_anadir_viaje.route("/insertar_viaje", methods=["POST"])
+def insertarViaje():
+
+	pais=request.form.get("pais")
+	ciudad=request.form.get("ciudad")
+	ida=request.form.get("ida")
+	vuelta=request.form.get("vuelta")
+	hotel=request.form.get("hotel")
+	web=request.form.get("web")
+	transporte=request.form.get("transporte")
+	comentario=request.form.get("comentario")
+
+	conexion=Conexion()
+
+	codigo_ciudad=conexion.obtenerCodCiudad(ciudad)
+
+	if codigo_ciudad is None:
+
+		print(ciudad)
+
+		return redirect(url_for("anadir_viaje.anadirViaje"))
+
+	conexion.insertarViaje(codigo_ciudad, ida, vuelta, hotel, web, transporte, comentario)
+
+	conexion.cerrarConexion()
+
+	return redirect(url_for("inicio.inicio"))
