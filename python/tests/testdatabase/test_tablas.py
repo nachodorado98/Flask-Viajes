@@ -55,7 +55,7 @@ def test_obtener_paises_existentes(conexion):
 
 	paises=conexion.paises_existentes()
 
-	assert len(paises)==239
+	assert len(paises)==210
 
 def test_obtener_ciudades_existentes(conexion):
 

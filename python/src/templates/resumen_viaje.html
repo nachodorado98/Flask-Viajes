@@ -5,15 +5,44 @@
 {% block principal %}
 
 <div class="contenedor-resumen">
+
+	<div class="seccion-resumen">
 	
-	<p><strong>Pais del Destino:</strong> {{ pais }}</p>
-	<p><strong>Ciudad del Destino:</strong> {{ ciudad }}</p>
-	<p><strong>Fecha de Ida:</strong> {{ ida }}</p>
-	<p><strong>Fecha de Vuelta:</strong> {{ vuelta }}</p>
-	<p><strong>Nombre del Hotel:</strong> {{ hotel }}</p>
-	<p><strong>Pagina Web del Hotel:</strong> {{ web }}</p>
-	<p><strong>Transporte:</strong> {{ transporte }}</p>
-	<p><strong>Comentario:</strong> {{ comentario }}</p>
+		<p><strong>Pais del Destino:</strong> {{ pais }}</p>
+		<p><strong>Ciudad del Destino:</strong> {{ ciudad }}</p>
+
+	</div>
+
+	<div class="seccion-resumen">
+
+		<p><strong>Fecha de Ida:</strong> {{ ida }}</p>
+		<p><strong>Fecha de Vuelta:</strong> {{ vuelta }}</p>
+
+	</div>
+
+	<div class="seccion-resumen">
+
+		<p><strong>Nombre del Hotel:</strong> {{ hotel }}</p>
+		<p><strong>Pagina Web del Hotel:</strong> {{ web }}</p>
+		<p><strong>Transporte:</strong> {{ transporte }}</p>
+
+	</div>
+
+	<div class="seccion-resumen">
+
+		{% if comentario!="Sin Comentario"%}
+			<p><strong>Comentario:</strong> {{ comentario }}</p>
+		{% endif %}
+
+	</div>
+
+	<div class="seccion-resumen">
+
+		{% if archivo_imagen!="Sin Imagen" %}
+			<p><img src="{{ url_for('static', filename='imagenes/' + archivo_imagen) }}" alt="Imagen"  width="200" height="120"></p>
+		{% endif %}
+
+	</div>
 
 	<div class="botones">
         <form action="/insertar_viaje" method="POST">
@@ -25,6 +54,7 @@
             <input type="hidden" name="web" value="{{ web }}">
             <input type="hidden" name="transporte" value="{{ transporte }}">
             <input type="hidden" name="comentario" value="{{ comentario }}">
+            <input type="hidden" name="archivo_imagen" value="{{ archivo_imagen }}">
 
             <button type="submit" class="boton-confirmar">Confirmar</button>
         </form>

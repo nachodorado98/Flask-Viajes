@@ -5,7 +5,7 @@
 {% block principal %}
 
 <div class="formulario-container">
-	<form action="/comprobar_viaje" method="POST" class="formulario">
+	<form action="/comprobar_viaje" method="POST" class="formulario" enctype="multipart/form-data">
 
 		<div class="seccion">
 
@@ -63,8 +63,19 @@
 	        	<option value="Coche">Coche</option>
 	        </select>
 
-	        <label for="comentario">Comentario:</label>
+	    </div>
+
+	    <hr class="linea-separadora">
+
+	    <div class="seccion">
+
+	        <h3>Informacion Adicional</h3>
+
+	       	<label for="comentario">Comentario:</label>
 	        <input type="text" id="comentario" name="comentario" autocomplete="off">
+
+	        <label for="imagen">Subir Imagen (solo jpg, jpeg):</label>
+    		<input type="file" name="imagen" id="imagen" accept=".jpg, .jpeg">
 
 	    </div>
 

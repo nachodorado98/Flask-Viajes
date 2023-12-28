@@ -1,7 +1,10 @@
 from flask import Blueprint, render_template, request, jsonify, redirect, url_for
-from datetime import datetime
+import os
 
 from src.database.conexion import Conexion
+
+from src.utilidades.utils import fechas_correctas, web_correcta, comentario_incorrecto, crearNombreImagen, extraerExtension, generarArchivoImagen
+
 
 bp_anadir_viaje=Blueprint("anadir_viaje", __name__)
 
@@ -41,25 +44,50 @@ def comprobarViaje():
 	transporte=request.form.get("transporte")
 	comentario=request.form.get("comentario")
 
-	# Funcion para saber si las fechas son correctas
-	def fechas_correctas(ida:str, vuelta:str)->bool:
-
-		return False if datetime.strptime(ida, "%Y-%m-%d")>datetime.strptime(vuelta, "%Y-%m-%d") else True
-
-	# Funcion para saber si la pagina web es correcta
-	def web_correcta(web:str)->bool:
-
-		return True if web.startswith("www.") and web.endswith((".com", ".es")) else False
-
 	if not fechas_correctas(ida, vuelta) or not web_correcta(web):
 
 		return redirect(url_for("anadir_viaje.anadirViaje"))
 
-	if comentario is not None and len(comentario)>50:
+	if comentario_incorrecto(comentario):
 
 		return redirect(url_for("anadir_viaje.anadirViaje"))
 
-	return render_template("resumen_viaje.html", pais=pais, ciudad=ciudad, ida=ida, vuelta=vuelta, hotel=hotel, web=web, transporte=transporte, comentario=comentario)
+	comentario_limpio="Sin Comentario" if comentario=="" or comentario is None else comentario
+
+	ruta=os.path.dirname(os.path.join(os.path.dirname(__file__)))
+
+	ruta_carpeta=os.path.join(ruta, "static", "imagenes")
+
+	if "imagen" in request.files:
+
+		imagen=request.files["imagen"]
+
+		if imagen.filename!="":
+
+			archivo_imagen=generarArchivoImagen(imagen.filename, ciudad, pais)
+
+			ruta_imagen=os.path.join(ruta_carpeta, archivo_imagen)
+
+			imagen.save(ruta_imagen)
+
+		else:
+
+			archivo_imagen="Sin Imagen"
+
+	else:
+
+		archivo_imagen="Sin Imagen"
+
+	return render_template("resumen_viaje.html",
+							pais=pais,
+							ciudad=ciudad,
+							ida=ida,
+							vuelta=vuelta,
+							hotel=hotel,
+							web=web,
+							transporte=transporte,
+							comentario=comentario_limpio,
+							archivo_imagen=archivo_imagen)
 
 @bp_anadir_viaje.route("/insertar_viaje", methods=["POST"])
 def insertarViaje():

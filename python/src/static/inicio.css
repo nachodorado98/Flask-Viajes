@@ -150,11 +150,15 @@ tbody tr:hover {
     background-color: #e74c3c;
 }
 
+.pie-pagina {
+    font-size: 15px;
+}
+
 footer {
     background-color: #ff6b6b;
     color: #fff;
     text-align: center;
-    padding: 10px 0;
+    padding: 5px 0;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -172,8 +176,8 @@ footer {
 h3 {
     text-align: center;
     color: #333;
-    margin-bottom: 20px;
-    font-size: 22px;
+    margin-bottom: 12px;
+    font-size: 20px;
 }
 
 .formulario {
@@ -183,12 +187,13 @@ h3 {
 }
 
 .seccion {
-    margin: 0 20px;
+    margin: 0 10px;
 }
 
 label {
     font-weight: bold;
     margin-bottom: 10px;
+
 }
 
 select,
@@ -229,18 +234,31 @@ input {
 
 
 .contenedor-resumen {
-    max-width: 700px;
-    margin: 50px auto;
+    max-width: 2000px;
+    margin: 10px auto;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
+    text-align: center;
+}
+
+.seccion-resumen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.seccion-resumen p {
+    margin-right: 10px;
+    font-size: 22px;
 }
 
 p {
     margin-bottom: 12px;
-     font-size: 22px;
+    font-size: 22px;
 }
 
 strong {
@@ -268,7 +286,7 @@ strong {
     background-color: #ff6b6b;
     color: #fff;
     border: 1px solid;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .boton-cancelar {
