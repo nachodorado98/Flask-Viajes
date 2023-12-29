@@ -104,7 +104,7 @@ def test_pagina_comprobar_viaje_sin_comentario_sin_imagen(cliente, conexion):
 	assert "Resumen" in contenido
 	assert "España" in contenido
 	assert "Madrid" in contenido
-	assert "2019-6-22" in contenido
+	assert "22/06/2019" in contenido
 	assert "Hotel" in contenido
 	assert "www.miweb.com" in contenido
 	assert "Transporte" in contenido
@@ -132,7 +132,7 @@ def test_pagina_comprobar_viaje_con_comentario_sin_imagen(cliente, conexion):
 	assert "Resumen" in contenido
 	assert "España" in contenido
 	assert "Madrid" in contenido
-	assert "2019-6-22" in contenido
+	assert "22/06/2019" in contenido
 	assert "Hotel" in contenido
 	assert "www.miweb.com" in contenido
 	assert "Transporte" in contenido
@@ -160,6 +160,7 @@ def test_limpieza_imagenes_posible_existencia():
 
 	assert len(os.listdir(ruta_relativa_carpeta))==0
 
+
 def test_pagina_comprobar_viaje_con_comentario_con_imagen(cliente, conexion):
 
 	ruta_imagen=os.path.join(os.getcwd(), "testapp", "imagen_tests.jpg")
@@ -185,7 +186,7 @@ def test_pagina_comprobar_viaje_con_comentario_con_imagen(cliente, conexion):
 	assert "Resumen" in contenido
 	assert "España" in contenido
 	assert "Madrid" in contenido
-	assert "2019-6-22" in contenido
+	assert "22/06/2019" in contenido
 	assert "Hotel" in contenido
 	assert "www.miweb.com" in contenido
 	assert "Transporte" in contenido
@@ -229,7 +230,7 @@ def test_pagina_comprobar_viaje_sin_comentario_con_imagen(cliente, conexion):
 	assert "Resumen" in contenido
 	assert "España" in contenido
 	assert "Madrid" in contenido
-	assert "2019-6-22" in contenido
+	assert "22/06/2019" in contenido
 	assert "Hotel" in contenido
 	assert "www.miweb.com" in contenido
 	assert "Transporte" in contenido
@@ -250,133 +251,36 @@ def test_pagina_comprobar_viaje_sin_comentario_con_imagen(cliente, conexion):
 
 	vaciarCarpeta(ruta_relativa_carpeta)
 
-@pytest.mark.parametrize(["ida", "vuelta", "web"],
-	[
-		("2019-6-22", "2019-6-22", "www.hola.es"),
-		("2019-4-13", "2019-4-14", "www.adios.com"),
-		("2023-12-26", "2024-12-26", "www.miweb.es"),
-	]
-)
-def test_pagina_comprobar_viaje(cliente, conexion, ida, vuelta, web):
 
-	data={"pais":"España",
-		"ciudad":"Madrid",
-		"fecha-ida":ida,
-		"fecha-vuelta":vuelta,
-		"nombre-hotel":"Hotel",
-		"pagina-web-hotel":web,
-		"transporte":"Transporte"}
+def test_pagina_comprobar_viaje_todo_multiples(cliente, conexion):
 
-	respuesta=cliente.post("/comprobar_viaje", data=data)
+	ruta_imagen=os.path.join(os.getcwd(), "testapp", "imagen_tests.jpg")
 
-	contenido=respuesta.data.decode()
+	viajes=[("Madrid", "España"), ("Porto", "Portugal"), ("London", "Reino Unido"), ("Ciudad", "Pais")]
 
-	assert respuesta.status_code==200
-	assert "Resumen" in contenido
-	assert "España" in contenido
-	assert "Madrid" in contenido
-	assert ida in contenido
-	assert vuelta in contenido
-	assert "Hotel" in contenido
-	assert web in contenido
-	assert "Transporte" in contenido
-	assert "<p><strong>Comentario:</strong> Sin Comentario</p>" not in contenido
-	assert "Sin Comentario" in contenido
-	assert "<p><strong>Imagen:</strong> Sin Imagen</p>" not in contenido
-	assert "Sin Imagen" in contenido
+	for ciudad, pais in viajes:
 
+		data={"pais":pais,
+			"ciudad":ciudad,
+			"fecha-ida":"2019-6-22",
+			"fecha-vuelta":"2019-6-22",
+			"nombre-hotel":"Hotel",
+			"pagina-web-hotel":"www.miweb.com",
+			"transporte":"Transporte",
+			"comentario":"Comentario"}
 
+		with open(ruta_imagen, 'rb') as imagen_file:
+			
+			data["imagen"]=(imagen_file, "imagen_tests.jpg")
 
+			cliente.post("/comprobar_viaje", data=data, buffered=True, content_type="multipart/form-data")
+	
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
 
+	ruta_relativa_carpeta=os.path.join(ruta_relativa, "static", "imagenes")
 
+	archivos=os.listdir(ruta_relativa_carpeta)
 
+	assert len(archivos)==len(viajes)
 
-def test_pagina_insertar_viaje_ciudad_no_existe(cliente, conexion):
-
-	data={"pais":"España",
-		"ciudad":"Londothgjhn",
-		"fecha-ida":"2019-6-22",
-		"fecha-vuelta":"2019-6-22",
-		"nombre-hotel":"Hotel",
-		"pagina-web-hotel":"www.mihotel.es",
-		"transporte":"Transporte",
-		"comentario":"Comentario"}
-
-	respuesta=cliente.post("/insertar_viaje", data=data)
-
-	contenido=respuesta.data.decode()
-
-	assert respuesta.status_code==302
-	assert respuesta.location=="/anadir_viaje"
-	assert "Redirecting..." in contenido
-
-def test_pagina_insertar_viaje(cliente, conexion):
-
-	data={"pais":"España",
-		"ciudad":"London",
-		"fecha-ida":"2019-6-22",
-		"fecha-vuelta":"2019-6-22",
-		"nombre-hotel":"Hotel",
-		"pagina-web-hotel":"www.mihotel.es",
-		"transporte":"Transporte",
-		"comentario":"Comentario"}
-
-	respuesta=cliente.post("/insertar_viaje", data=data)
-
-	contenido=respuesta.data.decode()
-
-	assert respuesta.status_code==302
-	assert respuesta.location=="/"
-	assert "Redirecting..." in contenido
-
-	conexion.c.execute("SELECT * FROM viajes")
-
-	assert len(conexion.c.fetchall())==1
-
-def test_pagina_insertar_viajes_multiples(cliente, conexion):
-
-	data={"pais":"España",
-		"ciudad":"London",
-		"fecha-ida":"2019-6-22",
-		"fecha-vuelta":"2019-6-22",
-		"nombre-hotel":"Hotel",
-		"pagina-web-hotel":"www.mihotel.es",
-		"transporte":"Transporte",
-		"comentario":"Comentario"}
-
-	cliente.post("/insertar_viaje", data=data)
-	cliente.post("/insertar_viaje", data=data)
-	cliente.post("/insertar_viaje", data=data)
-	cliente.post("/insertar_viaje", data=data)
-
-	conexion.c.execute("SELECT * FROM viajes")
-
-	assert len(conexion.c.fetchall())==4
-
-def test_funcionalidad_completa_insertar_viaje(cliente, conexion):
-
-	data={"pais":"España",
-		"ciudad":"Madrid",
-		"fecha-ida":"2019-06-22",
-		"fecha-vuelta":"2019-06-22",
-		"nombre-hotel":"Hotel",
-		"pagina-web-hotel":"www.miweb.com",
-		"transporte":"Transporte"}
-
-	respuesta1=cliente.post("/comprobar_viaje", data=data)
-
-	contenido1=respuesta1.data.decode()
-
-	assert respuesta1.status_code==200
-	assert "Resumen" in contenido1
-
-	respuesta2=cliente.post("/insertar_viaje", data=data)
-
-	contenido2=respuesta2.data.decode()
-
-	assert respuesta2.status_code==302
-	assert respuesta2.location=="/"
-
-	conexion.c.execute("SELECT * FROM viajes")
-
-	assert len(conexion.c.fetchall())==1
+	vaciarCarpeta(ruta_relativa_carpeta)

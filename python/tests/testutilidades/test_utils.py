@@ -1,7 +1,8 @@
 import pytest
 import re
 
-from src.utilidades.utils import fechas_correctas, web_correcta, comentario_incorrecto, limpiarCadena, crearNombreImagen, extraerExtension, generarArchivoImagen
+from src.utilidades.utils import fechas_correctas, web_correcta, comentario_incorrecto, limpiarCadena, crearNombreImagen
+from src.utilidades.utils import extraerExtension, generarArchivoImagen, cambiarFormatoFecha, descambiarFormatoFecha
 
 @pytest.mark.parametrize(["ida","vuelta"],
 	[
@@ -108,3 +109,23 @@ def test_generar_archivo_imagen(imagen, ciudad, pais, nombre, extension):
 
 	assert archivo.startswith(nombre)
 	assert archivo.endswith(extension)
+
+@pytest.mark.parametrize(["fecha", "fecha_cambiada"],
+	[
+		("2022-06-22", "22/06/2022"),
+		("2019-11-22", "22/11/2019")
+	]
+)
+def test_cambiar_formato_fecha(fecha, fecha_cambiada):
+
+	assert cambiarFormatoFecha(fecha)==fecha_cambiada
+
+@pytest.mark.parametrize(["fecha", "fecha_descambiada"],
+	[
+		("22/06/2022", "2022-06-22"),
+		("22/11/2019", "2019-11-22")
+	]
+)
+def test_descambiar_formato_fecha(fecha, fecha_descambiada):
+
+	assert descambiarFormatoFecha(fecha)==fecha_descambiada

@@ -3,7 +3,8 @@ import os
 
 from src.database.conexion import Conexion
 
-from src.utilidades.utils import fechas_correctas, web_correcta, comentario_incorrecto, crearNombreImagen, extraerExtension, generarArchivoImagen
+from src.utilidades.utils import fechas_correctas, web_correcta, comentario_incorrecto, crearNombreImagen, extraerExtension
+from src.utilidades.utils import generarArchivoImagen, cambiarFormatoFecha, descambiarFormatoFecha
 
 
 bp_anadir_viaje=Blueprint("anadir_viaje", __name__)
@@ -81,8 +82,8 @@ def comprobarViaje():
 	return render_template("resumen_viaje.html",
 							pais=pais,
 							ciudad=ciudad,
-							ida=ida,
-							vuelta=vuelta,
+							ida=cambiarFormatoFecha(ida),
+							vuelta=cambiarFormatoFecha(vuelta),
 							hotel=hotel,
 							web=web,
 							transporte=transporte,
@@ -100,6 +101,7 @@ def insertarViaje():
 	web=request.form.get("web")
 	transporte=request.form.get("transporte")
 	comentario=request.form.get("comentario")
+	archivo_imagen=request.form.get("archivo_imagen")
 
 	conexion=Conexion()
 
@@ -111,8 +113,24 @@ def insertarViaje():
 
 		return redirect(url_for("anadir_viaje.anadirViaje"))
 
-	conexion.insertarViaje(codigo_ciudad, ida, vuelta, hotel, web, transporte, comentario)
+	comentario_limpio="Sin Comentario" if comentario is None else comentario
+
+	archivo_imagen_limpio="Sin Imagen" if archivo_imagen is None else archivo_imagen
+
+	conexion.insertarViaje(codigo_ciudad,
+							descambiarFormatoFecha(ida),
+							descambiarFormatoFecha(vuelta),
+							hotel,
+							web,
+							transporte,
+							comentario_limpio,
+							archivo_imagen_limpio)
 
 	conexion.cerrarConexion()
 
 	return redirect(url_for("inicio.inicio"))
+
+@bp_anadir_viaje.route("/cancelar_viaje/<archivo_imagen>", methods=["GET"])
+def cancelarViaje(archivo_imagen:str):
+
+	return redirect(url_for("inicio.inicio")) 

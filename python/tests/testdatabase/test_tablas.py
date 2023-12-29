@@ -21,8 +21,8 @@ def test_obtener_viajes_existentes(conexion):
 )
 def test_obtener_viajes_existente(conexion, codigo_ciudad):
 
-	conexion.c.execute(f"""INSERT INTO viajes (CodCiudad, Ida, Vuelta, Hotel, Web, Transporte)
-							VALUES({codigo_ciudad}, '2019-06-22', '2019-06-22', 'Hotel', 'Web', 'Transporte')""")
+	conexion.c.execute(f"""INSERT INTO viajes (CodCiudad, Ida, Vuelta, Hotel, Web, Transporte, Comentario, Imagen)
+							VALUES({codigo_ciudad}, '2019-06-22', '2019-06-22', 'Hotel', 'Web', 'Transporte', 'Comentario', 'Imagen')""")
 
 	conexion.confirmar()
 
@@ -36,8 +36,8 @@ def test_obtener_viajes_existentes(conexion):
 
 	for codigo in range(1, 11):
 
-		conexion.c.execute(f"""INSERT INTO viajes (CodCiudad, Ida, Vuelta, Hotel, Web, Transporte)
-								VALUES({codigo}, '2019-06-22', '2019-06-22', 'Hotel', 'Web', 'Transporte')""")
+		conexion.c.execute(f"""INSERT INTO viajes (CodCiudad, Ida, Vuelta, Hotel, Web, Transporte, Comentario, Imagen)
+								VALUES({codigo}, '2019-06-22', '2019-06-22', 'Hotel', 'Web', 'Transporte', 'Comentario', 'Imagen')""")
 
 	conexion.confirmar()
 
@@ -73,30 +73,30 @@ def test_obtener_ciudades_existentes_poblacion_limite(conexion, poblacion, canti
 	assert len(ciudades)==cantidad
 
 @pytest.mark.parametrize(["ciudad", "codigo_ciudad"],
-	[("Tokyo",1), ("delhi",3), ("LONDON",34), ("porto",2438), ("Barcelona", 160)]
+	[("Tokyo",1), ("Delhi",3), ("London",34), ("Porto",2438), ("Barcelona", 160), ("Andorra la Vella", 809)]
 )
 def test_obtener_codigo_ciudad(conexion, ciudad, codigo_ciudad):
 
 	assert conexion.obtenerCodCiudad(ciudad)==codigo_ciudad
 
 @pytest.mark.parametrize(["ciudad",],
-	[("jkjkjkjjk",), ("MADRIZ",), ("barna",)]
+	[("jkjkjkjjk",), ("MADRID",), ("barna",), ("london",), ("Andorra La Vella",)]
 )
 def test_obtener_codigo_ciudad_no_existe(conexion, ciudad):
 
 	assert conexion.obtenerCodCiudad(ciudad) is None
 
-@pytest.mark.parametrize(["codigo_ciudad", "ida", "vuelta", "hotel", "web", "transporte", "comentario"],
+@pytest.mark.parametrize(["codigo_ciudad", "ida", "vuelta", "hotel", "web", "transporte", "comentario", "imagen"],
 	[
-		(1, "2019-06-22", "2019-06-22", "Hotel", "Web", "Transporte", None),
-		(34, "2019-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "comentario"),
-		(160, "2023-06-22", "2019-06-22", "Hotel", "Web", "Transporte", None),
-		(2438, "2023-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "asdfghjkl")
+		(1, "2019-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "Comentario", "hjhjhjjhhj.jpg"),
+		(34, "2019-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "comentario", "imagen"),
+		(160, "2023-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "Sin Comentario", "Sin Imagen"),
+		(2438, "2023-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "asdfghjkl", "madrid_españa_jjjjkjbj.png")
 	]
 )
-def test_insertar_viaje(conexion, codigo_ciudad, ida, vuelta, hotel, web, transporte, comentario):
+def test_insertar_viaje(conexion, codigo_ciudad, ida, vuelta, hotel, web, transporte, comentario, imagen):
 
-	conexion.insertarViaje(codigo_ciudad, ida, vuelta, hotel, web, transporte, comentario)
+	conexion.insertarViaje(codigo_ciudad, ida, vuelta, hotel, web, transporte, comentario, imagen)
 
 	conexion.c.execute("SELECT * FROM viajes")
 
@@ -111,13 +111,14 @@ def test_insertar_viaje(conexion, codigo_ciudad, ida, vuelta, hotel, web, transp
 	assert viaje["hotel"]==hotel
 	assert viaje["web"]==web
 	assert viaje["transporte"]==transporte
-	assert viaje["comentarios"]==comentario
+	assert viaje["comentario"]==comentario
+	assert viaje["imagen"]==imagen
 
 def test_insertar_viaje_multiples(conexion):
 
 	for _ in range(5):
 
-		conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "comentario"),
+		conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "comentario", "imagen.jpg"),
 
 	conexion.c.execute("SELECT * FROM viajes")
 

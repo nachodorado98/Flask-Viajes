@@ -26,5 +26,6 @@ CREATE TABLE viajes (Id_Viaje SERIAL PRIMARY KEY,
 					Hotel VARCHAR(50),
 					Web VARCHAR(50),
 					Transporte VARCHAR(50),
-					Comentarios VARCHAR(200) DEFAULT NULL,
+					Comentario VARCHAR(200),
+					Imagen VARCHAR(200),
 					FOREIGN KEY (CodCiudad) REFERENCES ciudades (CodCiudad));

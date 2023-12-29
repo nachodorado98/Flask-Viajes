@@ -84,26 +84,18 @@ class Conexion:
 		self.c.execute("""SELECT CodCiudad
 							FROM Ciudades
 							WHERE Ciudad=%s""",
-							(ciudad.title(),))
+							(ciudad,))
 
 		ciudad=self.c.fetchone()
 
 		return None if ciudad is None else ciudad["codciudad"]
 
 	# Metodo para insertar un viaje en la BBDD
-	def insertarViaje(self, codciudad:int, ida:str, vuelta:str, hotel:str, web:str, transporte:str, comentario:Optional[str])->None:
+	def insertarViaje(self, codciudad:int, ida:str, vuelta:str, hotel:str, web:str, transporte:str, comentario:str, imagen:str)->None:
 
-		if comentario is None:
-
-			self.c.execute("""INSERT INTO viajes (CodCiudad, Ida, Vuelta, Hotel, Web, Transporte)
-								VALUES(%s, %s, %s, %s, %s, %s)""",
-								(codciudad, ida, vuelta, hotel, web, transporte))
-
-		else:
-
-			self.c.execute("""INSERT INTO viajes (CodCiudad, Ida, Vuelta, Hotel, Web, Transporte, Comentarios)
-								VALUES(%s, %s, %s, %s, %s, %s, %s)""",
-								(codciudad, ida, vuelta, hotel, web, transporte, comentario))
+		self.c.execute("""INSERT INTO viajes (CodCiudad, Ida, Vuelta, Hotel, Web, Transporte, Comentario, Imagen)
+							VALUES(%s, %s, %s, %s, %s, %s, %s, %s)""",
+							(codciudad, ida, vuelta, hotel, web, transporte, comentario, imagen))
 
 
 		self.confirmar()

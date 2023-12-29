@@ -49,3 +49,17 @@ def generarArchivoImagen(nombre:str, ciudad:str, pais:str)->str:
 	nombre_imagen=crearNombreImagen(ciudad, pais)
 
 	return f"{nombre_imagen}.{extension}"
+
+# Funcion para cambiar el formato de una fecha
+def cambiarFormatoFecha(fecha:str)->str:
+
+	fecha_datetime=datetime.strptime(fecha, "%Y-%m-%d")
+
+	return fecha_datetime.strftime("%d/%m/%Y")
+
+# Funcion para descambiar el formato de una fecha
+def descambiarFormatoFecha(fecha:str)->str:
+
+	fecha_datetime=datetime.strptime(fecha, "%d/%m/%Y")
+
+	return fecha_datetime.strftime("%Y-%m-%d")
