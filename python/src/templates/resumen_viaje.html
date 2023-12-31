@@ -39,7 +39,7 @@
 	<div class="seccion-resumen">
 
 		{% if archivo_imagen!="Sin Imagen" %}
-			<p><img src="{{ url_for('static', filename='imagenes/' + archivo_imagen) }}" alt="Imagen"  width="200" height="120"></p>
+			<p><img src="{{ url_for('static', filename='imagenes/' + archivo_imagen) }}" alt="Imagen"  width="{{ ancho }}" height="115"></p>
 		{% endif %}
 
 	</div>

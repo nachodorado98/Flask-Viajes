@@ -174,7 +174,7 @@ def test_pagina_comprobar_viaje_con_comentario_con_imagen(cliente, conexion):
 		"transporte":"Transporte",
 		"comentario":"Comentario"}
 
-	with open(ruta_imagen, 'rb') as imagen_file:
+	with open(ruta_imagen, "rb") as imagen_file:
 		
 		data["imagen"]=(imagen_file, "imagen_tests.jpg")
 

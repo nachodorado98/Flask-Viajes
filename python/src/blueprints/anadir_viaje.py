@@ -4,7 +4,7 @@ import os
 from src.database.conexion import Conexion
 
 from src.utilidades.utils import fechas_correctas, web_correcta, comentario_incorrecto, crearNombreImagen, extraerExtension
-from src.utilidades.utils import generarArchivoImagen, cambiarFormatoFecha, descambiarFormatoFecha
+from src.utilidades.utils import generarArchivoImagen, cambiarFormatoFecha, descambiarFormatoFecha, redimension_imagen, comprobarImagen
 
 
 bp_anadir_viaje=Blueprint("anadir_viaje", __name__)
@@ -32,6 +32,7 @@ def obtenerCiudades():
 	conexion.cerrarConexion()
 
 	return jsonify(ciudades)
+
 
 @bp_anadir_viaje.route("/comprobar_viaje", methods=["POST"])
 def comprobarViaje():
@@ -71,6 +72,8 @@ def comprobarViaje():
 
 			imagen.save(ruta_imagen)
 
+			ancho=redimension_imagen(ruta_imagen)
+
 		else:
 
 			archivo_imagen="Sin Imagen"
@@ -88,7 +91,8 @@ def comprobarViaje():
 							web=web,
 							transporte=transporte,
 							comentario=comentario_limpio,
-							archivo_imagen=archivo_imagen)
+							archivo_imagen=archivo_imagen,
+							ancho=None if archivo_imagen=="Sin Imagen" else ancho)
 
 @bp_anadir_viaje.route("/insertar_viaje", methods=["POST"])
 def insertarViaje():
@@ -133,4 +137,14 @@ def insertarViaje():
 @bp_anadir_viaje.route("/cancelar_viaje/<archivo_imagen>", methods=["GET"])
 def cancelarViaje(archivo_imagen:str):
 
-	return redirect(url_for("inicio.inicio")) 
+	if not comprobarImagen(archivo_imagen):
+
+		return redirect(url_for("inicio.inicio"))
+
+	ruta=os.path.dirname(os.path.join(os.path.dirname(__file__)))
+
+	ruta_carpeta=os.path.join(ruta, "static", "imagenes")
+
+	os.remove(os.path.join(ruta_carpeta, archivo_imagen))
+
+	return redirect(url_for("inicio.inicio"))

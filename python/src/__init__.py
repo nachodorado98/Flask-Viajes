@@ -1,7 +1,18 @@
 from flask import Flask
+import os
 
 from .blueprints.inicio import bp_inicio
 from .blueprints.anadir_viaje import bp_anadir_viaje
+from .utilidades.utils import crearCarpeta
+
+# Funcion para crear el entorno
+def creacionEntorno()->None:
+
+	ruta=os.path.dirname(os.path.join(os.path.dirname(__file__)))
+
+	ruta_carpeta=os.path.join(ruta, "src", "static", "imagenes")
+
+	crearCarpeta(ruta_carpeta)
 
 # Funcion para crear la instancia de la aplicacion
 def crear_app(configuracion:object)->Flask:
@@ -12,5 +23,7 @@ def crear_app(configuracion:object)->Flask:
 
 	app.register_blueprint(bp_inicio)
 	app.register_blueprint(bp_anadir_viaje)
+
+	creacionEntorno()
 
 	return app

@@ -2,6 +2,9 @@ from datetime import datetime
 from typing import Optional
 import re
 import uuid
+import os
+from PIL import Image
+
 
 # Funcion para saber si las fechas son correctas
 def fechas_correctas(ida:str, vuelta:str)->bool:
@@ -63,3 +66,37 @@ def descambiarFormatoFecha(fecha:str)->str:
 	fecha_datetime=datetime.strptime(fecha, "%d/%m/%Y")
 
 	return fecha_datetime.strftime("%Y-%m-%d")
+
+# Funcion para crear una carpeta si no existe 
+def crearCarpeta(ruta_carpeta:str)->None:
+
+	if not os.path.exists(ruta_carpeta):
+
+		os.mkdir(ruta_carpeta)
+
+		print("Creando carpeta...")
+
+# Funcion para obtener el ancho que debe tener la imagen
+def obtenerAncho(altura_actual:float, ancho_actual:float, altura:float=115)->int:
+
+	return int((altura/altura_actual)*ancho_actual)
+
+# Funcion para obtener el valor de la redimension de la imagen
+def redimension_imagen(ruta_imagen:str, altura:float=115)->int:
+
+	with Image.open(ruta_imagen) as imagen_pil:
+
+		ancho_original, alto_original=imagen_pil.size
+
+	return obtenerAncho(alto_original, ancho_original)
+
+# Funcion para comprobar si la imagen es valida
+def comprobarImagen(archivo_imagen:str)->bool:
+
+	ruta=os.path.dirname(os.path.join(os.path.dirname(__file__)))
+
+	ruta_imagen=os.path.join(ruta, "static", "imagenes", archivo_imagen)
+
+	print(ruta_imagen)
+
+	return True if archivo_imagen!="Sin Imagen" and os.path.exists(ruta_imagen) else False
