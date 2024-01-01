@@ -59,7 +59,7 @@ h2 {
 }
 
 .contenedor-tabla {
-    margin-top: 20px;
+    margin-top: 5px;
     overflow-y: auto;
      max-height: 490px;
 }
@@ -302,4 +302,62 @@ strong {
 .boton-cancelar:hover {
     opacity: 0.8;
     color: #333;
+}
+
+
+.contenedor-detalle {
+    max-width: 2000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.seccion-detalle-ciudad {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.seccion-detalle-ciudad p {
+    margin-right: 10px;
+    font-size: 24px;
+}
+
+.seccion-mapa-ciudad {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mapa-ciudad {
+    height: 250px;
+    width: 50%;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.contenedor-volver {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.volver-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff6b6b;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.volver-button:hover {
+    background-color: #e74c3c;
+    color: #333;
+    transform: scale(1.05);
 }

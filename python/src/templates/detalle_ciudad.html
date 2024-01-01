@@ -1,0 +1,43 @@
+{% extends 'inicio.html' %}
+
+{% block titulo %}Detalle de la ciudad de {{ ciudad }}{% endblock titulo %}
+
+{% block principal %}
+
+<div class="contenedor-detalle">
+
+	<div class="seccion-detalle-ciudad">
+		<p><strong>Ciudad:</strong> {{ ciudad }}, {{ pais }} ({{ siglas }})</p>
+	</div>
+
+	<div class="seccion-detalle-ciudad">
+		<p><strong>Tipo de ciudad:</strong> {{ tipo }}</p>
+	</div>
+
+	<div class="seccion-detalle-ciudad">
+		<p><strong>Poblacion:</strong> {{ poblacion }} habitantes</p>
+	</div>
+
+	<div class="seccion-mapa-ciudad">
+
+		<div id="mapa" class="mapa-ciudad"></div>
+
+			<script>
+			    var map=L.map("mapa").setView([{{ latitud }}, {{ longitud }}], 14);
+
+			    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {maxZoom: 19}).addTo(map);
+
+			    var texto="Ciudad: {{ ciudad }} - Pais: {{ pais }}";
+
+			    var marker=L.marker([{{ latitud }}, {{ longitud }}]).bindPopup(texto).addTo(map);
+			</script>
+
+		</div>
+
+	</div>	
+
+<div class="contenedor-volver">
+    <a href="/" class="volver-button">Volver</a>
+</div>
+
+{% endblock principal %}

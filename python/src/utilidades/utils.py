@@ -100,3 +100,18 @@ def comprobarImagen(archivo_imagen:str)->bool:
 	print(ruta_imagen)
 
 	return True if archivo_imagen!="Sin Imagen" and os.path.exists(ruta_imagen) else False
+
+# Funcion para poner los puntos de los miles, millones, etc
+def añadirPuntos(numero:str)->str:
+
+    numero_con_puntos=""
+
+    for indice, digito in enumerate(numero[::-1], 1):
+
+        numero_con_puntos+=digito
+
+        if indice%3==0 and indice!=len(numero[::-1]):
+
+            numero_con_puntos+="."
+
+    return numero_con_puntos[::-1]

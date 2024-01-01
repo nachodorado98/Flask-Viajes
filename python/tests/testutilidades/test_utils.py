@@ -5,7 +5,7 @@ import shutil
 
 from src.utilidades.utils import fechas_correctas, web_correcta, comentario_incorrecto, limpiarCadena, crearNombreImagen
 from src.utilidades.utils import extraerExtension, generarArchivoImagen, cambiarFormatoFecha, descambiarFormatoFecha
-from src.utilidades.utils import crearCarpeta, obtenerAncho, redimension_imagen, comprobarImagen
+from src.utilidades.utils import crearCarpeta, obtenerAncho, redimension_imagen, comprobarImagen, añadirPuntos
 
 @pytest.mark.parametrize(["ida","vuelta"],
 	[
@@ -225,3 +225,16 @@ def test_comprobar_imagen_valida():
 	ruta_relativa_carpeta=os.path.join(ruta_relativa, "static", "imagenes")
 
 	vaciarCarpeta(ruta_relativa_carpeta)
+
+@pytest.mark.parametrize(["numero", "numero_puntos"],
+	[
+		("100", "100"),
+		("1234", "1.234"),
+		("987654", "987.654"),
+		("1", "1"),
+		("1000000", "1.000.000")
+	]
+)
+def test_añadir_puntos(numero, numero_puntos):
+
+	assert añadirPuntos(numero)==numero_puntos

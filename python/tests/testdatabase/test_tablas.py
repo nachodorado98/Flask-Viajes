@@ -125,3 +125,36 @@ def test_insertar_viaje_multiples(conexion):
 	viajes=conexion.c.fetchall()
 
 	assert len(viajes)==5
+
+@pytest.mark.parametrize(["codigo_ciudad"],
+	[(0,), (100000,), (-1,), (24354366,)]
+)
+def test_codigo_ciudad_no_existe(conexion, codigo_ciudad):
+
+	assert not conexion.existe_codigo_ciudad(codigo_ciudad)
+
+@pytest.mark.parametrize(["codigo_ciudad"],
+	[(1,), (10000,), (22,), (13,)]
+)
+def test_codigo_ciudad_existe(conexion, codigo_ciudad):
+
+	assert conexion.existe_codigo_ciudad(codigo_ciudad)
+
+@pytest.mark.parametrize(["codigo_ciudad"],
+	[(0,), (100000,), (-1,), (24354366,)]
+)
+def test_detalle_ciudad_no_existe(conexion, codigo_ciudad):
+
+	assert conexion.obtenerDetalleCiudad(codigo_ciudad) is None
+
+@pytest.mark.parametrize(["codigo_ciudad"],
+	[(1,), (10000,), (22,), (13,)]
+)
+def test_detalle_ciudad_existe(conexion, codigo_ciudad):
+
+	ciudad=conexion.obtenerDetalleCiudad(codigo_ciudad)
+
+	assert len(ciudad)==7
+	assert isinstance(ciudad[1], float)
+	assert isinstance(ciudad[2], float)
+	assert isinstance(ciudad[-1], str)

@@ -99,3 +99,38 @@ class Conexion:
 
 
 		self.confirmar()
+
+	# Metodo para saber si existe un codigo de ciudad
+	def existe_codigo_ciudad(self, codciudad:int)->bool:
+
+		self.c.execute("""SELECT CodCiudad
+							FROM Ciudades
+							WHERE CodCiudad=%s""",
+							(codciudad,))
+
+		codigo=self.c.fetchone()
+
+		return False if codigo is None else True
+
+	# Metodo para obtener los detalles de una ciudad
+	def obtenerDetalleCiudad(self, codciudad:int)->Optional[tuple]:
+
+		self.c.execute("""SELECT Ciudad, Latitud, Longitud, Pais, Siglas, Tipo, Poblacion
+							FROM Ciudades
+							WHERE CodCiudad=%s""",
+							(codciudad,))
+
+		ciudad=self.c.fetchone()
+
+		# Funcion para limpiar los datos de la ciudad
+		def limpiarDatos(datos:Dict)->tuple:
+
+			latitud=round(float(datos["latitud"]), 4)
+
+			longitud=round(float(datos["longitud"]), 4)
+
+			poblacion=str(datos["poblacion"])
+
+			return datos["ciudad"], latitud, longitud, datos["pais"], datos["siglas"], datos["tipo"], poblacion
+
+		return None if ciudad is None else limpiarDatos(ciudad)

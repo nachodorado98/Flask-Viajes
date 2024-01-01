@@ -6,6 +6,8 @@
     <title>Viajes App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='inicio.css') }}">
     <script src="{{ url_for('static', filename='formulario.js') }}"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
 <body>
  <header>
@@ -40,7 +42,7 @@
                         {% for viaje in viajes %}
                             <tr>
                                 <td><a class="codigo-button" href="#">{{ viaje[0] }}</a></td>
-                                <td><a class="ciudad-button" href="#">{{ viaje[1] }}</a></td>
+                                <td><a class="ciudad-button" href="/detalle_ciudad/{{ viaje[2] }}">{{ viaje[1] }}</a></td>
                                 <td>{{ viaje[3] }}</td>
                                 <td>{{ viaje[4] }}</td>
                             </tr>
