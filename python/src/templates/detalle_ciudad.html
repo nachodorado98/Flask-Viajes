@@ -7,7 +7,14 @@
 <div class="contenedor-detalle">
 
 	<div class="seccion-detalle-ciudad">
-		<p><strong>Ciudad:</strong> {{ ciudad }}, {{ pais }} ({{ siglas }})</p>
+		<p>
+
+			<strong>Ciudad:</strong> {{ ciudad }}, {{ pais }}
+			{% if siglas!="Sin Bandera" %}
+				<p><img src="{{ url_for('static', filename='imagenes_banderas/'+siglas+'.png') }}" alt="Imagen"  width="{{ ancho }}" height="30"></p>
+			{% endif %}
+
+		</p>
 	</div>
 
 	<div class="seccion-detalle-ciudad">

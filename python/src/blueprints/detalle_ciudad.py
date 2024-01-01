@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for
 
 from src.database.conexion import Conexion
 
-from src.utilidades.utils import añadirPuntos
+from src.utilidades.utils import añadirPuntos, bandera_existe
 
 bp_detalle_ciudad=Blueprint("detalle_ciudad", __name__)
 
@@ -24,6 +24,6 @@ def detalle_ciudad(codigo_ciudad:int):
 							latitud=latitud,
 							longitud=longitud,
 							pais=pais,
-							siglas=siglas,
+							siglas=siglas if bandera_existe(siglas) else "Sin Bandera",
 							tipo=tipo,
 							poblacion=añadirPuntos(poblacion))

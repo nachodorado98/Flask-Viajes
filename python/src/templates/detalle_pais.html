@@ -7,8 +7,17 @@
 <div class="contenedor-detalle">
 
 	<div class="seccion-detalle-pais">
-		<p><strong>Pais:</strong> {{ pais }} ({{ siglas }})</p>
+		<p><strong>Pais:</strong> {{ pais }}</p>
 	</div>
+
+	{% if siglas!="Sin Bandera" %}
+	<div class="seccion-detalle-pais">
+			<p>
+				<strong>Bandera:</strong>
+				<p><img src="{{ url_for('static', filename='imagenes_banderas/'+siglas+'.png') }}" alt="Imagen"  width="{{ ancho }}" height="122"></p>
+			</p>
+	</div>
+	{% endif %}
 
 	<div class="seccion-detalle-pais">
 		<p>

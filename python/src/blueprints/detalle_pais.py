@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for
 
 from src.database.conexion import Conexion
 
-from src.utilidades.utils import añadirPuntos
+from src.utilidades.utils import añadirPuntos, bandera_existe
 
 bp_detalle_pais=Blueprint("detalle_pais", __name__)
 
@@ -22,7 +22,7 @@ def detalle_pais(nombre_pais:str):
 	return render_template("detalle_pais.html",
 							pais=nombre_pais,
 							capital=capital,
-							siglas=siglas,
+							siglas=siglas if bandera_existe(siglas) else "Sin Bandera",
 							codigo_ciudad=codigo_ciudad,
 							poblacion=añadirPuntos(str(poblacion)),
 							ciudades=añadirPuntos(str(ciudades)))

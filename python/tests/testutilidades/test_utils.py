@@ -5,7 +5,7 @@ import shutil
 
 from src.utilidades.utils import fechas_correctas, web_correcta, comentario_incorrecto, limpiarCadena, crearNombreImagen
 from src.utilidades.utils import extraerExtension, generarArchivoImagen, cambiarFormatoFecha, descambiarFormatoFecha
-from src.utilidades.utils import crearCarpeta, obtenerAncho, redimension_imagen, comprobarImagen, añadirPuntos
+from src.utilidades.utils import crearCarpeta, obtenerAncho, redimension_imagen, comprobarImagen, añadirPuntos, bandera_existe
 
 @pytest.mark.parametrize(["ida","vuelta"],
 	[
@@ -238,3 +238,17 @@ def test_comprobar_imagen_valida():
 def test_añadir_puntos(numero, numero_puntos):
 
 	assert añadirPuntos(numero)==numero_puntos
+
+@pytest.mark.parametrize(["siglas"],
+	[("avs",), ("epñ",), ("sig",), ("hgjhg",), ("siglas",)]
+)
+def test_bandera_no_existe(siglas):
+
+	assert not bandera_existe(siglas)
+
+@pytest.mark.parametrize(["siglas"],
+	[("esp",), ("USA",), ("URY",), ("and",), ("PRT",)]
+)
+def test_bandera_existe(siglas):
+
+	assert bandera_existe(siglas)

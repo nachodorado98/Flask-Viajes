@@ -2,7 +2,6 @@ CREATE DATABASE bbdd_viajes;
 
 \c bbdd_viajes;
 
-
 CREATE TABLE ciudades (CodCiudad SERIAL PRIMARY KEY,
 						Ciudad VARCHAR(50),
 						Latitud VARCHAR(50),
