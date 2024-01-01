@@ -7,7 +7,7 @@ from src.utilidades.utils import añadirPuntos
 bp_detalle_ciudad=Blueprint("detalle_ciudad", __name__)
 
 @bp_detalle_ciudad.route("/detalle_ciudad/<codigo_ciudad>", methods=["GET"])
-def detalle_ciudad(codigo_ciudad):
+def detalle_ciudad(codigo_ciudad:int):
 
 	conexion=Conexion()
 

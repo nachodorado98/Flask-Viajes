@@ -134,3 +134,49 @@ class Conexion:
 			return datos["ciudad"], latitud, longitud, datos["pais"], datos["siglas"], datos["tipo"], poblacion
 
 		return None if ciudad is None else limpiarDatos(ciudad)
+
+	# Metodo para saber si un pais existe
+	def existe_pais(self, nombre_pais:str)->bool:
+
+		paises_existentes=self.paises_existentes()
+
+		return True if nombre_pais in paises_existentes else False
+
+	# Metodo para obtener los datos de la capital de un pais
+	def capital_datos_pais(self, nombre_pais:str)->Optional[tuple]:
+
+		self.c.execute("""SELECT Ciudad, Siglas, CodCiudad
+							FROM ciudades
+							WHERE Tipo='Capital'
+							AND Pais=%s""",
+							(nombre_pais,))
+
+		datos=self.c.fetchone()
+
+		return None if datos is None else (datos["ciudad"], datos["siglas"], datos["codciudad"])
+
+	# Metodo para obtener la poblacion y el numero de ciudades de un pais
+	def poblacion_ciudades_pais(self, nombre_pais:str)->Optional[tuple]:
+
+		self.c.execute("""SELECT Pais, SUM(Poblacion) as Poblacion_Pais, COUNT(Ciudades) as Numero_Ciudades
+							FROM ciudades
+							WHERE Pais=%s
+							GROUP BY Pais""",
+							(nombre_pais,))
+
+		datos=self.c.fetchone()
+
+		return None if datos is None else (datos["poblacion_pais"], datos["numero_ciudades"])
+
+	# Metodo para obtener la informacion de un pais
+	def informacion_pais(self, nombre_pais:str)->Optional[tuple]:
+
+		if not self.existe_pais(nombre_pais):
+
+			return None
+
+		capital, siglas, codigo_ciudad=self.capital_datos_pais(nombre_pais)
+
+		poblacion, ciudades=self.poblacion_ciudades_pais(nombre_pais)
+
+		return capital, siglas, codigo_ciudad, poblacion, ciudades

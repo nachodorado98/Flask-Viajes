@@ -79,7 +79,7 @@ def test_obtener_codigo_ciudad(conexion, ciudad, codigo_ciudad):
 
 	assert conexion.obtenerCodCiudad(ciudad)==codigo_ciudad
 
-@pytest.mark.parametrize(["ciudad",],
+@pytest.mark.parametrize(["ciudad"],
 	[("jkjkjkjjk",), ("MADRID",), ("barna",), ("london",), ("Andorra La Vella",)]
 )
 def test_obtener_codigo_ciudad_no_existe(conexion, ciudad):
@@ -158,3 +158,77 @@ def test_detalle_ciudad_existe(conexion, codigo_ciudad):
 	assert isinstance(ciudad[1], float)
 	assert isinstance(ciudad[2], float)
 	assert isinstance(ciudad[-1], str)
+
+@pytest.mark.parametrize(["pais"],
+	[("jkjkjkjjk",), ("españa",), ("ReinoUnido",), ("ANDORRA",), ("Pais",)]
+)
+def test_pais_no_existe(conexion, pais):
+
+	assert not conexion.existe_pais(pais)
+
+@pytest.mark.parametrize(["pais"],
+	[("España",), ("Netherlands",), ("Reino Unido",), ("Andorra",), ("Emiratos Árabes Unidos",)]
+)
+def test_pais_existe(conexion, pais):
+
+	assert conexion.existe_pais(pais)
+
+@pytest.mark.parametrize(["pais"],
+	[("jkjkjkjjk",), ("españa",), ("ReinoUnido",), ("ANDORRA",), ("Pais",)]
+)
+def test_capital_datos_pais_no_existe(conexion, pais):
+
+	assert conexion.capital_datos_pais(pais) is None
+
+@pytest.mark.parametrize(["pais", "capital", "siglas", "codigo_ciudad"],
+	[
+		("España", "Madrid", "ESP", 103),
+		("Netherlands", "Amsterdam", "NLD", 709),
+		("Reino Unido", "London", "GBR", 34),
+		("Andorra", "Andorra la Vella", "AND", 809),
+		("Emiratos Árabes Unidos", "Abu Dhabi", "ARE", 488)
+	]
+)
+def test_capital_datos_pais_existe(conexion, pais, capital, siglas, codigo_ciudad):
+
+	assert conexion.capital_datos_pais(pais)==(capital, siglas, codigo_ciudad)
+
+@pytest.mark.parametrize(["pais"],
+	[("jkjkjkjjk",), ("españa",), ("ReinoUnido",), ("ANDORRA",), ("Pais",)]
+)
+def test_poblacion_ciudades_pais_no_existe(conexion, pais):
+
+	assert conexion.poblacion_ciudades_pais(pais) is None
+
+@pytest.mark.parametrize(["pais", "poblacion", "ciudades"],
+	[
+		("España", 44106654, 1135),
+		("Netherlands", 14580259, 331),
+		("Reino Unido", 46162721, 858),
+		("Andorra", 77354, 7),
+		("Emiratos Árabes Unidos", 6773563, 9)
+	]
+)
+def test_poblacion_ciudades_pais_existe(conexion, pais, poblacion, ciudades):
+
+	assert conexion.poblacion_ciudades_pais(pais)==(poblacion, ciudades)
+
+@pytest.mark.parametrize(["pais"],
+	[("jkjkjkjjk",), ("españa",), ("ReinoUnido",), ("ANDORRA",), ("Pais",)]
+)
+def test_informacion_pais_no_existe(conexion, pais):
+
+	assert conexion.informacion_pais(pais) is None
+
+@pytest.mark.parametrize(["pais", "capital", "siglas", "codigo_ciudad", "poblacion", "ciudades"],
+	[
+		("España", "Madrid", "ESP", 103, 44106654, 1135),
+		("Netherlands", "Amsterdam", "NLD", 709, 14580259, 331),
+		("Reino Unido", "London", "GBR", 34, 46162721, 858),
+		("Andorra", "Andorra la Vella", "AND", 809, 77354, 7),
+		("Emiratos Árabes Unidos", "Abu Dhabi", "ARE", 488, 6773563, 9)
+	]
+)
+def test_informacion_pais_existe(conexion, pais, capital, siglas, codigo_ciudad, poblacion, ciudades):
+
+	assert conexion.informacion_pais(pais)==(capital, siglas, codigo_ciudad, poblacion, ciudades)

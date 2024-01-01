@@ -126,6 +126,22 @@ tbody tr:hover {
     transform: scale(1.1);
 }
 
+.pais-button {
+    text-decoration: none;
+    color: #333;
+    background-color: #f7f7f7;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.01s ease;
+    font-size: 18px;
+    display: inline-block;
+}
+
+.pais-button:hover {
+    color: #333;
+    transform: scale(1.1);
+}
+
 .mensaje-no-viajes {
     margin-top: 30px;
     margin-bottom: 30px;
@@ -360,4 +376,33 @@ strong {
     background-color: #e74c3c;
     color: #333;
     transform: scale(1.05);
+}
+
+
+.seccion-detalle-pais {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.seccion-detalle-pais p {
+    margin-right: 10px;
+    font-size: 24px;
+}
+
+.capital-button {
+    text-decoration: none;
+    color: #333;
+    background-color: #f7f7f7;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.01s ease;
+    font-size: 23px;
+    display: inline-block;
+}
+
+.capital-button:hover {
+    color: #333;
+    transform: scale(1.1);
 }
