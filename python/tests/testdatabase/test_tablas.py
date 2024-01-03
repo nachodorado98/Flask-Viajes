@@ -232,3 +232,42 @@ def test_informacion_pais_no_existe(conexion, pais):
 def test_informacion_pais_existe(conexion, pais, capital, siglas, codigo_ciudad, poblacion, ciudades):
 
 	assert conexion.informacion_pais(pais)==(capital, siglas, codigo_ciudad, poblacion, ciudades)
+
+@pytest.mark.parametrize(["id_viaje"],
+	[(0,), (10000000,), (-1,), (2564354366,)]
+)
+def test_id_viaje_no_existe(conexion, id_viaje):
+
+	assert not conexion.existe_id_viaje(id_viaje)
+
+def test_id_viaje_existe(conexion):
+
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "comentario", "imagen.jpg")
+
+	viajes=conexion.obtenerViajes()
+
+	id_viaje=viajes[0][0]
+
+	assert conexion.existe_id_viaje(id_viaje)
+	assert not conexion.existe_id_viaje(id_viaje+1)
+	assert not conexion.existe_id_viaje(id_viaje-1)
+
+@pytest.mark.parametrize(["id_viaje"],
+	[(0,), (10000000,), (-1,), (2564354366,)]
+)
+def test_detalle_viaje_no_existe(conexion, id_viaje):
+
+	assert conexion.obtenerDetalleViaje(id_viaje) is None
+
+def test_detalle_viaje_existe(conexion):
+
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "comentario", "imagen.jpg")
+
+	viajes=conexion.obtenerViajes()
+
+	id_viaje=viajes[0][0]
+
+	viaje=conexion.obtenerDetalleViaje(id_viaje)
+
+	assert viaje is not None
+	assert viaje[0]=="London"

@@ -34,14 +34,14 @@ class Conexion:
 	def obtenerViajes(self)->Optional[List[tuple]]:
 
 		self.c.execute("""SELECT v.Id_Viaje, c.Ciudad, c.CodCiudad, c.Pais, v.Ida, v.Vuelta
-							FROM viajes v
-							JOIN ciudades c
+							FROM Viajes v
+							JOIN Ciudades c
 							USING (CodCiudad)
 							ORDER BY v.Id_Viaje""")
 
 		viajes=self.c.fetchall()
 
-		# Funcion para convertir los datos de los viajes en el formator deseado
+		# Funcion para convertir los datos de los viajes en el formato deseado
 		def convertirDatos(datos:Dict)->tuple:
 
 			ida=datos["ida"].strftime("%d/%m/%Y")
@@ -56,7 +56,7 @@ class Conexion:
 	def paises_existentes(self)->List[str]:
 
 		self.c.execute("""SELECT Pais
-	                 		FROM ciudades 
+	                 		FROM Ciudades 
 	                 		GROUP BY Pais
 	                 		ORDER BY Pais""")
 
@@ -68,7 +68,7 @@ class Conexion:
 	def ciudades_existentes(self, pais:str, poblacion:int=0)->List[str]:
 
 		self.c.execute("""SELECT Ciudad
-	                 		FROM ciudades 
+	                 		FROM Ciudades 
 	                 		WHERE Pais=%s
 	                 		AND Poblacion>=%s
 	                 		ORDER BY Ciudad""",
@@ -93,7 +93,7 @@ class Conexion:
 	# Metodo para insertar un viaje en la BBDD
 	def insertarViaje(self, codciudad:int, ida:str, vuelta:str, hotel:str, web:str, transporte:str, comentario:str, imagen:str)->None:
 
-		self.c.execute("""INSERT INTO viajes (CodCiudad, Ida, Vuelta, Hotel, Web, Transporte, Comentario, Imagen)
+		self.c.execute("""INSERT INTO Viajes (CodCiudad, Ida, Vuelta, Hotel, Web, Transporte, Comentario, Imagen)
 							VALUES(%s, %s, %s, %s, %s, %s, %s, %s)""",
 							(codciudad, ida, vuelta, hotel, web, transporte, comentario, imagen))
 
@@ -146,7 +146,7 @@ class Conexion:
 	def capital_datos_pais(self, nombre_pais:str)->Optional[tuple]:
 
 		self.c.execute("""SELECT Ciudad, Siglas, CodCiudad
-							FROM ciudades
+							FROM Ciudades
 							WHERE Tipo='Capital'
 							AND Pais=%s""",
 							(nombre_pais,))
@@ -159,7 +159,7 @@ class Conexion:
 	def poblacion_ciudades_pais(self, nombre_pais:str)->Optional[tuple]:
 
 		self.c.execute("""SELECT Pais, SUM(Poblacion) as Poblacion_Pais, COUNT(Ciudades) as Numero_Ciudades
-							FROM ciudades
+							FROM Ciudades
 							WHERE Pais=%s
 							GROUP BY Pais""",
 							(nombre_pais,))
@@ -180,3 +180,38 @@ class Conexion:
 		poblacion, ciudades=self.poblacion_ciudades_pais(nombre_pais)
 
 		return capital, siglas, codigo_ciudad, poblacion, ciudades
+
+	# Metodo para saber si existe un id de viaje
+	def existe_id_viaje(self, id_viaje:int)->bool:
+
+		self.c.execute("""SELECT Id_Viaje
+							FROM Viajes
+							WHERE Id_Viaje=%s""",
+							(id_viaje,))
+
+		id_viaje_existente=self.c.fetchone()
+
+		return False if id_viaje_existente is None else True
+
+	# Metodo para obtener los detalles de un viaje
+	def obtenerDetalleViaje(self, id_viaje:int)->Optional[tuple]:
+
+		self.c.execute("""SELECT c.Ciudad, c.Pais, c.Siglas, v.Ida, v.Vuelta, v.Hotel, v.Web, v.Transporte, v.Comentario, v.Imagen
+							FROM Ciudades c
+							JOIN Viajes v
+							USING (CodCiudad)
+							WHERE v.Id_Viaje=%s""",
+							(id_viaje,))
+
+		viaje=self.c.fetchone()
+
+		# Funcion para convertir los datos de los viajes en el formato deseado
+		def convertirDatos(datos:Dict)->tuple:
+
+			ida=datos["ida"].strftime("%d/%m/%Y")
+
+			vuelta=datos["vuelta"].strftime("%d/%m/%Y")
+
+			return datos["ciudad"], datos["pais"], datos["siglas"], f"{ida} - {vuelta}", datos["hotel"], datos["web"], datos["transporte"], datos["comentario"], datos["imagen"]
+
+		return None if viaje is None else convertirDatos(viaje)

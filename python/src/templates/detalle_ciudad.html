@@ -11,7 +11,7 @@
 
 			<strong>Ciudad:</strong> {{ ciudad }}, {{ pais }}
 			{% if siglas!="Sin Bandera" %}
-				<p><img src="{{ url_for('static', filename='imagenes_banderas/'+siglas+'.png') }}" alt="Imagen"  width="{{ ancho }}" height="30"></p>
+				<p><img src="{{ url_for('static', filename='imagenes_banderas/'+siglas+'.png') }}" alt="Imagen" height="30"></p>
 			{% endif %}
 
 		</p>

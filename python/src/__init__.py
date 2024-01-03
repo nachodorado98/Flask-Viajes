@@ -5,6 +5,7 @@ from .blueprints.inicio import bp_inicio
 from .blueprints.anadir_viaje import bp_anadir_viaje
 from .blueprints.detalle_ciudad import bp_detalle_ciudad
 from .blueprints.detalle_pais import bp_detalle_pais
+from .blueprints.detalle_viaje import bp_detalle_viaje
 from .utilidades.utils import crearCarpeta
 
 # Funcion para crear el entorno
@@ -27,6 +28,7 @@ def crear_app(configuracion:object)->Flask:
 	app.register_blueprint(bp_anadir_viaje)
 	app.register_blueprint(bp_detalle_ciudad)
 	app.register_blueprint(bp_detalle_pais)
+	app.register_blueprint(bp_detalle_viaje)
 
 	creacionEntorno()
 

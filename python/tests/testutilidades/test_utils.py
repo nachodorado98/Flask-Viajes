@@ -5,7 +5,9 @@ import shutil
 
 from src.utilidades.utils import fechas_correctas, web_correcta, comentario_incorrecto, limpiarCadena, crearNombreImagen
 from src.utilidades.utils import extraerExtension, generarArchivoImagen, cambiarFormatoFecha, descambiarFormatoFecha
-from src.utilidades.utils import crearCarpeta, obtenerAncho, redimension_imagen, comprobarImagen, añadirPuntos, bandera_existe
+from src.utilidades.utils import crearCarpeta, obtenerAncho, obtenerAlto, redimension_imagen, redimension_imagen_alto
+from src.utilidades.utils import comprobarImagen, añadirPuntos, bandera_existe, es_cuadrada, comprobarCuadrada
+from src.utilidades.utils import es_horizontal, comprobarHorizontal
 
 @pytest.mark.parametrize(["ida","vuelta"],
 	[
@@ -182,6 +184,26 @@ def test_redimension_imagen():
 
 	assert isinstance(ancho, int)
 
+@pytest.mark.parametrize(["altura", "ancho", "resultado"],
+	[
+		(220, 50, 1320),
+		(500, 300, 500),
+		(145, 200, 217),
+		(20.56, 2.5, 2467)
+	]
+)
+def test_obtener_alto(altura, ancho, resultado):
+
+	assert obtenerAlto(altura, ancho)==resultado
+
+def test_redimension_imagen_alto():
+
+	ruta_imagen=os.path.join(os.getcwd(), "testapp", "imagen_tests.jpg")
+
+	alto=redimension_imagen_alto(ruta_imagen)
+
+	assert isinstance(alto, int)
+
 @pytest.mark.parametrize(["archivo_imagen"],
 	[("imagen",), ("Sin Imagen",), ("imagen.jpg",), ("london_uk_",), ("mipdf.pdf",)]
 )
@@ -252,3 +274,39 @@ def test_bandera_no_existe(siglas):
 def test_bandera_existe(siglas):
 
 	assert bandera_existe(siglas)
+
+@pytest.mark.parametrize(["altura", "ancho", "resultado"],
+	[
+		(220, 50, False),
+		(500, 300, False),
+		(200, 200, True),
+		(20.56, 2.5, False)
+	]
+)
+def test_es_cuadrada(altura, ancho, resultado):
+
+	assert es_cuadrada(ancho, altura)==resultado
+
+def test_comprobar_cuadrada():
+
+	ruta_imagen=os.path.join(os.getcwd(), "testapp", "imagen_tests.jpg")
+
+	assert not comprobarCuadrada(ruta_imagen)
+
+@pytest.mark.parametrize(["altura", "ancho", "resultado"],
+	[
+		(220, 50, False),
+		(500, 600, True),
+		(200, 200, False),
+		(20.56, 2.5, False)
+	]
+)
+def test_es_horizontal(altura, ancho, resultado):
+
+	assert es_horizontal(ancho, altura)==resultado
+
+def test_comprobar_horizontal():
+
+	ruta_imagen=os.path.join(os.getcwd(), "testapp", "imagen_tests.jpg")
+
+	assert comprobarHorizontal(ruta_imagen)

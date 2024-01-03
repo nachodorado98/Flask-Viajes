@@ -81,14 +81,28 @@ def obtenerAncho(altura_actual:float, ancho_actual:float, altura:float=115)->int
 
 	return int((altura/altura_actual)*ancho_actual)
 
-# Funcion para obtener el valor de la redimension de la imagen
+# Funcion para obtener el alto que debe tener la imagen
+def obtenerAlto(altura_actual:float, ancho_actual:float, anchura:float=300)->int:
+
+	return int((anchura/ancho_actual)*altura_actual)
+
+# Funcion para obtener el valor de la redimension del ancho de la imagen
 def redimension_imagen(ruta_imagen:str, altura:float=115)->int:
 
 	with Image.open(ruta_imagen) as imagen_pil:
 
 		ancho_original, alto_original=imagen_pil.size
 
-	return obtenerAncho(alto_original, ancho_original)
+	return obtenerAncho(alto_original, ancho_original, altura)
+
+# Funcion para obtener el valor de la redimension del alto de la imagen
+def redimension_imagen_alto(ruta_imagen:str, anchura:float=300)->int:
+
+	with Image.open(ruta_imagen) as imagen_pil:
+
+		ancho_original, alto_original=imagen_pil.size
+
+	return obtenerAlto(alto_original, ancho_original, anchura)
 
 # Funcion para comprobar si la imagen es valida
 def comprobarImagen(archivo_imagen:str)->bool:
@@ -122,3 +136,31 @@ def bandera_existe(siglas:str)->bool:
 	ruta_imagen=os.path.join(ruta, "static", "imagenes_banderas", f"{siglas.upper()}.png")
 
 	return True if os.path.exists(ruta_imagen) else False
+
+# Funcion para saber si una imagen es cuadrada
+def es_cuadrada(ancho:int, alto:int)->bool:
+
+	return True if ancho==alto else False
+
+# Funcion para comprobar si la imagen es cuadrada
+def comprobarCuadrada(ruta_imagen:str)->bool:
+
+	with Image.open(ruta_imagen) as imagen_pil:
+
+		ancho, alto=imagen_pil.size
+
+	return es_cuadrada(ancho, alto)
+
+# Funcion para saber si una imagen es horizontal
+def es_horizontal(ancho:int, alto:int)->bool:
+
+	return True if ancho>alto else False
+
+# Funcion para comprobar si la imagen es horizontal
+def comprobarHorizontal(ruta_imagen:str)->bool:
+
+	with Image.open(ruta_imagen) as imagen_pil:
+
+		ancho, alto=imagen_pil.size
+
+	return es_horizontal(ancho, alto)

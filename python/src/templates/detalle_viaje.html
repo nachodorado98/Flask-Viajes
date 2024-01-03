@@ -1,0 +1,55 @@
+{% extends 'inicio.html' %}
+
+{% block titulo %}Detalle del viaje a {{ ciudad }}{% endblock titulo %}
+
+{% block principal %}
+
+<div class="contenedor-detalle">
+
+	<div class="seccion-detalle-viaje">
+
+		<div class="contenedor-imagen-viaje">
+
+			{% if imagen!="Sin Imagen" %}
+				<p>
+					<img src="{{ url_for('static', filename='imagenes/' + imagen) }}" alt="Imagen"  width="{{ ancho }}" height="{{ alto }}">
+				</p>
+			{% else %}
+				<p>{{ imagen }}</p>
+			{% endif %}
+	        
+	    </div>
+
+	    <div class="info-viaje">
+
+	        <p>
+	            <strong>Destino:</strong> {{ ciudad }}, {{ pais }}
+	            {% if siglas!="Sin Bandera" %}
+	                <img src="{{ url_for('static', filename='imagenes_banderas/'+siglas+'.png') }}" alt="Imagen" height="30">
+	            {% endif %}
+	        </p>
+
+	        <p><strong>Fecha:</strong> {{ fechas }}</p>
+
+	        <p><strong>Hotel:</strong> 
+	        	<a class="web-button" href="https://{{ web }}">{{ hotel }}</a>
+	        </p>
+
+	        <p><strong>Transporte:</strong> {{ transporte }}</p>
+
+	        {% if comentario!="Sin Comentario"%}
+				<p><strong>Comentario:</strong> {{ comentario }}</p>
+			{% endif %}
+	        
+	    </div>
+
+	</div>
+
+</div>
+
+
+<div class="contenedor-volver">
+    <a href="/" class="volver-button">Volver</a>
+</div>
+
+{% endblock principal %}

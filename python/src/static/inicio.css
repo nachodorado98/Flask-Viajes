@@ -406,3 +406,43 @@ strong {
     color: #333;
     transform: scale(1.1);
 }
+
+
+
+.seccion-detalle-viaje {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.seccion-detalle-viaje p {
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+
+.contenedor-imagen-viaje {
+    width: 40%;
+    padding-right: 20px;
+}
+
+.info-viaje {
+    width: 60%;
+}
+
+.web-button {
+    text-decoration: none;
+    color: #333;
+    background-color: #f7f7f7;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.01s ease;
+    font-size: 23px;
+    display: inline-block;
+}
+
+.web-button:hover {
+    color: #333;
+    transform: scale(1.1);
+}
