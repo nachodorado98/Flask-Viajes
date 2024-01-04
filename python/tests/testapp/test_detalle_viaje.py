@@ -22,7 +22,7 @@ def test_pagina_detalle_viaje_existe_sin_imagen_sin_comentario_sin_bandera(clien
 			"ida":"22/06/2019",
 			"vuelta":"22/06/2019",
 			"hotel":"h",
-			"web":"www.h.es",
+			"web":"www.google.com",
 			"transporte":"t",
 			"comentario":"Sin Comentario",
 			"archivo_imagen":"Sin Imagen"}
@@ -56,7 +56,7 @@ def test_pagina_detalle_viaje_existe_sin_imagen_sin_comentario_con_bandera(clien
 			"ida":"22/06/2019",
 			"vuelta":"22/06/2019",
 			"hotel":"h",
-			"web":"www.h.es",
+			"web":"www.google.com",
 			"transporte":"t",
 			"comentario":"Sin Comentario",
 			"archivo_imagen":"Sin Imagen"}
@@ -90,7 +90,7 @@ def test_pagina_detalle_viaje_existe_sin_imagen_con_comentario(cliente, conexion
 			"ida":"22/06/2019",
 			"vuelta":"22/06/2019",
 			"hotel":"h",
-			"web":"www.h.es",
+			"web":"www.google.com",
 			"transporte":"t",
 			"comentario":"Comentario",
 			"archivo_imagen":"Sin Imagen"}
@@ -124,7 +124,7 @@ def test_pagina_detalle_viaje_existe_con_imagen_no_existente_sin_comentario(clie
 			"ida":"22/06/2019",
 			"vuelta":"22/06/2019",
 			"hotel":"h",
-			"web":"www.h.es",
+			"web":"www.google.com",
 			"transporte":"t",
 			"comentario":"Sin Comentario",
 			"archivo_imagen":"miimagen.jpg"}
@@ -182,7 +182,7 @@ def test_pagina_detalle_viaje_existe_con_imagen_existente_sin_comentario(cliente
 			"ida":"22/06/2019",
 			"vuelta":"22/06/2019",
 			"hotel":"h",
-			"web":"www.h.es",
+			"web":"www.google.com",
 			"transporte":"t",
 			"comentario":"Sin Comentario",
 			"archivo_imagen":"imagen_tests.jpg"}
@@ -210,3 +210,61 @@ def test_pagina_detalle_viaje_existe_con_imagen_existente_sin_comentario(cliente
 	assert "imagen_tests.jpg" in contenido
 
 	vaciarCarpeta(ruta_relativa_carpeta)
+
+@pytest.mark.parametrize(["web"],
+	[("www.fdhgfhgf.com",), ("www.h.com",),("www.jhkfhfgj.com",),("www.github.com",),("www.fbref.com",)]
+)
+def test_pagina_detalle_viaje_existe_web_invalida(cliente, conexion, web):
+
+	data={"pais":"España",
+			"ciudad":"Oranjestad",
+			"ida":"22/06/2019",
+			"vuelta":"22/06/2019",
+			"hotel":"h",
+			"web":web,
+			"transporte":"t",
+			"comentario":"Sin Comentario",
+			"archivo_imagen":"Sin Imagen"}
+
+	cliente.post("/insertar_viaje", data=data)
+
+	viajes=conexion.obtenerViajes()
+
+	id_viaje=viajes[0][0]
+
+	respuesta=cliente.get(f"/detalle_viaje/{id_viaje}")
+
+	contenido=respuesta.data.decode()
+
+	assert respuesta.status_code==200
+	assert "web-button-invalido" in contenido
+	assert web not in contenido
+
+@pytest.mark.parametrize(["web"],
+	[("www.google.com",),("www.hotelparquesur.com",)]
+)
+def test_pagina_detalle_viaje_existe_web_valida(cliente, conexion, web):
+
+	data={"pais":"España",
+			"ciudad":"Oranjestad",
+			"ida":"22/06/2019",
+			"vuelta":"22/06/2019",
+			"hotel":"h",
+			"web":web,
+			"transporte":"t",
+			"comentario":"Sin Comentario",
+			"archivo_imagen":"Sin Imagen"}
+
+	cliente.post("/insertar_viaje", data=data)
+
+	viajes=conexion.obtenerViajes()
+
+	id_viaje=viajes[0][0]
+
+	respuesta=cliente.get(f"/detalle_viaje/{id_viaje}")
+
+	contenido=respuesta.data.decode()
+
+	assert respuesta.status_code==200
+	assert "web-button-valido" in contenido
+	assert web in contenido

@@ -4,7 +4,7 @@ import os
 from src.database.conexion import Conexion
 
 from src.utilidades.utils import fechas_correctas, web_correcta, comentario_incorrecto, crearNombreImagen, extraerExtension
-from src.utilidades.utils import generarArchivoImagen, cambiarFormatoFecha, descambiarFormatoFecha, redimension_imagen, comprobarImagen
+from src.utilidades.utils import generarArchivoImagen, cambiarFormatoFecha, descambiarFormatoFecha, redimension_imagen_ancho, comprobarImagen
 
 
 bp_anadir_viaje=Blueprint("anadir_viaje", __name__)
@@ -72,7 +72,7 @@ def comprobarViaje():
 
 			imagen.save(ruta_imagen)
 
-			ancho=redimension_imagen(ruta_imagen)
+			ancho=redimension_imagen_ancho(ruta_imagen)
 
 		else:
 

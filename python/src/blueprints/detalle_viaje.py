@@ -4,6 +4,7 @@ import os
 from src.database.conexion import Conexion
 
 from src.utilidades.utils import bandera_existe, redimension_imagen_alto, comprobarCuadrada, comprobarHorizontal
+from src.utilidades.utils import obtenerNuevasDimensiones, validarPaginaWeb
 
 bp_detalle_viaje=Blueprint("detalle_viaje", __name__)
 
@@ -30,22 +31,7 @@ def detalle_viaje(id_viaje:int):
 
 			ruta_imagen=os.path.join(ruta_carpeta, imagen)
 
-			if not comprobarCuadrada(ruta_imagen):
-
-				if not comprobarHorizontal(ruta_imagen):
-
-					ancho=300
-					alto=redimension_imagen_alto(ruta_imagen)
-
-				else:
-
-					ancho=500
-					alto=redimension_imagen_alto(ruta_imagen, ancho)
-
-			else:
-
-				ancho=400
-				alto=redimension_imagen_alto(ruta_imagen, ancho)
+			ancho, alto=obtenerNuevasDimensiones(ruta_imagen)
 
 		else:
 
@@ -62,4 +48,5 @@ def detalle_viaje(id_viaje:int):
 							comentario=comentario,
 							imagen=imagen,
 							alto=None if imagen=="Sin Imagen" else alto,
-							ancho=None if imagen=="Sin Imagen" else ancho)
+							ancho=None if imagen=="Sin Imagen" else ancho,
+							accesible=validarPaginaWeb(web))

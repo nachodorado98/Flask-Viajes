@@ -31,8 +31,14 @@
 
 	        <p><strong>Fecha:</strong> {{ fechas }}</p>
 
-	        <p><strong>Hotel:</strong> 
-	        	<a class="web-button" href="https://{{ web }}">{{ hotel }}</a>
+	        <p><strong>Hotel:</strong>
+
+	        	{% if accesible %}
+	        		<a class="web-button-valido" href="https://{{ web }}" target="_blank">{{ hotel }}</a>
+	        	{% else %}
+	        		<a class="web-button-invalido" href="#">{{ hotel }}</a>
+	        	{% endif %}
+
 	        </p>
 
 	        <p><strong>Transporte:</strong> {{ transporte }}</p>

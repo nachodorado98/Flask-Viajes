@@ -5,9 +5,9 @@ import shutil
 
 from src.utilidades.utils import fechas_correctas, web_correcta, comentario_incorrecto, limpiarCadena, crearNombreImagen
 from src.utilidades.utils import extraerExtension, generarArchivoImagen, cambiarFormatoFecha, descambiarFormatoFecha
-from src.utilidades.utils import crearCarpeta, obtenerAncho, obtenerAlto, redimension_imagen, redimension_imagen_alto
+from src.utilidades.utils import crearCarpeta, obtenerAncho, obtenerAlto, redimension_imagen_ancho, redimension_imagen_alto
 from src.utilidades.utils import comprobarImagen, añadirPuntos, bandera_existe, es_cuadrada, comprobarCuadrada
-from src.utilidades.utils import es_horizontal, comprobarHorizontal
+from src.utilidades.utils import es_horizontal, comprobarHorizontal, obtenerNuevasDimensiones, validarPaginaWeb
 
 @pytest.mark.parametrize(["ida","vuelta"],
 	[
@@ -180,7 +180,7 @@ def test_redimension_imagen():
 
 	ruta_imagen=os.path.join(os.getcwd(), "testapp", "imagen_tests.jpg")
 
-	ancho=redimension_imagen(ruta_imagen)
+	ancho=redimension_imagen_ancho(ruta_imagen)
 
 	assert isinstance(ancho, int)
 
@@ -287,11 +287,18 @@ def test_es_cuadrada(altura, ancho, resultado):
 
 	assert es_cuadrada(ancho, altura)==resultado
 
-def test_comprobar_cuadrada():
+@pytest.mark.parametrize(["imagen", "resultado"],
+	[
+		("imagen_tests_horizontal.jpg", False),
+		("imagen_tests_cuadrada.jpg", True),
+		("imagen_tests_vertical.jpg", False)
+	]
+)
+def test_comprobar_cuadrada(imagen, resultado):
 
-	ruta_imagen=os.path.join(os.getcwd(), "testapp", "imagen_tests.jpg")
+	ruta_imagen=os.path.join(os.getcwd(), "testutilidades", "imagenes_formato", imagen)
 
-	assert not comprobarCuadrada(ruta_imagen)
+	assert comprobarCuadrada(ruta_imagen)==resultado
 
 @pytest.mark.parametrize(["altura", "ancho", "resultado"],
 	[
@@ -305,8 +312,44 @@ def test_es_horizontal(altura, ancho, resultado):
 
 	assert es_horizontal(ancho, altura)==resultado
 
-def test_comprobar_horizontal():
+@pytest.mark.parametrize(["imagen", "resultado"],
+	[
+		("imagen_tests_horizontal.jpg", True),
+		("imagen_tests_cuadrada.jpg", False),
+		("imagen_tests_vertical.jpg", False)
+	]
+)
+def test_comprobar_horizontal(imagen, resultado):
 
-	ruta_imagen=os.path.join(os.getcwd(), "testapp", "imagen_tests.jpg")
+	ruta_imagen=os.path.join(os.getcwd(), "testutilidades", "imagenes_formato", imagen)
 
-	assert comprobarHorizontal(ruta_imagen)
+	assert comprobarHorizontal(ruta_imagen)==resultado
+
+@pytest.mark.parametrize(["imagen", "resultado"],
+	[
+		("imagen_tests_horizontal.jpg", 500),
+		("imagen_tests_cuadrada.jpg", 400),
+		("imagen_tests_vertical.jpg", 300)
+	]
+)
+def test_obtener_nuevas_dimensiones(imagen, resultado):
+
+	ruta_imagen=os.path.join(os.getcwd(), "testutilidades", "imagenes_formato", imagen)
+
+	ancho, alto=obtenerNuevasDimensiones(ruta_imagen)
+
+	assert ancho==resultado
+
+@pytest.mark.parametrize(["web", "resultado"],
+	[
+		("www.google.com", True),
+		("https://www.google.com", True),
+		("www.fgfhfghfg.com", False),
+		("https://www.jhkfhfgj.com", False),
+		("https://www.github.com", False),
+		("https://fbref.com/en/comps/12/schedule/La-Liga-Scores-and-Fixtures", True)
+	]
+)
+def test_validar_pagina_web(web, resultado):
+
+	assert validarPaginaWeb(web)==resultado

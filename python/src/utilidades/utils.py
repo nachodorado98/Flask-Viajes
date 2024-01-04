@@ -4,7 +4,7 @@ import re
 import uuid
 import os
 from PIL import Image
-
+import requests
 
 # Funcion para saber si las fechas son correctas
 def fechas_correctas(ida:str, vuelta:str)->bool:
@@ -87,7 +87,7 @@ def obtenerAlto(altura_actual:float, ancho_actual:float, anchura:float=300)->int
 	return int((anchura/ancho_actual)*altura_actual)
 
 # Funcion para obtener el valor de la redimension del ancho de la imagen
-def redimension_imagen(ruta_imagen:str, altura:float=115)->int:
+def redimension_imagen_ancho(ruta_imagen:str, altura:float=115)->int:
 
 	with Image.open(ruta_imagen) as imagen_pil:
 
@@ -116,17 +116,17 @@ def comprobarImagen(archivo_imagen:str)->bool:
 # Funcion para poner los puntos de los miles, millones, etc
 def añadirPuntos(numero:str)->str:
 
-    numero_con_puntos=""
+	numero_con_puntos=""
 
-    for indice, digito in enumerate(numero[::-1], 1):
+	for indice, digito in enumerate(numero[::-1], 1):
 
-        numero_con_puntos+=digito
+		numero_con_puntos+=digito
 
-        if indice%3==0 and indice!=len(numero[::-1]):
+		if indice%3==0 and indice!=len(numero[::-1]):
 
-            numero_con_puntos+="."
+			numero_con_puntos+="."
 
-    return numero_con_puntos[::-1]
+	return numero_con_puntos[::-1]
 
 # Funcion para saber si una bandera existe
 def bandera_existe(siglas:str)->bool:
@@ -164,3 +164,33 @@ def comprobarHorizontal(ruta_imagen:str)->bool:
 		ancho, alto=imagen_pil.size
 
 	return es_horizontal(ancho, alto)
+
+# Funcion para obtener las nuevas dimensiones (alto, ancho) de la imagen segun sea cuadrada, horizontal o vertical
+def obtenerNuevasDimensiones(ruta_imagen:str)->tuple:
+
+	if not comprobarCuadrada(ruta_imagen):
+
+		ancho=500 if comprobarHorizontal(ruta_imagen) else 300
+
+	else:
+
+		ancho=400
+
+	alto=redimension_imagen_alto(ruta_imagen, ancho)
+	
+	return ancho, alto
+
+# Funcion para obtener que una pagina web es accesible
+def validarPaginaWeb(web:str)->bool:
+
+	url=web if web.startswith("https://") else f"https://{web}"
+
+	try:
+
+		respuesta=requests.head(url)
+
+		return True if respuesta.status_code==200 else False
+
+	except requests.ConnectionError:
+
+		return False

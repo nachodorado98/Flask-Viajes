@@ -431,7 +431,7 @@ strong {
     width: 60%;
 }
 
-.web-button {
+.web-button-valido {
     text-decoration: none;
     color: #333;
     background-color: #f7f7f7;
@@ -442,7 +442,18 @@ strong {
     display: inline-block;
 }
 
-.web-button:hover {
+.web-button-valido:hover {
     color: #333;
     transform: scale(1.1);
+}
+
+.web-button-invalido {
+    text-decoration: none;
+    color: #333;
+    background-color: #f7f7f7;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-size: 23px;
+    display: inline-block;
+    pointer-events: none;
 }
