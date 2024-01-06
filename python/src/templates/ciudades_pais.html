@@ -9,20 +9,26 @@
         <thead>
             <tr>
                 <th>Ciudad</th>
+                <th>Poblacion</th>
+                <th>Tipo de Ciudad</th>
                 <th>Visitado</th>
             </tr>
         </thead>
         <tbody>
             {% for ciudad in ciudades %}
             <tr>
-                {% if ciudad[1]=='Visitada' %}
+                {% if ciudad[3]=='Visitada' %}
 
-                    <td><a class="ciudad-visitada-pais-button" href="/detalle_ciudad/{{ ciudad[2] }}">{{ ciudad[0] }}</a></td>
+                    <td><a class="visitada-button" href="#">{{ ciudad[0] }}</a></td>
+                    <td><a class="visitada-button" href="#">{{ ciudad[1] }} habitantes</a></td>
+                    <td><a class="visitada-button" href="#">{{ ciudad[2] }}</a></td>
                     <td style="background-color: #90ee90;"><a class="visitada-button" href="#">Visitada <i class="fas fa-check"></i></a></td>
 
                 {% else %}
 
-                    <td><a class="ciudad-no-visitada-pais-button" href="/detalle_ciudad/{{ ciudad[2] }}">{{ ciudad[0] }}</a></td>
+                    <td><a class="no-visitada-button" href="#">{{ ciudad[0] }}</a></td>
+                    <td><a class="no-visitada-button" href="#">{{ ciudad[1] }} habitantes</a></td>
+                    <td><a class="no-visitada-button" href="#">{{ ciudad[2] }}</a></td>
                     <td><a class="no-visitada-button" href="#">No Visitada <i class="fas fa-times"></i></a></td>
 
                 {% endif %}
@@ -32,8 +38,20 @@
     </table>
 </div>
 
-<div class="contenedor-volver">
-    <a href="/detalle_pais/{{ pais }}" class="volver-button">Volver al pais</a>
+<div class="seccion-orden-ciudades">
+    
+    <div class="contenedor-orden">
+        {% if orden %}
+            <a href="/ciudades_pais/{{ pais }}" class="orden-button">No Ordenar</a>
+        {% else %}
+            <a href="/ciudades_pais/{{ pais }}?orden=True" class="orden-button">Ordenar</a>
+        {% endif %}
+    </div>
+
+    <div class="contenedor-ciudades-pais-volver">
+        <a href="/detalle_pais/{{ pais }}" class="volver-ciudades-pais-button">Volver al pais</a>
+    </div>
+
 </div>
 
 {% endblock principal %}

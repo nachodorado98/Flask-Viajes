@@ -351,3 +351,92 @@ def test_ciudades_pais_existe_con_varios_viajes(conexion, pais, poblacion, codig
 	for ciudad_no_visitada in ciudades_no_visitadas:
 
 		assert ciudad_no_visitada[1]=="No Visitada"
+
+@pytest.mark.parametrize(["pais"],
+	[("jkjkjkjjk",), ("españa",), ("ReinoUnido",), ("ANDORRA",), ("Pais",)]
+)
+def test_ciudades_pais_orden_visitadas_no_existe(conexion, pais):
+
+	assert conexion.ciudades_pais_orden_visitadas(pais) is None
+
+@pytest.mark.parametrize(["pais", "poblacion"],
+	[
+		("Reino Unido", 0),
+		("España", 10000),
+		("Portugal", 24356),
+		("Francia", 1000000)
+	]
+)
+def test_ciudades_pais_orden_visitadas_existe_sin_viaje(conexion, pais, poblacion):
+
+	ciudades=conexion.ciudades_pais_orden_visitadas(pais, poblacion)
+
+	assert len(ciudades)==len(conexion.ciudades_existentes(pais, poblacion))
+
+@pytest.mark.parametrize(["pais", "poblacion", "codigo_ciudad"],
+	[
+		("Reino Unido",0, 34),
+		("España", 10000, 103),
+		("Portugal", 24356, 2438),
+		("Francia", 1000000, 35)
+	]
+)
+def test_ciudades_pais_orden_visitadas_existe_con_viaje(conexion, pais, poblacion, codigo_ciudad):
+
+	conexion.insertarViaje(codigo_ciudad, "2019-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "comentario", "imagen.jpg")
+
+	ciudades=conexion.ciudades_pais_orden_visitadas(pais, poblacion)
+
+	assert len(ciudades)==len(conexion.ciudades_existentes(pais, poblacion))
+
+	ciudad_visitada=list(filter(lambda ciudad: ciudad[2]==codigo_ciudad, ciudades))
+
+	assert len(ciudad_visitada)==1
+	assert ciudad_visitada[0][1]=="Visitada"
+
+	assert ciudades[0]==ciudad_visitada[0]
+
+	ciudades_no_visitadas=list(filter(lambda ciudad: ciudad[2]!=codigo_ciudad, ciudades))
+
+	assert len(ciudades_no_visitadas)==len(ciudades)-1
+
+	for ciudad_no_visitada in ciudades_no_visitadas:
+
+		assert ciudad_no_visitada[1]=="No Visitada"
+
+	assert ciudades[1:]==ciudades_no_visitadas
+
+@pytest.mark.parametrize(["pais", "poblacion", "codigo_ciudad"],
+	[
+		("Reino Unido",0, 34),
+		("España", 10000, 103),
+		("Portugal", 24356, 2438),
+		("Francia", 1000000, 35)
+	]
+)
+def test_ciudades_pais_orden_visitadas_existe_con_varios_viajes(conexion, pais, poblacion, codigo_ciudad):
+
+	for _ in range(5):
+
+		conexion.insertarViaje(codigo_ciudad, "2019-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "comentario", "imagen.jpg")
+
+	ciudades=conexion.ciudades_pais_orden_visitadas(pais, poblacion)
+
+	assert len(ciudades)==len(conexion.ciudades_existentes(pais, poblacion))
+
+	ciudad_visitada=list(filter(lambda ciudad: ciudad[2]==codigo_ciudad, ciudades))
+
+	assert len(ciudad_visitada)==1
+	assert ciudad_visitada[0][1]=="Visitada"
+
+	assert ciudades[0]==ciudad_visitada[0]
+
+	ciudades_no_visitadas=list(filter(lambda ciudad: ciudad[2]!=codigo_ciudad, ciudades))
+
+	assert len(ciudades_no_visitadas)==len(ciudades)-1
+
+	for ciudad_no_visitada in ciudades_no_visitadas:
+
+		assert ciudad_no_visitada[1]=="No Visitada"
+
+	assert ciudades[1:]==ciudades_no_visitadas

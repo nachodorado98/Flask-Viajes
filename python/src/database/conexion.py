@@ -221,7 +221,9 @@ class Conexion:
 
 		self.c.execute("""SELECT DISTINCT(c.Ciudad),
 								CASE WHEN V.CodCiudad IS NOT NULL THEN 'Visitada' ELSE 'No Visitada' END AS Visitada,
-								c.CodCiudad
+								c.CodCiudad,
+								c.Poblacion,
+								c.Tipo
 	                 		FROM Ciudades c
 	                 		LEFT JOIN Viajes v
 	                 		USING (CodCiudad)
@@ -232,4 +234,24 @@ class Conexion:
 
 		ciudades=self.c.fetchall()
 
-		return list(map(lambda ciudad: (ciudad["ciudad"], ciudad["visitada"], ciudad["codciudad"]), ciudades)) if ciudades else None
+		return list(map(lambda ciudad: (ciudad["ciudad"], ciudad["visitada"], ciudad["codciudad"], ciudad["poblacion"], ciudad["tipo"]), ciudades)) if ciudades else None
+
+	# Metodo para obtener las ciudades de un pais
+	def ciudades_pais_orden_visitadas(self, pais:str, poblacion:int=0)->Optional[List[tuple]]:
+
+		self.c.execute("""SELECT DISTINCT(c.Ciudad),
+								CASE WHEN V.CodCiudad IS NOT NULL THEN 'Visitada' ELSE 'No Visitada' END AS Visitada,
+								c.CodCiudad,
+								c.Poblacion,
+								c.Tipo
+	                 		FROM Ciudades c
+	                 		LEFT JOIN Viajes v
+	                 		USING (CodCiudad)
+	                 		WHERE c.Pais=%s
+	                 		AND c.Poblacion>=%s
+	                 		ORDER BY Visitada DESC, Ciudad""",
+	                 		(pais,poblacion))
+
+		ciudades=self.c.fetchall()
+
+		return list(map(lambda ciudad: (ciudad["ciudad"], ciudad["visitada"], ciudad["codciudad"], ciudad["poblacion"], ciudad["tipo"]), ciudades)) if ciudades else None

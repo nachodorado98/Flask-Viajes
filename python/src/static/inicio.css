@@ -514,38 +514,6 @@ strong {
     background-color: #fff;
 }
 
-.ciudad-visitada-pais-button {
-    text-decoration: none;
-    color: #fff;
-    background-color: #ff6b6b;
-    padding: 8px 16px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.01s ease;
-    font-size: 23px;
-    display: inline-block;
-}
-
-.ciudad-visitada-pais-button:hover {
-    color: #333;
-    transform: scale(1.1);
-}
-
-.ciudad-no-visitada-pais-button {
-    text-decoration: none;
-    color: #333;
-    background-color: #f7f7f7;
-    padding: 8px 16px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.01s ease;
-    font-size: 23px;
-    display: inline-block;
-}
-
-.ciudad-no-visitada-pais-button:hover {
-    color: #333;
-    transform: scale(1.05);
-}
-
 .visitada-button {
     text-decoration: none;
     color: #333;
@@ -566,4 +534,55 @@ strong {
     font-size: 23px;
     display: inline-block;
     pointer-events: none;
+}
+
+.seccion-orden-ciudades {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.contenedor-orden {
+    width: 20%;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.orden-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff6b6b;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.orden-button:hover {
+    background-color: #e74c3c;
+    color: #333;
+    transform: scale(1.05);
+}
+
+.contenedor-ciudades-pais-volver {
+    text-align: center;
+    margin-top: 15px;
+    width: 20%;
+}
+
+.volver-ciudades-pais-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff6b6b;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.volver-ciudades-pais-button:hover {
+    background-color: #e74c3c;
+    color: #333;
+    transform: scale(1.05);
 }
