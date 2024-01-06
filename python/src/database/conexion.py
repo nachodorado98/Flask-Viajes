@@ -215,3 +215,21 @@ class Conexion:
 			return datos["ciudad"], datos["pais"], datos["siglas"], f"{ida} - {vuelta}", datos["hotel"], datos["web"], datos["transporte"], datos["comentario"], datos["imagen"]
 
 		return None if viaje is None else convertirDatos(viaje)
+
+	# Metodo para obtener las ciudades de un pais
+	def ciudades_pais(self, pais:str, poblacion:int=0)->Optional[List[tuple]]:
+
+		self.c.execute("""SELECT DISTINCT(c.Ciudad),
+								CASE WHEN V.CodCiudad IS NOT NULL THEN 'Visitada' ELSE 'No Visitada' END AS Visitada,
+								c.CodCiudad
+	                 		FROM Ciudades c
+	                 		LEFT JOIN Viajes v
+	                 		USING (CodCiudad)
+	                 		WHERE c.Pais=%s
+	                 		AND c.Poblacion>=%s
+	                 		ORDER BY Ciudad""",
+	                 		(pais,poblacion))
+
+		ciudades=self.c.fetchall()
+
+		return list(map(lambda ciudad: (ciudad["ciudad"], ciudad["visitada"], ciudad["codciudad"]), ciudades)) if ciudades else None

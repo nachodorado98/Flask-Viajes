@@ -27,7 +27,7 @@ def obtenerCiudades():
 
 	conexion=Conexion()
 
-	ciudades=conexion.ciudades_existentes(pais, 10000)
+	ciudades=conexion.ciudades_existentes(pais, 18000)
 
 	conexion.cerrarConexion()
 

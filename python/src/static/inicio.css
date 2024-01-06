@@ -1,3 +1,4 @@
+/*------------------------------------------------------INICIO-----------------------------------------------*/
 body, h1, h2, h3, p, ul, li, table {
     margin: 0;
     padding: 0;
@@ -61,7 +62,7 @@ h2 {
 .contenedor-tabla {
     margin-top: 5px;
     overflow-y: auto;
-     max-height: 490px;
+    max-height: 490px;
 }
 
 table {
@@ -180,7 +181,7 @@ footer {
     width: 100%;
 }
 
-
+/*------------------------------------------------------ANADIR-----------------------------------------------*/
 
 .formulario-container {
     background-color: #fff;
@@ -247,7 +248,7 @@ input {
     border: 1px solid #ddd;
 }
 
-
+/*------------------------------------------------------RESUMEN VIAJE-----------------------------------------------*/
 
 .contenedor-resumen {
     max-width: 2000px;
@@ -320,6 +321,7 @@ strong {
     color: #333;
 }
 
+/*------------------------------------------------------DETALLE CIUDAD-----------------------------------------------*/
 
 .contenedor-detalle {
     max-width: 2000px;
@@ -378,6 +380,7 @@ strong {
     transform: scale(1.05);
 }
 
+/*------------------------------------------------------DETALLE PAIS-----------------------------------------------*/
 
 .seccion-detalle-pais {
     display: flex;
@@ -407,7 +410,23 @@ strong {
     transform: scale(1.1);
 }
 
+.ciudades-pais-button {
+    text-decoration: none;
+    color: #333;
+    background-color: #f7f7f7;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.01s ease;
+    font-size: 23px;
+    display: inline-block;
+}
 
+.ciudades-pais-button:hover {
+    color: #333;
+    transform: scale(1.1);
+}
+
+/*------------------------------------------------------DETALLE VIAJE-----------------------------------------------*/
 
 .seccion-detalle-viaje {
     display: flex;
@@ -420,7 +439,6 @@ strong {
     margin-bottom: 10px;
     font-size: 28px;
 }
-
 
 .contenedor-imagen-viaje {
     width: 40%;
@@ -448,6 +466,98 @@ strong {
 }
 
 .web-button-invalido {
+    text-decoration: none;
+    color: #333;
+    background-color: #f7f7f7;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-size: 23px;
+    display: inline-block;
+    pointer-events: none;
+}
+
+/*------------------------------------------------------CIUDADES PAIS-----------------------------------------------*/
+
+.contenedor-tabla-ciudades-pais {
+    margin-top: 5px;
+    overflow-y: auto;
+    max-height: 470px;
+}
+
+.tabla-ciudades-pais {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+.tabla-ciudades-pais th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    font-size: 18px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tabla-ciudades-pais th {
+    background-color: #ff6b6b;
+    color: #fff;
+    font-weight: bold;
+    font-size: 20px;
+    top: 0;
+    z-index: 1;
+    position: sticky;
+}
+
+.tabla-ciudades-pais tbody tr:hover {
+    background-color: #fff;
+}
+
+.ciudad-visitada-pais-button {
+    text-decoration: none;
+    color: #fff;
+    background-color: #ff6b6b;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.01s ease;
+    font-size: 23px;
+    display: inline-block;
+}
+
+.ciudad-visitada-pais-button:hover {
+    color: #333;
+    transform: scale(1.1);
+}
+
+.ciudad-no-visitada-pais-button {
+    text-decoration: none;
+    color: #333;
+    background-color: #f7f7f7;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.01s ease;
+    font-size: 23px;
+    display: inline-block;
+}
+
+.ciudad-no-visitada-pais-button:hover {
+    color: #333;
+    transform: scale(1.05);
+}
+
+.visitada-button {
+    text-decoration: none;
+    color: #333;
+    background-color: #90ee90;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-size: 23px;
+    display: inline-block;
+    pointer-events: none;
+}
+
+.no-visitada-button {
     text-decoration: none;
     color: #333;
     background-color: #f7f7f7;

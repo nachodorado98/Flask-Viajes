@@ -38,8 +38,6 @@ def copiarImagen():
 
 	shutil.copy(ruta_imagen, ruta_destino)
 
-	print(ruta_destino)
-
 	assert os.path.exists(ruta_destino)
 
 def test_pagina_cancelar_viaje_imagen_valida(cliente, conexion):

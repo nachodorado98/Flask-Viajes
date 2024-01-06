@@ -1,0 +1,39 @@
+{% extends 'inicio.html' %}
+
+{% block titulo %}Ciudades del pais {{ pais }}{% endblock titulo %}
+
+{% block principal %}
+
+<div class="contenedor-tabla-ciudades-pais">
+    <table class="tabla-ciudades-pais">
+        <thead>
+            <tr>
+                <th>Ciudad</th>
+                <th>Visitado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ciudad in ciudades %}
+            <tr>
+                {% if ciudad[1]=='Visitada' %}
+
+                    <td><a class="ciudad-visitada-pais-button" href="/detalle_ciudad/{{ ciudad[2] }}">{{ ciudad[0] }}</a></td>
+                    <td style="background-color: #90ee90;"><a class="visitada-button" href="#">Visitada <i class="fas fa-check"></i></a></td>
+
+                {% else %}
+
+                    <td><a class="ciudad-no-visitada-pais-button" href="/detalle_ciudad/{{ ciudad[2] }}">{{ ciudad[0] }}</a></td>
+                    <td><a class="no-visitada-button" href="#">No Visitada <i class="fas fa-times"></i></a></td>
+
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="contenedor-volver">
+    <a href="/detalle_pais/{{ pais }}" class="volver-button">Volver al pais</a>
+</div>
+
+{% endblock principal %}
