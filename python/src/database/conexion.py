@@ -255,3 +255,23 @@ class Conexion:
 		ciudades=self.c.fetchall()
 
 		return list(map(lambda ciudad: (ciudad["ciudad"], ciudad["visitada"], ciudad["codciudad"], ciudad["poblacion"], ciudad["tipo"]), ciudades)) if ciudades else None
+
+	# Metodo para actualizar la web y el comentario de un viaje mediante su id
+	def actualizarWebComentario(self, id_viaje:int, web:str, comentario:str)->None:
+
+		self.c.execute("""UPDATE viajes
+							SET web=%s, comentario=%s
+							WHERE id_viaje=%s""",
+							(web, comentario, id_viaje))
+
+		self.confirmar()
+
+	# Metodo para actualizar la web, el comentario y la imagen de un viaje mediante su id
+	def actualizarWebComentarioImagen(self, id_viaje:int, web:str, comentario:str, imagen:str)->None:
+
+		self.c.execute("""UPDATE viajes
+							SET web=%s, comentario=%s, imagen=%s
+							WHERE id_viaje=%s""",
+							(web, comentario, imagen, id_viaje))
+
+		self.confirmar()

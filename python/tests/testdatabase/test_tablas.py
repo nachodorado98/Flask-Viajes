@@ -440,3 +440,60 @@ def test_ciudades_pais_orden_visitadas_existe_con_varios_viajes(conexion, pais, 
 		assert ciudad_no_visitada[1]=="No Visitada"
 
 	assert ciudades[1:]==ciudades_no_visitadas
+
+@pytest.mark.parametrize(["web", "comentario"],
+	[
+		("www.miweb.com", "me gusta mucho esta app"),
+		("miweb.com", "me gusta muchissisismo esta app"),
+		("", "me gusta mucho esta app"),
+		("www.miweb.com", ""),
+		("www.sdgfdhfgh.com", "dhfdhfghgf"),
+		("www.google.com", "Comentario")
+	]
+)
+def test_actualizar_viaje_web_comentario(conexion, web, comentario):
+
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	viajes=conexion.obtenerViajes()
+
+	id_viaje=viajes[0][0]
+
+	conexion.actualizarWebComentario(id_viaje, web, comentario)
+
+	conexion.c.execute("SELECT * FROM viajes")
+
+	viaje=conexion.c.fetchone()
+
+	assert viaje["id_viaje"]==id_viaje
+	assert viaje["web"]==web
+	assert viaje["comentario"]==comentario
+
+@pytest.mark.parametrize(["web", "comentario", "imagen"],
+	[
+		("www.miweb.com", "me gusta mucho esta app", "Sin Imagen"),
+		("miweb.com", "me gusta muchissisismo esta app", "miimagen.jpg"),
+		("", "me gusta mucho esta app", "ytytytyttuy"),
+		("www.miweb.com", "", "madrid_espana_ggfh.jpg"),
+		("www.sdgfdhfgh.com", "dhfdhfghgf", "Imagen"),
+		("www.google.com", "Comentario", "Sin Imagen")
+	]
+)
+def test_actualizar_viaje_web_comentario_imagen(conexion, web, comentario, imagen):
+
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	viajes=conexion.obtenerViajes()
+
+	id_viaje=viajes[0][0]
+
+	conexion.actualizarWebComentarioImagen(id_viaje, web, comentario, imagen)
+
+	conexion.c.execute("SELECT * FROM viajes")
+
+	viaje=conexion.c.fetchone()
+
+	assert viaje["id_viaje"]==id_viaje
+	assert viaje["web"]==web
+	assert viaje["comentario"]==comentario
+	assert viaje["imagen"]==imagen

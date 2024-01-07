@@ -1,9 +1,9 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, request
 import os
 
 from src.database.conexion import Conexion
 
-from src.utilidades.utils import bandera_existe
+from src.utilidades.utils import bandera_existe, web_correcta, comentario_incorrecto, generarArchivoImagen
 
 bp_editar_viaje=Blueprint("editar_viaje", __name__)
 
@@ -51,4 +51,56 @@ def actualizarViaje(id_viaje:int):
 
 		return redirect(url_for("inicio.inicio"))
 
-	return str(id_viaje)
+	web=request.form.get("web")
+	comentario=request.form.get("comentario")
+	imagen=request.form.get("imagen")
+	ciudad=request.form.get("ciudad")
+	pais=request.form.get("pais")
+
+	if comentario!="Sin Comentario":
+
+		if comentario_incorrecto(comentario):
+
+			return redirect(url_for("editar_viaje.editarViaje", id_viaje=id_viaje))
+
+	comentario_limpio="Sin Comentario" if comentario=="" or comentario is None else comentario
+
+	if not web_correcta(web):
+
+		return redirect(url_for("editar_viaje.editarViaje", id_viaje=id_viaje))
+
+	if imagen is not None:
+
+		conexion.actualizarWebComentario(id_viaje, web, comentario_limpio)
+
+		return redirect(url_for("detalle_viaje.detalle_viaje", id_viaje=id_viaje))
+
+	if "imagen" in request.files:
+
+		imagen=request.files["imagen"]
+
+		if imagen.filename!="":
+
+			archivo_imagen=generarArchivoImagen(imagen.filename, ciudad, pais) 
+
+			ruta=os.path.dirname(os.path.join(os.path.dirname(__file__)))
+
+			ruta_carpeta=os.path.join(ruta, "static", "imagenes")
+
+			ruta_imagen=os.path.join(ruta_carpeta, archivo_imagen)
+
+			imagen.save(ruta_imagen)
+
+			conexion.actualizarWebComentarioImagen(id_viaje, web, comentario_limpio, archivo_imagen)
+
+		else:
+
+			conexion.actualizarWebComentarioImagen(id_viaje, web, comentario_limpio, "Sin Imagen")
+
+	else:
+
+		conexion.actualizarWebComentario(id_viaje, web, comentario_limpio)
+			
+	conexion.cerrarConexion()
+
+	return redirect(url_for("detalle_viaje.detalle_viaje", id_viaje=id_viaje))

@@ -49,7 +49,7 @@
 
 				{% if comentario=="Sin Comentario" %}
 					<label for="comentario">Añadir Comentario:</label>
-					<input name="comentario" value="{{ comentario }}">
+					<input name="comentario" value="{{ comentario }}" autocomplete="off">
 				{% else %}
 					<input type="hidden" name="comentario" value="{{ comentario }}">
 				{% endif %}
@@ -57,6 +57,8 @@
 				{% if imagen=="Sin Imagen" %}
 					<label for="imagen">Subir Imagen (solo jpg, jpeg):</label>
 	    			<input type="file" name="imagen" id="imagen" accept=".jpg, .jpeg">
+	    			<input type="hidden" name="ciudad" value="{{ ciudad }}">
+	    			<input type="hidden" name="pais" value="{{ pais }}">
 	    		{% else %}
 	    			<input type="hidden" name="imagen" value="{{ imagen }}">
     			{% endif %}
