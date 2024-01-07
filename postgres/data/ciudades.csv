@@ -121,7 +121,7 @@ Nanchang,28.6842,115.8872,China,CHN,Capital Comunidad,5545500
 Tai'an,36.2001,117.0809,China,CHN,Ciudad,5494207
 Dazhou,31.2152,107.4947,China,CHN,Capital Provincia,5468097
 Houston,29.7863,-95.3889,Estados Unidos,USA,Ciudad,5464251
-Guadalajara,20.6767,-103.3475,México,MEX,Capital Comunidad,5437000
+Guadalajara City,20.6767,-103.3475,México,MEX,Capital Comunidad,5437000
 Yongzhou,26.4515,111.5953,China,CHN,Ciudad,5452100
 Atlanta,33.7627,-84.4224,Estados Unidos,USA,Capital Comunidad,5449398
 Rangoon,16.795,96.16,Birmania,MMR,Capital,5430000
@@ -484,7 +484,7 @@ Gwangju,35.1667,126.9167,Corea del Sur,KOR,Capital Comunidad,1490092
 Munich,48.1375,11.575,Alemania,DEU,Capital Comunidad,1488202
 Nasik,20.0,73.7833,India,IND,Ciudad,1486053
 Porto Alegre,-30.0328,-51.23,Brasil,BRA,Capital Comunidad,1484941
-Valencia,10.1667,-68.0,Venezuela,VEN,Capital Comunidad,1484430
+Valencia Ven,10.1667,-68.0,Venezuela,VEN,Capital Comunidad,1484430
 Onitsha,6.1667,6.7833,Nigeria,NGA,Capital Provincia,1483000
 Abu Dhabi,24.4511,54.3969,Emiratos Árabes Unidos,ARE,Capital,1483000
 Virginia Beach,36.7335,-76.0435,Estados Unidos,USA,Ciudad,1478868
@@ -521,7 +521,7 @@ Santiago,19.45,-70.7,República Dominicana,DOM,Capital Comunidad,1343423
 Prague,50.0833,14.4167,República Checa,CZE,Capital,1335084
 Rajkot,22.2969,70.7984,India,IND,Ciudad,1335397
 Liangshi,27.2578,111.7351,China,CHN,Ciudad,1335900
-Cordoba,-31.4167,-64.1833,Argentina,ARG,Capital Comunidad,1329604
+Cordoba Arg,-31.4167,-64.1833,Argentina,ARG,Capital Comunidad,1329604
 Guarulhos,-23.4667,-46.5333,Brasil,BRA,Ciudad,1324781
 Al Basrah,30.515,47.81,Irak,IRQ,Capital Comunidad,1326564
 Saitama,35.8617,139.6453,Japón,JPN,Capital Comunidad,1320571
@@ -666,7 +666,7 @@ Zhongwei,37.5139,105.1884,China,CHN,Capital Provincia,1046000
 Shouguang,36.8833,118.7333,China,CHN,Ciudad,1039205
 Bogor,-6.5917,106.8,Indonesia,IDN,Ciudad,1030720
 Raleigh,35.8325,-78.6435,Estados Unidos,USA,Capital Comunidad,1038738
-Cartagena,10.4236,-75.5253,Colombia,COL,Capital Comunidad,1036412
+Cartagena Col,10.4236,-75.5253,Colombia,COL,Capital Comunidad,1036412
 Chandigarh,30.7353,76.7911,India,IND,Capital Comunidad,1026459
 Matola,-25.9667,32.4667,Mozambique,MOZ,Ciudad,1032197
 Jodhpur,26.2944,73.0278,India,IND,Ciudad,1033918
@@ -892,7 +892,7 @@ Kisangani,0.5153,25.1911,República Democrática del Congo,COD,Capital Comunidad
 Aguascalientes,21.876,-102.296,México,MEX,Capital Comunidad,934424
 Marrakech,31.6295,-7.9811,Marruecos,MAR,Capital Comunidad,928850
 Donetsk,48.0089,37.8042,Ucrania,UKR,Capital Comunidad,929063
-Trujillo,-8.1119,-79.0289,Peru,PER,Capital Comunidad,919899
+Trujillo Per,-8.1119,-79.0289,Peru,PER,Capital Comunidad,919899
 Taihe,30.8706,105.3784,China,CHN,Capital Provincia,924531
 Bridgeport,41.1918,-73.1953,Estados Unidos,USA,Ciudad,924449
 Trichinopoly,10.8269,78.6928,India,IND,Ciudad,916857
@@ -1457,7 +1457,7 @@ Brookhaven,40.8321,-72.9518,Estados Unidos,USA,Ciudad,483546
 Az Zarqa',32.0833,36.1,Jordania,JOR,Capital Comunidad,481300
 Sylhet,24.9,91.8667,Bangladés,BGD,Capital Comunidad,479837
 Wichita,37.6896,-97.3442,Estados Unidos,USA,Ciudad,482249
-Toledo,41.6639,-83.5822,Estados Unidos,USA,Ciudad,482111
+Toledo City,41.6639,-83.5822,Estados Unidos,USA,Ciudad,482111
 Kaihua,23.3715,104.2437,China,CHN,Capital Provincia,481505
 Jamnagar,22.47,70.07,India,IND,Ciudad,479920
 Fuyuan,48.3614,134.2875,China,CHN,Capital Provincia,480000
@@ -2641,7 +2641,7 @@ Juazeiro,-9.4139,-40.5028,Brasil,BRA,Ciudad,220253
 Kremenchuk,49.0775,33.4239,Ucrania,UKR,Capital Provincia,220174
 Itabuna,-14.7858,-39.28,Brasil,BRA,Ciudad,219680
 Al Khubar,26.3,50.2167,Arabia Saudí,SAU,Ciudad,219679
-Cordoba,18.8942,-96.9347,México,MEX,Capital Provincia,218153
+Cordoba City,18.8942,-96.9347,México,MEX,Capital Provincia,218153
 Shiliguri,26.72,88.42,India,IND,Ciudad,218718
 Zakhu,37.1436,42.6819,Irak,IRQ,Capital Provincia,219006
 Tulua,4.0847,-76.1986,Colombia,COL,Capital Provincia,219138
@@ -2669,7 +2669,7 @@ Matrah,23.6167,58.5667,Omán,OMN,Ciudad,214901
 Qostanay,53.2144,63.6246,Kazajistán,KAZ,Capital Comunidad,217135
 Banjarbaru,-3.4425,114.8325,Indonesia,IDN,Ciudad,216600
 Sa Dec,10.3105,105.7397,Vietnam,VNM,Capital Provincia,213610
-Valencia,7.9,125.0833,Filipinas,PHL,Ciudad,216546
+Valencia Fil,7.9,125.0833,Filipinas,PHL,Ciudad,216546
 Gujiao,37.9069,112.17,China,CHN,Ciudad,216723
 Lubeck,53.8697,10.6864,Alemania,DEU,Capital Provincia,215846
 Cartagena,37.6,-0.9819,España,ESP,Ciudad,216365
@@ -2758,7 +2758,7 @@ Fargo,46.8652,-96.8292,Estados Unidos,USA,Ciudad,208675
 Cascais,38.6969,-9.4206,Portugal,PRT,Capital Provincia,206479
 Northcote,-36.7913,174.7758,Nueva Zelanda,NZL,Ciudad,205605
 Qina,26.1667,32.7167,Egipto,EGY,Capital Comunidad,201191
-Toledo,10.3833,123.65,Filipinas,PHL,Ciudad,207314
+Toledo Fil,10.3833,123.65,Filipinas,PHL,Ciudad,207314
 Kharagpur,22.3302,87.3237,India,IND,Ciudad,207604
 Waitakere,-36.849,174.543,Nueva Zelanda,NZL,Ciudad,208100
 Monywa,22.1086,95.1358,Birmania,MMR,Ciudad,207489
@@ -3433,7 +3433,7 @@ Saharsa,25.88,86.6,India,IND,Ciudad,156540
 Puerto Plata,19.7958,-70.6944,República Dominicana,DOM,Capital Provincia,158756
 Nan Zhuang,22.9839,113.0139,China,CHN,Ciudad,156902
 Quipungo,-14.8167,14.5167,Angola,AGO,Ciudad,158918
-Cadiz,10.95,123.3,Filipinas,PHL,Ciudad,158544
+Cadiz Fil,10.95,123.3,Filipinas,PHL,Ciudad,158544
 Chau Doc,10.7,105.1167,Vietnam,VNM,Ciudad,157298
 Guimaraes,41.445,-8.2908,Portugal,PRT,Capital Provincia,158124
 Amersfoort,52.15,5.38,Netherlands,NLD,Capital Provincia,156286
@@ -4333,7 +4333,7 @@ Dinalupihan,14.8833,120.4667,Filipinas,PHL,Ciudad,118209
 Duluth,46.7756,-92.1392,Estados Unidos,USA,Ciudad,119476
 Dongsheng,22.6199,113.2895,China,CHN,Ciudad,117976
 Sopur,34.3,74.47,India,IND,Ciudad,118608
-Toledo,-24.7139,-53.7428,Brasil,BRA,Ciudad,119313
+Toledo Br,-24.7139,-53.7428,Brasil,BRA,Ciudad,119313
 Elblag,54.1667,19.4,Polonia,POL,Capital Provincia,119317
 Nazran,43.2167,44.7667,Rusia,RUS,Ciudad,117936
 Araucaria,-25.5928,-49.41,Brasil,BRA,Ciudad,119123
@@ -4548,7 +4548,7 @@ Euriapolis,-16.3778,-39.58,Brasil,BRA,Ciudad,113191
 Osmanabad,18.1667,76.05,India,IND,Ciudad,112085
 Novyy Urengoy,66.0847,76.6789,Rusia,RUS,Ciudad,113254
 Montero,-17.3333,-63.3833,Bolivia,BOL,Ciudad,112837
-Madrid,4.7306,-74.2639,Colombia,COL,Capital Provincia,112254
+Madrid Col,4.7306,-74.2639,Colombia,COL,Capital Provincia,112254
 Westminster,39.8837,-105.0624,Estados Unidos,USA,Ciudad,113166
 Tayabas,14.0167,121.5833,Filipinas,PHL,Ciudad,112658
 Mopti,14.49,-4.18,Malí,MLI,Capital Comunidad,108456
@@ -6519,7 +6519,7 @@ Am-Timan,11.0333,20.2833,Chad,TCD,Capital Comunidad,38261
 La Presa,32.711,-117.0027,Estados Unidos,USA,Ciudad,38227
 Massama,38.7568,-9.2748,Portugal,PRT,Ciudad,28112
 Brugherio,45.5508,9.3011,Italia,ITA,Ciudad,34868
-Trujillo,9.3658,-70.4369,Venezuela,VEN,Capital Comunidad,38110
+Trujillo Ven,9.3658,-70.4369,Venezuela,VEN,Capital Comunidad,38110
 Kranj,46.2389,14.3556,Eslovenia,SVN,Capital Comunidad,37941
 Stanton,33.8002,-117.9935,Estados Unidos,USA,Ciudad,38139
 Brzeg,50.8667,17.4833,Polonia,POL,Capital Provincia,35890
@@ -6935,7 +6935,7 @@ Billericay,51.628,0.4184,Reino Unido,GBR,Ciudad,27998
 Otjiwarongo,-20.4642,16.6528,Namibia,NAM,Capital Comunidad,28249
 Dubendorf,47.3981,8.6194,Suiza,CHE,Ciudad,28002
 Charentsavan,40.4097,44.6431,Armenia,ARM,Ciudad,25039
-Trujillo,15.9167,-86.0,Honduras,HND,Capital Comunidad,30000
+Trujillo Ho,15.9167,-86.0,Honduras,HND,Capital Comunidad,30000
 Sai Mai,13.8882,100.462,Tailandia,THA,Capital Provincia,23316
 Subotica,46.0983,19.67,Serbia,SRB,Capital Comunidad,29919
 Treinta y Tres,-33.2308,-54.3822,Uruguay,URY,Capital Comunidad,25477
@@ -10377,7 +10377,7 @@ Carson,33.8374,-118.2559,Estados Unidos,USA,Ciudad,91394
 Tubingen,48.52,9.0556,Alemania,DEU,Capital Provincia,90546
 Greenburgh,41.033,-73.8413,Estados Unidos,USA,Ciudad,91382
 Sao Felix do Xingu,-6.645,-51.995,Brasil,BRA,Ciudad,91340
-Caceres,-16.0711,-57.6789,Brasil,BRA,Ciudad,91271
+Caceres Br,-16.0711,-57.6789,Brasil,BRA,Ciudad,91271
 Maladzyechna,54.3136,26.8517,Bielorrusia,BLR,Capital Provincia,91063
 Ad Dakhla,23.7141,-15.9368,Marruecos,MAR,Ciudad,89292
 Conroe,30.3239,-95.4825,Estados Unidos,USA,Ciudad,91079
@@ -10440,7 +10440,7 @@ Albany,31.5776,-84.1762,Estados Unidos,USA,Ciudad,89217
 Shwebo,22.5783,95.6929,Birmania,MMR,Ciudad,88914
 Humpata,-15.0725,13.3678,Angola,AGO,Ciudad,89144
 Sao Joao da Boa Vista,-21.9689,-46.7978,Brasil,BRA,Ciudad,89027
-Murcia,10.6,123.0333,Filipinas,PHL,Ciudad,88868
+Murcia Fil,10.6,123.0333,Filipinas,PHL,Ciudad,88868
 Qiantangcun,23.6742,116.915,China,CHN,Ciudad,88001
 Candeias,-12.6678,-38.5508,Brasil,BRA,Ciudad,88806
 San Francisco,30.9,-112.6,México,MEX,Ciudad,89122
@@ -13329,7 +13329,7 @@ Nanzhuangzhen,23.721,102.8231,China,CHN,Ciudad,46696
 Rondon do Para,-4.7758,-48.0669,Brasil,BRA,Ciudad,46964
 Yashan,22.4776,112.7289,China,CHN,Ciudad,46700
 Tocoa,15.6833,-86.0,Honduras,HND,Ciudad,46900
-Valencia,8.2592,-76.1469,Colombia,COL,Capital Provincia,46897
+Valencia Col,8.2592,-76.1469,Colombia,COL,Capital Provincia,46897
 Agrinio,38.6167,21.4,Grecia,GRC,Capital Provincia,46899
 Cornelio Procopio,-23.1808,-50.6469,Brasil,BRA,Ciudad,46928
 Dongzhuosu,38.0658,115.1232,China,CHN,Ciudad,45748
@@ -13728,7 +13728,7 @@ Laurel,14.05,120.9,Filipinas,PHL,Ciudad,43210
 Toboso,10.7167,123.5167,Filipinas,PHL,Ciudad,43445
 Mahbubabad,17.6167,80.0167,India,IND,Ciudad,42851
 Santa Elena,14.2,122.3833,Filipinas,PHL,Ciudad,43582
-Madridejos,11.2667,123.7333,Filipinas,PHL,Ciudad,42039
+Madridejos Fil,11.2667,123.7333,Filipinas,PHL,Ciudad,42039
 Istres,43.5151,4.9895,Francia,FRA,Capital Provincia,43411
 Southington,41.605,-72.8802,Estados Unidos,USA,Ciudad,43781
 Sambava,-14.2662,50.1666,Madagascar,MDG,Capital Provincia,43465
@@ -13979,7 +13979,7 @@ Sidrolandia,-20.9319,-54.9608,Brasil,BRA,Ciudad,42132
 Montenegro,4.5653,-75.7511,Colombia,COL,Capital Provincia,41857
 Memari,23.2,88.12,India,IND,Ciudad,41451
 Amontada,-3.3608,-39.8308,Brasil,BRA,Ciudad,42098
-Caceres,7.5794,-75.3503,Colombia,COL,Capital Provincia,42112
+Caceres Col,7.5794,-75.3503,Colombia,COL,Capital Provincia,42112
 Puerto Galera,13.5,120.9542,Filipinas,PHL,Ciudad,41961
 Lingquan,36.9985,110.8417,China,CHN,Capital Provincia,41996
 Monchegorsk,67.9394,32.9156,Rusia,RUS,Ciudad,42099
@@ -14557,7 +14557,6 @@ Ancud,-41.8682,-73.8287,Chile,CHL,Ciudad,38991
 Margosatubig,7.5783,123.1659,Filipinas,PHL,Ciudad,38660
 Moses Lake,47.128,-119.2761,Estados Unidos,USA,Ciudad,39002
 Pirna,50.9622,13.9403,Alemania,DEU,Capital Provincia,38277
-Valencia,9.2833,123.25,Filipinas,PHL,Ciudad,38733
 Yoshinogawa,34.0664,134.3586,Japón,JPN,Ciudad,38726
 Itabaianinha,-11.2739,-37.79,Brasil,BRA,Ciudad,38910
 Samal,14.7678,120.5431,Filipinas,PHL,Ciudad,38302
@@ -17025,7 +17024,6 @@ Aioi,34.8036,134.4681,Japón,JPN,Ciudad,28350
 Asago,35.325,134.85,Japón,JPN,Ciudad,28586
 San Carlos,8.7944,-75.6994,Colombia,COL,Capital Provincia,28597
 Stoughton,42.1192,-71.1019,Estados Unidos,USA,Ciudad,28639
-Valencia,9.6097,124.208,Filipinas,PHL,Ciudad,28392
 Lake in the Hills,42.1913,-88.3476,Estados Unidos,USA,Ciudad,28634
 Idar-Oberstein,49.7019,7.3253,Alemania,DEU,Ciudad,28323
 Kartaly,53.05,60.65,Rusia,RUS,Ciudad,28607
@@ -19273,7 +19271,7 @@ Butig,7.7239,124.3011,Filipinas,PHL,Ciudad,22768
 Shaomi,26.4727,104.8126,China,CHN,Ciudad,22688
 Goldasht,32.6267,51.4392,Irán,IRN,Ciudad,22693
 Marshall,32.537,-94.3515,Estados Unidos,USA,Ciudad,22831
-Cartagena,-33.55,-71.6,Chile,CHL,Ciudad,22738
+Cartagena Ch,-33.55,-71.6,Chile,CHL,Ciudad,22738
 Singur,22.81,88.23,India,IND,Ciudad,21382
 Haar,48.1,11.7333,Alemania,DEU,Ciudad,21185
 Laguna Beach,33.5448,-117.7612,Estados Unidos,USA,Ciudad,22827
@@ -22718,7 +22716,7 @@ Dongjiangshui,33.3792,104.9516,China,CHN,Ciudad,16816
 Dacaozhuang,37.5546,114.9316,China,CHN,Ciudad,16709
 Guben,51.9533,14.7167,Alemania,DEU,Ciudad,16656
 Retiro,6.0597,-75.5039,Colombia,COL,Capital Provincia,16974
-Valencia,-0.9525,-79.3531,Ecuador,ECU,Ciudad,16983
+Valencia Ec,-0.9525,-79.3531,Ecuador,ECU,Ciudad,16983
 Cernavoda,44.3381,28.0336,Rumanía,ROU,Ciudad,17022
 Santa Maria,-26.6833,-66.0333,Argentina,ARG,Capital Provincia,17030
 Costa Marques,-12.445,-64.2272,Brasil,BRA,Ciudad,17031
@@ -22899,7 +22897,7 @@ Aue,50.5853,12.7008,Alemania,DEU,Ciudad,16012
 Liangyi,35.2698,106.093,China,CHN,Ciudad,16529
 Islampur,24.1513,88.4671,India,IND,Ciudad,15019
 Kawagoe,35.0231,136.6739,Japón,JPN,Ciudad,15048
-Madrid,9.2667,125.9667,Filipinas,PHL,Ciudad,16653
+Madrid Fil,9.2667,125.9667,Filipinas,PHL,Ciudad,16653
 Kaiwen,27.1548,99.8371,China,CHN,Capital Provincia,16738
 Fairburn,33.5496,-84.5914,Estados Unidos,USA,Ciudad,16768
 Ceadir-Lunga,46.055,28.8303,Moldavia,MDA,Ciudad,16605
@@ -25134,7 +25132,7 @@ Oatfield,45.4127,-122.5942,Estados Unidos,USA,Ciudad,14060
 Kalkar,51.7389,6.2925,Alemania,DEU,Ciudad,13902
 Muggia,45.6,13.7667,Italia,ITA,Ciudad,13111
 Pomfret,42.4029,-79.3534,Estados Unidos,USA,Ciudad,14056
-Cordoba,0.8533,-77.5178,Colombia,COL,Capital Provincia,14006
+Cordoba Col,0.8533,-77.5178,Colombia,COL,Capital Provincia,14006
 Chumpak,41.8585,84.137,China,CHN,Ciudad,13983
 Waunakee,43.1829,-89.4445,Estados Unidos,USA,Ciudad,14052
 Famenin,35.1139,48.9717,Irán,IRN,Capital Provincia,14019
@@ -27025,7 +27023,7 @@ Sakawa,33.5008,133.2867,Japón,JPN,Ciudad,12170
 Wells,51.209,-2.647,Reino Unido,GBR,Ciudad,10536
 Kibungo,-2.1608,30.5442,Ruanda,RWA,Ciudad,11537
 Tamarana,-23.7228,-51.0969,Brasil,BRA,Ciudad,12262
-Cordoba,9.5867,-74.8272,Colombia,COL,Capital Provincia,12266
+Cordoba Col,9.5867,-74.8272,Colombia,COL,Capital Provincia,12266
 Stradella,45.0833,9.3,Italia,ITA,Ciudad,11637
 Lagoa Dourada,-20.9139,-44.0778,Brasil,BRA,Ciudad,12256
 Grootegast,53.2091,6.2674,Netherlands,NLD,Capital Provincia,12143
@@ -31125,7 +31123,6 @@ Burela de Cabo,43.65,-7.4,España,ESP,Ciudad,9428
 Minano,36.0708,139.0989,Japón,JPN,Ciudad,9338
 Sindos,40.6667,22.8,Grecia,GRC,Capital Provincia,9289
 Planaltino,-13.2589,-40.3689,Brasil,BRA,Ciudad,9473
-Granada,4.5186,-74.3514,Colombia,COL,Capital Provincia,9253
 Vettweiss,50.7389,6.5972,Alemania,DEU,Ciudad,9369
 Esperantina,-5.3428,-48.5108,Brasil,BRA,Ciudad,9476
 Yutsa,43.9625,42.9875,Rusia,RUS,Ciudad,9427
@@ -39716,7 +39713,6 @@ Fischamend,48.1156,16.6128,Austria,AUT,Ciudad,5583
 Cambria,40.4931,-78.7448,Estados Unidos,USA,Ciudad,5807
 Beardstown,39.9994,-90.4178,Estados Unidos,USA,Ciudad,5807
 Matmari,16.0299,77.2959,India,IND,Ciudad,5434
-Toledo,-22.7428,-46.3719,Brasil,BRA,Ciudad,5764
 Manasquan,40.1186,-74.045,Estados Unidos,USA,Ciudad,5806
 Sala Baganza,44.7167,10.2333,Italia,ITA,Ciudad,5622
 Los Yebenes,39.5667,-3.8833,España,ESP,Ciudad,5796
@@ -41252,7 +41248,6 @@ Ceska Skalice,50.3947,16.0428,República Checa,CZE,Ciudad,5017
 Tha Wang Pha,19.0945,100.8097,Tailandia,THA,Capital Provincia,5242
 Grans,43.6086,5.0631,Francia,FRA,Ciudad,5120
 Avdon,54.6692,55.7164,Rusia,RUS,Ciudad,5263
-Cordoba,4.3911,-75.6878,Colombia,COL,Capital Provincia,5249
 Fairport,43.099,-77.4427,Estados Unidos,USA,Ciudad,5305
 Union Beach,40.4454,-74.1699,Estados Unidos,USA,Ciudad,5305
 Pawcatuck,41.3774,-71.8492,Estados Unidos,USA,Ciudad,5305

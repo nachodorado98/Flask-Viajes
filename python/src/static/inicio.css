@@ -476,6 +476,57 @@ strong {
     pointer-events: none;
 }
 
+.seccion-editar-datos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.contenedor-editar {
+    width: 10%;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.editar-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff6b6b;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+.editar-button:hover {
+    background-color: #e74c3c;
+    color: #333;
+    transform: scale(1.05);
+}
+
+.contenedor-viaje-volver {
+    text-align: center;
+    margin-top: 15px;
+    width: 10%;
+}
+
+.volver-viaje-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff6b6b;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+.volver-viaje-button:hover {
+    background-color: #e74c3c;
+    color: #333;
+    transform: scale(1.05);
+}
+
 /*------------------------------------------------------CIUDADES PAIS-----------------------------------------------*/
 
 .contenedor-tabla-ciudades-pais {
@@ -585,4 +636,96 @@ strong {
     background-color: #e74c3c;
     color: #333;
     transform: scale(1.05);
+}
+
+/*------------------------------------------------------EDITAR VIAJE-----------------------------------------------*/
+
+.contenedor-editar-viaje {
+    max-width: 2000px;
+    margin: 10px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.seccion-editar-viaje {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.seccion-editar-viaje p {
+    margin-right: 30px;
+    font-size: 22px;
+}
+
+.formulario-container-editar-viaje {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.formulario-editar-viaje {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.seccion-editar-viaje {
+    margin: 0 10px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 10px;
+
+}
+
+select,
+input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+
+.boton-confirmar-editar-viaje,
+.boton-cancelar-editar-viaje {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.boton-confirmar-editar-viaje {
+    background-color: #ff6b6b;
+    color: #fff;
+    border: 1px solid;
+    margin-bottom: 20px;
+    width: 120px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+.boton-cancelar-editar-viaje {
+    background-color: #cecece;
+    color: #fff;
+}
+
+.boton-confirmar-editar-viaje:hover {
+    opacity: 0.8;
+    background-color: #4caf50;
+}
+
+.boton-cancelar-editar-viaje:hover {
+    opacity: 0.8;
+    color: #333;
 }

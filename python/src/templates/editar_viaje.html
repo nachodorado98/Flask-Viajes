@@ -1,0 +1,73 @@
+{% extends 'inicio.html' %}
+
+{% block titulo %}Editar viaje a {{ ciudad }}{% endblock titulo %}
+
+{% block principal %}
+
+<div class="contenedor-editar-viaje">
+
+	<div class="seccion-editar-viaje">
+	
+		<p>
+            <strong>Destino:</strong> {{ ciudad }}, {{ pais }}
+            {% if siglas!="Sin Bandera" %}
+                <img src="{{ url_for('static', filename='imagenes_banderas/'+siglas+'.png') }}" alt="Imagen" height="30">
+            {% endif %}
+        </p>
+
+        <p><strong>Fecha:</strong> {{ fechas }}</p>
+
+	</div>
+
+	<div class="seccion-editar-viaje">
+
+		<p><strong>Hotel:</strong> {{ hotel }}</p>
+		<p><strong>Transporte:</strong> {{ transporte }}</p>
+
+	</div>
+
+	{% if comentario!="Sin Comentario"%}
+		<div class="seccion-editar-viaje">
+			<p><strong>Comentario:</strong> {{ comentario }}</p>
+		</div>
+	{% endif %}
+
+	{% if imagen!="Sin Imagen" %}
+		<div class="seccion-editar-viaje">
+			<p><img src="{{ url_for('static', filename='imagenes/' + imagen) }}" alt="Imagen"  width="{{ ancho }}" height="115"></p>
+		</div>
+	{% endif %}
+
+	<div class="formulario-container-editar-viaje">
+
+        <form action="/actualizar_viaje/{{ id_viaje }}" method="POST" class="formulario-editar-viaje" enctype="multipart/form-data">
+
+        	<div class="seccion-formulario-editar-viaje">
+
+				<label for="web">Editar Web:</label>
+				<input name="web" value="{{ web }}">
+
+				{% if comentario=="Sin Comentario" %}
+					<label for="comentario">Añadir Comentario:</label>
+					<input name="comentario" value="{{ comentario }}">
+				{% else %}
+					<input type="hidden" name="comentario" value="{{ comentario }}">
+				{% endif %}
+
+				{% if imagen=="Sin Imagen" %}
+					<label for="imagen">Subir Imagen (solo jpg, jpeg):</label>
+	    			<input type="file" name="imagen" id="imagen" accept=".jpg, .jpeg">
+	    		{% else %}
+	    			<input type="hidden" name="imagen" value="{{ imagen }}">
+    			{% endif %}
+	
+	    	</div>
+
+            <button type="submit" class="boton-confirmar-editar-viaje">Confirmar</button>
+        </form>
+        <a href="/detalle_viaje/{{ id_viaje }}" class="boton-cancelar-editar-viaje">Cancelar</a>
+    </div>
+
+</div>
+
+{% endblock principal %}
