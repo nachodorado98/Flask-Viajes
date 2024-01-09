@@ -1,10 +1,12 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List, Dict
 import re
 import uuid
 import os
 from PIL import Image
 import requests
+import geopandas as gpd
+import folium
 
 # Funcion para saber si las fechas son correctas
 def fechas_correctas(ida:str, vuelta:str)->bool:
@@ -194,3 +196,84 @@ def validarPaginaWeb(web:str)->bool:
 	except requests.ConnectionError:
 
 		return False
+
+# Funcion para obtener el nombre de las ciudades de manera unica (sin duplicados) por viaje
+def obtenerNombreCiudades(ciudades:List[tuple])->List[str]:
+
+	return list(set([ciudad[0]for ciudad in ciudades]))
+
+# Funcion para obtener los datos (latutud y longitud) del viaje de una ciudad concreta
+def obtenerLatLongCiudad(viajes:List[tuple])->tuple:
+
+	return tuple(set([(viaje[1], viaje[2]) for viaje in viajes]))[0]
+
+# Funcion para limpiar las fechas de los viajes a una ciudad
+def limpiarFechasCiudad(viajes:List[tuple])->str:
+
+	fechas=[viaje[3] for viaje in viajes]
+
+	return "<br> ".join(fechas)
+
+# Funcion para obtener los datos de las ciudades en los viajes correspondientes
+def obtenerDatosCiudadViaje(viajes:List[tuple])->Dict:
+
+	diccionario_ciudades={}
+
+	ciudades_unicas=obtenerNombreCiudades(viajes)
+
+	for ciudad in ciudades_unicas:
+
+		datos_ciudad=list(filter(lambda viaje: viaje[0]==ciudad, viajes))
+
+		latitud, longitud=obtenerLatLongCiudad(datos_ciudad)
+
+		fechas=limpiarFechasCiudad(datos_ciudad)
+
+		diccionario_ciudades[ciudad]={"latitud":latitud, "longitud":longitud, "fechas":fechas}
+
+	return diccionario_ciudades
+
+# Funcion para leer el archivo geojson
+def leerGeoJSON(ruta:str, paises:List[str])->gpd.geodataframe.GeoDataFrame:
+
+	ruta_carpeta=os.path.join(ruta, "static", "geojson")
+
+	archivo_geojson=os.path.join(ruta_carpeta, "gis.json")
+
+	geodataframe=gpd.read_file(archivo_geojson)
+
+	geodataframe_paises=geodataframe[geodataframe["name"].isin(paises)]
+
+	return geodataframe_paises
+
+# Funcion para crear el mapa con folium y guardarlo en un html
+def crearMapaFolium(ruta:str, paises:List[str], datos_ciudades:Dict, nombre_html:str="geojson_mapa.html")->None:
+
+	geodataframe=leerGeoJSON(ruta, paises)
+
+	mapa=folium.Map(location=[40.5, -3.25], zoom_start=3)
+	 
+	folium.GeoJson(geodataframe, name="viajes").add_to(mapa)
+
+	for ciudad, datos_ciudad in datos_ciudades.items():
+
+		folium.Marker([datos_ciudad["latitud"], datos_ciudad["longitud"]],
+				tooltip=f"Viaje(s) a {ciudad}",
+				popup=folium.Popup(f"<h1>Viajes a {ciudad}</h1><h4>Fechas Ida y Vuelta Viaje(s):<br> {datos_ciudad['fechas']}</h4>",max_width=500)).add_to(mapa)
+
+	ruta_templates=os.path.join(ruta, "templates")
+
+	ruta_archivo_html=os.path.join(ruta_templates, nombre_html)
+
+	mapa.save(ruta_archivo_html)
+	
+# Funcion para eliminar los posibles mapas (archivos html) si existen
+def eliminarPosiblesMapasFolium(ruta:str)->None:
+
+	ruta_templates=os.path.join(ruta, "templates")
+
+	posibles_mapas=[archivo for archivo in os.listdir(ruta_templates) if archivo.startswith("geojson_mapa")]
+
+	for mapa in posibles_mapas:
+
+		os.remove(os.path.join(ruta_templates, mapa))

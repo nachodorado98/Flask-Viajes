@@ -8,6 +8,7 @@ from .blueprints.detalle_pais import bp_detalle_pais
 from .blueprints.detalle_viaje import bp_detalle_viaje
 from .blueprints.ciudades_pais import bp_ciudades_pais
 from .blueprints.editar_viaje import bp_editar_viaje
+from .blueprints.mapa import bp_mapa
 
 from .utilidades.utils import crearCarpeta
 
@@ -34,6 +35,7 @@ def crear_app(configuracion:object)->Flask:
 	app.register_blueprint(bp_detalle_viaje)
 	app.register_blueprint(bp_ciudades_pais)
 	app.register_blueprint(bp_editar_viaje)
+	app.register_blueprint(bp_mapa)
 
 	creacionEntorno()
 

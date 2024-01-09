@@ -8,6 +8,8 @@ from src.utilidades.utils import extraerExtension, generarArchivoImagen, cambiar
 from src.utilidades.utils import crearCarpeta, obtenerAncho, obtenerAlto, redimension_imagen_ancho, redimension_imagen_alto
 from src.utilidades.utils import comprobarImagen, añadirPuntos, bandera_existe, es_cuadrada, comprobarCuadrada
 from src.utilidades.utils import es_horizontal, comprobarHorizontal, obtenerNuevasDimensiones, validarPaginaWeb
+from src.utilidades.utils import obtenerNombreCiudades, obtenerLatLongCiudad, limpiarFechasCiudad, obtenerDatosCiudadViaje
+from src.utilidades.utils import leerGeoJSON, crearMapaFolium, eliminarPosiblesMapasFolium
 
 @pytest.mark.parametrize(["ida","vuelta"],
 	[
@@ -353,3 +355,322 @@ def test_obtener_nuevas_dimensiones(imagen, resultado):
 def test_validar_pagina_web(web, resultado):
 
 	assert validarPaginaWeb(web)==resultado
+
+@pytest.mark.parametrize(["ciudades", "resultado"],
+	[
+		([("London","dsfsdgdgfd"), ("London","dsfsdgdgfd"), ("London","dsfsdgdgfd"), ("London","dsfsdgdgfd")], 1),
+		([("London","dsfsdgdgfd"), ("Paris","dsfsdgdgfd"), ("Madrid","dsfsdgdgfd"), ("London","dsfsdgdgfd")], 3),
+		([("London","dsfsdgdgfd"), ("Paris","dsfsdgdgfd"), ("Madrid","dsfsdgdgfd"), ("Porto","dsfsdgdgfd")], 4),
+		([],0)
+	]
+)
+def test_obtener_nombre_ciudades_unicas(ciudades, resultado):
+
+	assert len(obtenerNombreCiudades(ciudades))==resultado
+
+@pytest.mark.parametrize(["viajes"],
+	[
+		([("London","latitud1", "longitud1"), ("London","latitud1", "longitud1"), ("London","latitud1", "longitud1"), ("London","latitud1", "longitud1")],),
+		([("London","latitud1", "longitud1"), ("London","latitud1", "longitud1"), ("London","latitud1", "longitud1")],),
+		([("London","latitud1", "longitud1"), ("London","latitud1", "longitud1")],),
+		([("London","latitud1", "longitud1")],)
+	]
+)
+def test_obtener_latutud_longitud_ciudades_viaje(viajes):
+
+	assert obtenerLatLongCiudad(viajes)==("latitud1", "longitud1")
+
+
+@pytest.mark.parametrize(["viajes", "brs"],
+	[
+		([("London","latitud1", "longitud1", "fecha1 London"), ("London","latitud1", "longitud1", "fecha2 London"), ("London","latitud1", "longitud1", "fecha3 London"), ("London", "latitud1", "longitud1", "fecha4 London")], 3),
+		([("London","latitud1", "longitud1", "fecha1 London"), ("London","latitud1", "longitud1", "fecha2 London"), ("London","latitud1", "longitud1", "fecha3 London")], 2),
+		([("London","latitud1", "longitud1", "fecha1 London"), ("London","latitud1", "longitud1", "fecha2 London")], 1),
+		([("London","latitud1", "longitud1", "fecha1 London")], 0)
+	]
+)
+def test_limpiar_fechas_ciudades_viaje(viajes, brs):
+
+	fechas=limpiarFechasCiudad(viajes)
+
+	assert fechas.count("<br>")==brs
+
+@pytest.mark.parametrize(["viajes", "claves"],
+	[
+		([("London","latitud1", "longitud1", "fecha1 London"), ("London","latitud1", "longitud1", "fecha2 London"), ("London","latitud1", "longitud1", "fecha3 London"), ("London", "latitud1", "longitud1", "fecha4 London")], 1),
+		([("London","latitud1", "longitud1", "fecha1 London"), ("Paris","latitud2", "longitud2", "fecha1 Paris"), ("Madrid","latitud3", "longitud3", "fecha1 Madrid"), ("London","latitud1", "longitud1", "fecha2 London")], 3),
+		([("London","latitud1", "longitud1", "fecha1 London"), ("Paris","latitud2", "longitud2", "fecha1 Paris"), ("Madrid","latitud3", "longitud3", "fecha1 Madrid"), ("Porto","latitud4", "longitud4", "fecha1 Porto")], 4),
+		([],0)
+	]
+)
+def test_obtener_datos_ciudades_viaje(viajes, claves):
+
+	datos=obtenerDatosCiudadViaje(viajes)
+
+	assert len(datos.keys())==claves
+
+def test_leer_geojson_paises_no_existen():
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	assert leerGeoJSON(ruta_relativa, []).empty
+
+@pytest.mark.parametrize(["pais"],
+	[("spain",), ("InitedKingdom",), ("Japn",), ("PortuGal",)]
+)
+def test_leer_geojson_paises_existe_error(pais):
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	assert leerGeoJSON(ruta_relativa, [pais]).empty
+
+@pytest.mark.parametrize(["pais"],
+	[("Spain",), ("United Kingdom",), ("Japan",), ("Portugal",)]
+)
+def test_leer_geojson_paises_existe(pais):
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	geodataframe=leerGeoJSON(ruta_relativa, [pais])
+
+	assert not geodataframe.empty
+	assert len(geodataframe)==1
+
+@pytest.mark.parametrize(["paises", "resultado"],
+	[
+		(["Spain", "United Kingdom", "Japan", "Portugal"], 4),
+		(["Spain", "Japan", "Portugal"], 3),
+		(["Spain", "United Kingdom"], 2),
+		(["Spain", "United Kingdom", "Spain"], 2)
+	]
+)
+def test_leer_geojson_paises_existen(paises, resultado):
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	geodataframe=leerGeoJSON(ruta_relativa, paises)
+
+	assert not geodataframe.empty
+	assert len(geodataframe)==resultado
+
+def test_eliminar_posibles_mapas_folium_no_existe():
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	ruta_templates=os.path.join(ruta_relativa, "templates")
+
+	archivos_antes=len(os.listdir(ruta_templates))
+
+	eliminarPosiblesMapasFolium(ruta_relativa)
+
+	archivos_despues=len(os.listdir(ruta_templates))
+
+	assert archivos_antes==archivos_despues
+
+#  Funcion complementaria para crear el HTML del geojson
+def crearHTML(ruta_html:str)->None:
+
+	contenido="""
+			<!DOCTYPE html>
+			<html>
+			<head>
+			    <title>Mi Archivo HTML</title>
+			</head>
+			<body>
+			    <h1>Hola, este es mi archivo HTML creado con Python</h1>
+			</body>
+			</html>
+			"""
+
+	with open(ruta_html, "w") as html:
+
+	    html.write(contenido)
+
+def test_eliminar_posibles_mapa_folium_existe():
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	ruta_templates=os.path.join(ruta_relativa, "templates")
+
+	ruta_html=os.path.join(ruta_templates, "geojson_mapa1.html")
+
+	crearHTML(ruta_html)
+
+	archivos_antes=len(os.listdir(ruta_templates))
+
+	eliminarPosiblesMapasFolium(ruta_relativa)
+
+	archivos_despues=len(os.listdir(ruta_templates))
+
+	assert archivos_antes!=archivos_despues
+	assert archivos_antes>archivos_despues
+	assert archivos_antes-1==archivos_despues
+
+def test_eliminar_posibles_mapa_folium_existen():
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	ruta_templates=os.path.join(ruta_relativa, "templates")
+
+	for numero in range(5):
+
+		ruta_html=os.path.join(ruta_templates, f"geojson_mapa{numero}.html")
+
+		crearHTML(ruta_html)
+
+	archivos_antes=len(os.listdir(ruta_templates))
+
+	eliminarPosiblesMapasFolium(ruta_relativa)
+
+	archivos_despues=len(os.listdir(ruta_templates))
+
+	assert archivos_antes!=archivos_despues
+	assert archivos_antes>archivos_despues
+	assert archivos_antes-5==archivos_despues
+
+@pytest.mark.parametrize(["ciudad", "fechas"],
+	[
+		("London", "22/06/2019-22/06/2019"),
+		("Madrid", "22/06/2019-22/06/2019"),
+		("Ciudad", "22/06/2019-22/06/2019<br> 22/06/2019-22/06/2019"),
+		("city", "22/06/2019-22/06/2019<br> 22/06/2019-22/06/2019<br> 22/06/2019-22/06/2019")
+	]
+)
+def test_crear_mapa_paises_no_existen_ciudad_existe(ciudad, fechas):
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	eliminarPosiblesMapasFolium(ruta_relativa)
+
+	ruta_templates=os.path.join(ruta_relativa, "templates")
+
+	ruta_html=os.path.join(ruta_templates, "geojson_mapa.html")
+
+	assert not os.path.exists(ruta_html)
+
+	crearMapaFolium(ruta_relativa, [], {ciudad:{"latitud":40, "longitud":-3, "fechas":fechas}})
+
+	assert os.path.exists(ruta_html)
+
+	with open(ruta_html, "r") as html:
+
+		contenido=html.read()
+
+		assert "United Kingdom" not in contenido
+		assert f"<h1>Viajes a {ciudad}</h1>" in contenido
+		assert f"Viaje(s) a {ciudad}" in contenido
+		assert f"<h4>Fechas Ida y Vuelta Viaje(s):<br> {fechas}</h4>"
+
+	eliminarPosiblesMapasFolium(ruta_relativa)
+
+@pytest.mark.parametrize(["ciudades", "fechas"],
+	[
+		(["London", "Madrid"], "22/06/2019-22/06/2019"),
+		(["London", "Madrid", "Porto"], "22/06/2019-22/06/2019<br> 22/06/2019-22/06/2019"),
+		(["London", "Madrid", "Porto", "Lisboa"], "22/06/2019-22/06/2019<br> 22/06/2019-22/06/2019"),
+		(["London", "Madrid", "Porto", "Lisboa", "Paris", "city"], "22/06/2019-22/06/2019<br> 22/06/2019-22/06/2019<br> 22/06/2019-22/06/2019")
+	]
+)
+def test_crear_mapa_paises_no_existen_ciudad_existen(ciudades, fechas):
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	ruta_templates=os.path.join(ruta_relativa, "templates")
+
+	ruta_html=os.path.join(ruta_templates, "geojson_mapa.html")
+
+	data_ciudades={ciudad:{"latitud":40+indice, "longitud":-3+indice, "fechas":fechas} for indice, ciudad in enumerate(ciudades)}
+
+	crearMapaFolium(ruta_relativa, [], data_ciudades)
+
+	assert os.path.exists(ruta_html)
+
+	with open(ruta_html, "r") as html:
+
+		contenido=html.read()
+
+		assert "United Kingdom" not in contenido
+
+		for ciudad in ciudades:
+
+			assert f"<h1>Viajes a {ciudad}</h1>" in contenido
+			assert f"Viaje(s) a {ciudad}" in contenido
+			assert f"<h4>Fechas Ida y Vuelta Viaje(s):<br> {fechas}</h4>"
+
+	eliminarPosiblesMapasFolium(ruta_relativa)
+
+@pytest.mark.parametrize(["pais", "sigla", "ciudades", "fechas"],
+	[
+		("Spain", "ESP", ["London", "Madrid"], "22/06/2019-22/06/2019"),
+		("Germany", "DEU", ["London", "Madrid", "city"], "22/06/2019-22/06/2019"),
+		("Portugal", "PRT", ["London", "Madrid"], "22/06/2019-22/06/2019"),
+		("United Kingdom", "GBR", ["London", "Madrid", "Paris", "ciudad"], "22/06/2019-22/06/2019")
+	]
+)
+def test_crear_mapa_paises_existe_ciudad_existen(pais, sigla, ciudades, fechas):
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	ruta_templates=os.path.join(ruta_relativa, "templates")
+
+	ruta_html=os.path.join(ruta_templates, "geojson_mapa.html")
+
+	data_ciudades={ciudad:{"latitud":40+indice, "longitud":-3+indice, "fechas":fechas} for indice, ciudad in enumerate(ciudades)}
+
+	crearMapaFolium(ruta_relativa, [pais], data_ciudades)
+
+	assert os.path.exists(ruta_html)
+
+	with open(ruta_html, "r") as html:
+
+		contenido=html.read()
+
+		assert pais in contenido
+		assert sigla in contenido
+
+		for ciudad in ciudades:
+
+			assert f"<h1>Viajes a {ciudad}</h1>" in contenido
+			assert f"Viaje(s) a {ciudad}" in contenido
+			assert f"<h4>Fechas Ida y Vuelta Viaje(s):<br> {fechas}</h4>"
+
+	eliminarPosiblesMapasFolium(ruta_relativa)
+
+@pytest.mark.parametrize(["paises", "siglas", "ciudades", "fechas"],
+	[
+		(["Spain", "Portugal"], ["ESP", "PRT"], ["London", "Madrid"], "22/06/2019-22/06/2019"),
+		(["Germany", "United Kingdom"], ["DEU", "GBR"], ["London", "Madrid", "city"], "22/06/2019-22/06/2019"),
+		(["Spain", "Portugal", "Germany", "United Kingdom"], ["ESP", "PRT", "DEU", "GBR"], ["London", "Madrid"], "22/06/2019-22/06/2019"),
+		(["Spain", "Portugal", "Germany", "United Kingdom", "France"], ["ESP", "PRT", "DEU", "GBR", "FRA"], ["London", "Madrid", "Paris", "ciudad"], "22/06/2019-22/06/2019")
+	]
+)
+def test_crear_mapa_paises_existen_ciudad_existen(paises, siglas, ciudades, fechas):
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	ruta_templates=os.path.join(ruta_relativa, "templates")
+
+	ruta_html=os.path.join(ruta_templates, "geojson_mapa.html")
+
+	data_ciudades={ciudad:{"latitud":40+indice, "longitud":-3+indice, "fechas":fechas} for indice, ciudad in enumerate(ciudades)}
+
+	crearMapaFolium(ruta_relativa, paises, data_ciudades)
+
+	assert os.path.exists(ruta_html)
+
+	with open(ruta_html, "r") as html:
+
+		contenido=html.read()
+
+		for pais, sigla in zip(paises, siglas):
+
+			assert pais in contenido
+			assert sigla in contenido
+
+		for ciudad in ciudades:
+
+			assert f"<h1>Viajes a {ciudad}</h1>" in contenido
+			assert f"Viaje(s) a {ciudad}" in contenido
+			assert f"<h4>Fechas Ida y Vuelta Viaje(s):<br> {fechas}</h4>"
+
+	eliminarPosiblesMapasFolium(ruta_relativa)

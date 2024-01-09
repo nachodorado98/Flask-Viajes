@@ -497,3 +497,84 @@ def test_actualizar_viaje_web_comentario_imagen(conexion, web, comentario, image
 	assert viaje["web"]==web
 	assert viaje["comentario"]==comentario
 	assert viaje["imagen"]==imagen
+
+def test_ciudades_visitadas_mapa_no_existen(conexion):
+
+	assert conexion.obtenerDatosCiudadesVisitadas() is None
+
+def test_ciudades_visitadas_mapa_existe(conexion):
+
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	ciudades_visitadas=conexion.obtenerDatosCiudadesVisitadas()
+
+	assert len(ciudades_visitadas)==1
+	assert isinstance(ciudades_visitadas[0][1], float)
+	assert isinstance(ciudades_visitadas[0][2], float)
+	assert ciudades_visitadas[0][3]=="22/06/2019-22/06/2019"
+
+def test_ciudades_visitadas_mapa_existes(conexion):
+
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(33, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(22, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	ciudades_visitadas=conexion.obtenerDatosCiudadesVisitadas()
+
+	assert len(ciudades_visitadas)==4
+
+def test_tabla_paises_llena(conexion):
+
+	conexion.c.execute("SELECT * FROM paises")
+
+	assert conexion.c.fetchall()!=[]
+
+def test_paises_visitados_mapa_no_existen(conexion):
+
+	assert conexion.obtenerPaisesVisitados() is None
+
+def test_paises_visitados_mapa_existe(conexion):
+
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	paises_visitados=conexion.obtenerPaisesVisitados()
+
+	assert len(paises_visitados)==1
+
+def test_paises_visitados_mapa_existes(conexion):
+
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(33, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(22, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	paises_visitados=conexion.obtenerPaisesVisitados()
+
+	assert len(paises_visitados)==2
+
+def test_paises_visitados_ingles_mapa_no_existen(conexion):
+
+	assert conexion.paises_visitados_ingles() is None
+
+def test_paises_visitados_ingles_mapa_existe(conexion):
+
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	paises_visitados_ingles=conexion.paises_visitados_ingles()
+
+	assert len(paises_visitados_ingles)==1
+	assert paises_visitados_ingles[0]=="United Kingdom"
+
+def test_paises_visitados_mapa_existes(conexion):
+
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(33, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(22, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	paises_visitados_ingles=conexion.paises_visitados_ingles()
+
+	assert len(paises_visitados_ingles)==2
+	assert paises_visitados_ingles[0]=="Islamic Republic of Pakistan"
+	assert paises_visitados_ingles[1]=="United Kingdom"

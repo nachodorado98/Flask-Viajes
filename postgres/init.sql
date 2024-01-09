@@ -2,6 +2,11 @@ CREATE DATABASE bbdd_viajes;
 
 \c bbdd_viajes;
 
+CREATE TABLE paises (Pais VARCHAR(50) PRIMARY KEY,
+						PaisIngles VARCHAR(50));
+
+\copy paises (Pais, PaisIngles) FROM '/docker-entrypoint-initdb.d/paises.csv' WITH CSV HEADER;
+
 CREATE TABLE ciudades (CodCiudad SERIAL PRIMARY KEY,
 						Ciudad VARCHAR(50),
 						Latitud VARCHAR(50),
@@ -9,7 +14,8 @@ CREATE TABLE ciudades (CodCiudad SERIAL PRIMARY KEY,
 						Pais VARCHAR(50),
 						Siglas CHAR(3),
 						Tipo VARCHAR(50),
-						Poblacion INT);
+						Poblacion INT,
+						FOREIGN KEY (Pais) REFERENCES paises (Pais));
 
 \copy ciudades (Ciudad, Latitud, Longitud, Pais, Siglas, Tipo, Poblacion) FROM '/docker-entrypoint-initdb.d/ciudades.csv' WITH CSV HEADER;
 

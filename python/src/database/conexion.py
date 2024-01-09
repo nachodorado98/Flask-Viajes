@@ -229,7 +229,7 @@ class Conexion:
 	                 		USING (CodCiudad)
 	                 		WHERE c.Pais=%s
 	                 		AND c.Poblacion>=%s
-	                 		ORDER BY Ciudad""",
+	                 		ORDER BY c.Ciudad""",
 	                 		(pais,poblacion))
 
 		ciudades=self.c.fetchall()
@@ -259,9 +259,9 @@ class Conexion:
 	# Metodo para actualizar la web y el comentario de un viaje mediante su id
 	def actualizarWebComentario(self, id_viaje:int, web:str, comentario:str)->None:
 
-		self.c.execute("""UPDATE viajes
-							SET web=%s, comentario=%s
-							WHERE id_viaje=%s""",
+		self.c.execute("""UPDATE Viajes
+							SET Web=%s, Comentario=%s
+							WHERE Id_viaje=%s""",
 							(web, comentario, id_viaje))
 
 		self.confirmar()
@@ -269,9 +269,57 @@ class Conexion:
 	# Metodo para actualizar la web, el comentario y la imagen de un viaje mediante su id
 	def actualizarWebComentarioImagen(self, id_viaje:int, web:str, comentario:str, imagen:str)->None:
 
-		self.c.execute("""UPDATE viajes
-							SET web=%s, comentario=%s, imagen=%s
-							WHERE id_viaje=%s""",
+		self.c.execute("""UPDATE Viajes
+							SET Web=%s, Comentario=%s, Imagen=%s
+							WHERE Id_viaje=%s""",
 							(web, comentario, imagen, id_viaje))
 
 		self.confirmar()
+
+	# Metodo para obtener los datos para el mapa de las ciudades visitadas
+	def obtenerDatosCiudadesVisitadas(self)->Optional[List[tuple]]:
+
+		self.c.execute("""SELECT c.Ciudad, c.Latitud, c.Longitud, v.Ida, v.Vuelta
+	                 		FROM Ciudades c
+	                 		JOIN Viajes v
+	                 		USING (CodCiudad)
+	                 		ORDER BY c.Ciudad""")
+
+		ciudades_visitadas=self.c.fetchall()
+
+		# Funcion para limpiar los datos de la ciudad visitada
+		def limpiarDatos(datos:Dict)->tuple:
+
+			latitud=round(float(datos["latitud"]), 4)
+
+			longitud=round(float(datos["longitud"]), 4)
+
+			ida=datos["ida"].strftime("%d/%m/%Y")
+
+			vuelta=datos["vuelta"].strftime("%d/%m/%Y")
+
+			return datos["ciudad"], latitud, longitud, f"{ida}-{vuelta}"
+
+		return list(map(limpiarDatos, ciudades_visitadas)) if ciudades_visitadas else None
+
+	# Metodo para obtener los paises visitados para el mapa
+	def obtenerPaisesVisitados(self)->Optional[List[tuple]]:
+
+		self.c.execute("""SELECT DISTINCT(p.Pais), p.PaisIngles
+	                 		FROM Viajes v
+	                 		JOIN Ciudades c
+	                 		USING (CodCiudad)
+	                 		JOIN Paises p
+	                 		USING (Pais)
+	                 		ORDER BY p.Pais""")
+
+		paises_visitados=self.c.fetchall()
+
+		return list(map(lambda pais: (pais["pais"], pais["paisingles"]), paises_visitados)) if paises_visitados else None
+
+	# Metodo para obtener los paises visitados para el mapa en ingles
+	def paises_visitados_ingles(self)->Optional[List[str]]:
+
+		paises_visitados=self.obtenerPaisesVisitados()
+
+		return list(map(lambda pais: pais[1], paises_visitados)) if paises_visitados else None

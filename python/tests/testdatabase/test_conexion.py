@@ -10,6 +10,7 @@ def test_conexion(conexion):
 
 	assert "ciudades" in tablas
 	assert "viajes" in tablas
+	assert "paises" in tablas
 
 def test_cerrar_conexion(conexion):
 
