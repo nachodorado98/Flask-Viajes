@@ -1,6 +1,18 @@
 import pytest
 import os
 
+
+# Funcion complementaria para vaciar la carpeta de las imagenes
+def vaciarCarpetaImagenes()->None:
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	ruta_relativa_carpeta=os.path.join(ruta_relativa, "static", "imagenes")
+
+	for archivo in os.listdir(ruta_relativa_carpeta):
+
+		os.remove(os.path.join(ruta_relativa_carpeta, archivo))
+
 @pytest.mark.parametrize(["id_viaje"],
 	[(0,), (10000000,), (-1,), (243544666,)]
 )
@@ -13,6 +25,8 @@ def test_pagina_actualizar_viaje_no_existe(cliente, conexion, id_viaje):
 	assert respuesta.status_code==302
 	assert respuesta.location=="/"
 	assert "Redirecting..." in contenido
+
+	vaciarCarpetaImagenes()
 
 @pytest.mark.parametrize(["comentario"],
 	[

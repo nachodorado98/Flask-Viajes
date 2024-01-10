@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, send_file
 import os
 import uuid
 
@@ -10,8 +10,6 @@ bp_mapa=Blueprint("mapa", __name__)
 
 @bp_mapa.route("/mapa", methods=["GET"])
 def verMapa():
-
-	ruta=os.path.dirname(os.path.join(os.path.dirname(__file__)))
 
 	conexion=Conexion()
 
@@ -35,4 +33,14 @@ def verMapa():
 
 	crearMapaFolium(ruta, paises_visitados, datos_ciudades_visitadas, nombre_mapa)
 
-	return render_template(nombre_mapa)
+	return render_template("mapa.html", nombre_mapa=nombre_mapa)
+
+
+@bp_mapa.route("/visualizar_mapa/<nombre_mapa>", methods=["GET"])
+def visualizarMapa(nombre_mapa:str):
+
+	ruta=os.path.dirname(os.path.join(os.path.dirname(__file__)))
+
+	ruta_mapa=os.path.join(ruta, "templates", "templates_mapas", nombre_mapa)
+
+	return send_file(ruta_mapa)

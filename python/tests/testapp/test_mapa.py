@@ -35,21 +35,21 @@ def test_pagina_mapa_existe_viaje(cliente, conexion, ciudad):
 	contenido=respuesta.data.decode()
 
 	assert respuesta.status_code==200
-	assert f"<h1>Viajes a {ciudad}</h1>" in contenido
-	assert f"Viaje(s) a {ciudad}" in contenido
+	assert "Mapa Mundial" in contenido
+	assert "iframe" in contenido
+	assert "/visualizar_mapa/geojson_mapa_" in contenido
 
-	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
-
-	eliminarPosiblesMapasFolium(ruta_relativa)
-
-@pytest.mark.parametrize(["paises", "siglas", "ciudades", "fechas"],
+@pytest.mark.parametrize(["ciudades"],
 	[
-		(["Spain", "United Kingdom"], ["ESP", "GBR"], ["London", "Madrid"], "22/06/2019-22/06/2019"),
-		(["Germany", "United Kingdom"], ["DEU", "GBR"], ["Berlin", "London"], "22/06/2019-22/06/2019"),
-		(["Spain", "Portugal", "Germany", "United Kingdom"], ["ESP", "PRT", "DEU", "GBR"], ["Madrid", "Porto", "Berlin", "London"], "22/06/2019-22/06/2019"),
+		(["Madrid", "Porto"],),
+		(["Madrid", "Porto", "Toledo"],),
+		(["Madrid", "Porto", "London"],),
+		(["Madrid", "Porto", "Toledo", "London"],),
+		(["Madrid", "Porto", "Toledo", "London", "Paris"],),
+		(["Madrid", "Porto", "Toledo", "London", "Paris", "Guadalajara"],)
 	]
 )
-def test_pagina_mapa_existen_viajes(cliente, conexion, paises, siglas, ciudades, fechas):
+def test_pagina_mapa_existen_viajes(cliente, conexion, ciudades):
 
 	for ciudad in ciudades:
 
@@ -70,17 +70,9 @@ def test_pagina_mapa_existen_viajes(cliente, conexion, paises, siglas, ciudades,
 	contenido=respuesta.data.decode()
 
 	assert respuesta.status_code==200
-
-	for pais, sigla in zip(paises, siglas):
-
-			assert pais in contenido
-			assert sigla in contenido
-
-	for ciudad in ciudades:
-
-		assert f"<h1>Viajes a {ciudad}</h1>" in contenido
-		assert f"Viaje(s) a {ciudad}" in contenido
-		assert f"<h4>Fechas Ida y Vuelta Viaje(s):<br> {fechas}</h4>"
+	assert "Mapa Mundial" in contenido
+	assert "iframe" in contenido
+	assert "/visualizar_mapa/geojson_mapa_" in contenido
 
 	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
 

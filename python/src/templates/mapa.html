@@ -1,0 +1,15 @@
+{% extends 'inicio.html' %}
+
+{% block titulo %}Mapa Mundial{% endblock titulo %}
+
+{% block principal %}
+
+<div class="contenedor-mapa-mundial">
+    <iframe src="/visualizar_mapa/{{ nombre_mapa }}"></iframe>
+</div>
+
+<div class="contenedor-volver">
+    <a href="/" class="volver-button">Volver</a>
+</div>
+
+{% endblock principal %}

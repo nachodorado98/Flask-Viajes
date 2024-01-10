@@ -457,7 +457,7 @@ def test_eliminar_posibles_mapas_folium_no_existe():
 
 	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
 
-	ruta_templates=os.path.join(ruta_relativa, "templates")
+	ruta_templates=os.path.join(ruta_relativa, "templates", "templates_mapas")
 
 	archivos_antes=len(os.listdir(ruta_templates))
 
@@ -490,7 +490,7 @@ def test_eliminar_posibles_mapa_folium_existe():
 
 	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
 
-	ruta_templates=os.path.join(ruta_relativa, "templates")
+	ruta_templates=os.path.join(ruta_relativa, "templates", "templates_mapas")
 
 	ruta_html=os.path.join(ruta_templates, "geojson_mapa1.html")
 
@@ -510,7 +510,7 @@ def test_eliminar_posibles_mapa_folium_existen():
 
 	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
 
-	ruta_templates=os.path.join(ruta_relativa, "templates")
+	ruta_templates=os.path.join(ruta_relativa, "templates", "templates_mapas")
 
 	for numero in range(5):
 
@@ -542,7 +542,7 @@ def test_crear_mapa_paises_no_existen_ciudad_existe(ciudad, fechas):
 
 	eliminarPosiblesMapasFolium(ruta_relativa)
 
-	ruta_templates=os.path.join(ruta_relativa, "templates")
+	ruta_templates=os.path.join(ruta_relativa, "templates", "templates_mapas")
 
 	ruta_html=os.path.join(ruta_templates, "geojson_mapa.html")
 
@@ -575,7 +575,7 @@ def test_crear_mapa_paises_no_existen_ciudad_existen(ciudades, fechas):
 
 	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
 
-	ruta_templates=os.path.join(ruta_relativa, "templates")
+	ruta_templates=os.path.join(ruta_relativa, "templates", "templates_mapas")
 
 	ruta_html=os.path.join(ruta_templates, "geojson_mapa.html")
 
@@ -611,7 +611,7 @@ def test_crear_mapa_paises_existe_ciudad_existen(pais, sigla, ciudades, fechas):
 
 	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
 
-	ruta_templates=os.path.join(ruta_relativa, "templates")
+	ruta_templates=os.path.join(ruta_relativa, "templates", "templates_mapas")
 
 	ruta_html=os.path.join(ruta_templates, "geojson_mapa.html")
 
@@ -648,7 +648,7 @@ def test_crear_mapa_paises_existen_ciudad_existen(paises, siglas, ciudades, fech
 
 	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
 
-	ruta_templates=os.path.join(ruta_relativa, "templates")
+	ruta_templates=os.path.join(ruta_relativa, "templates", "templates_mapas")
 
 	ruta_html=os.path.join(ruta_templates, "geojson_mapa.html")
 

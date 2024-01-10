@@ -729,3 +729,20 @@ input {
     opacity: 0.8;
     color: #333;
 }
+
+/*------------------------------------------------------MAPA MUNDIAL-----------------------------------------------*/
+
+.contenedor-mapa-mundial {
+    margin-top: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.contenedor-mapa-mundial iframe {
+    border: 2px solid #ccc;
+    width: 1200px;
+    height: 450px;
+    margin-top: 5px;
+    margin-bottom: 2px;
+}

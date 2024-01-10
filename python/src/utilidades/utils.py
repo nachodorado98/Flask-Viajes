@@ -251,7 +251,7 @@ def crearMapaFolium(ruta:str, paises:List[str], datos_ciudades:Dict, nombre_html
 
 	geodataframe=leerGeoJSON(ruta, paises)
 
-	mapa=folium.Map(location=[40.5, -3.25], zoom_start=3)
+	mapa=folium.Map(location=[51, 22], zoom_start=3)
 	 
 	folium.GeoJson(geodataframe, name="viajes").add_to(mapa)
 
@@ -261,7 +261,7 @@ def crearMapaFolium(ruta:str, paises:List[str], datos_ciudades:Dict, nombre_html
 				tooltip=f"Viaje(s) a {ciudad}",
 				popup=folium.Popup(f"<h1>Viajes a {ciudad}</h1><h4>Fechas Ida y Vuelta Viaje(s):<br> {datos_ciudad['fechas']}</h4>",max_width=500)).add_to(mapa)
 
-	ruta_templates=os.path.join(ruta, "templates")
+	ruta_templates=os.path.join(ruta, "templates", "templates_mapas")
 
 	ruta_archivo_html=os.path.join(ruta_templates, nombre_html)
 
@@ -270,7 +270,7 @@ def crearMapaFolium(ruta:str, paises:List[str], datos_ciudades:Dict, nombre_html
 # Funcion para eliminar los posibles mapas (archivos html) si existen
 def eliminarPosiblesMapasFolium(ruta:str)->None:
 
-	ruta_templates=os.path.join(ruta, "templates")
+	ruta_templates=os.path.join(ruta, "templates", "templates_mapas")
 
 	posibles_mapas=[archivo for archivo in os.listdir(ruta_templates) if archivo.startswith("geojson_mapa")]
 

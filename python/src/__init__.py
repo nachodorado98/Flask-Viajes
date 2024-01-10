@@ -17,9 +17,10 @@ def creacionEntorno()->None:
 
 	ruta=os.path.dirname(os.path.join(os.path.dirname(__file__)))
 
-	ruta_carpeta=os.path.join(ruta, "src", "static", "imagenes")
+	ruta_src=os.path.join(ruta, "src")
 
-	crearCarpeta(ruta_carpeta)
+	crearCarpeta(os.path.join(ruta_src, "static", "imagenes"))
+	crearCarpeta(os.path.join(ruta_src, "templates", "templates_mapas"))
 
 # Funcion para crear la instancia de la aplicacion
 def crear_app(configuracion:object)->Flask:
