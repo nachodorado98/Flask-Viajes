@@ -746,3 +746,45 @@ input {
     margin-top: 5px;
     margin-bottom: 2px;
 }
+
+/*------------------------------------------------------ESTADISTICAS-----------------------------------------------*/
+
+.contenedor-estadisticas {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.contenedor-estadistica {
+    display: column;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    flex: 1;
+}
+
+.contenedor-estadistica > div {
+    flex: 1;
+}
+
+.contenedor-estadistica-informacion {
+    margin-top: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.contenedor-estadistica-informacion h3 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 12px;
+    font-size: 25px;
+    margin-top: 10px;
+}
+
+.contenedor-estadistica-informacion p {
+    text-align: center;
+    color: #333;
+    margin-bottom: 12px;
+    font-size: 24px;
+    margin-top: 10px;
+}

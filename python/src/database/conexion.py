@@ -1,6 +1,7 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from typing import List, Optional, Dict
+from datetime import datetime
 
 from .confconexion import *
 
@@ -323,3 +324,52 @@ class Conexion:
 		paises_visitados=self.obtenerPaisesVisitados()
 
 		return list(map(lambda pais: pais[1], paises_visitados)) if paises_visitados else None
+
+	# Metodo para obtener la estadistica del numero de viajes realizados
+	def estadistica_viajes_realizados(self)->int:
+
+		self.c.execute("""SELECT COUNT(*) AS Viajes
+							FROM Viajes v
+							JOIN Ciudades c
+							USING (CodCiudad)""")
+
+		return self.c.fetchone()["viajes"]
+
+	# Metodo para obtener la estadistica del numero de paises visitados
+	def estadistica_paises_visitados(self)->int:
+
+		self.c.execute("""SELECT COUNT(DISTINCT(c.Pais)) AS Paises
+							FROM Viajes v
+							JOIN Ciudades c
+							USING (CodCiudad)""")
+
+		return self.c.fetchone()["paises"]
+
+	# Metodo para obtener la estadistica del numero de ciudades visitadas
+	def estadistica_ciudades_visitadas(self)->int:
+
+		self.c.execute("""SELECT COUNT(DISTINCT(c.Ciudad)) AS Ciudades
+							FROM Viajes v
+							JOIN Ciudades c
+							USING (CodCiudad)""")
+
+		return self.c.fetchone()["ciudades"]
+
+	# Metodo para obtener la estadistica de los dias del ultimo viaje
+	def estadistica_dias_ultimo_viaje(self)->Optional[int]:
+
+		self.c.execute("""SELECT MAX(Vuelta) AS UltimoDia
+							FROM Viajes""")
+
+		ultimo_dia=self.c.fetchone()["ultimodia"]
+
+		# Funcion para limpiar la fecha y obtener los dias
+		def obtenerDias(fecha:datetime)->int:
+
+			hoy=datetime.now()
+
+			fecha_datetime=datetime.combine(fecha, datetime.min.time())
+
+			return (hoy-fecha_datetime).days
+
+		return obtenerDias(ultimo_dia) if ultimo_dia else None

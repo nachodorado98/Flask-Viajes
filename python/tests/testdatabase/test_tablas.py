@@ -1,4 +1,5 @@
 import pytest
+from datetime import datetime
 
 def test_tabla_ciudades_llena(conexion):
 
@@ -578,3 +579,135 @@ def test_paises_visitados_mapa_existes(conexion):
 	assert len(paises_visitados_ingles)==2
 	assert paises_visitados_ingles[0]=="Islamic Republic of Pakistan"
 	assert paises_visitados_ingles[1]=="United Kingdom"
+
+def test_estadisticas_viajes_realizados_no_existen(conexion):
+
+	assert conexion.estadistica_viajes_realizados()==0
+
+def test_estadisticas_viajes_realizados_existe(conexion):
+
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.estadistica_viajes_realizados()==1
+
+def test_estadisticas_viajes_realizados_existen_mismo_pais(conexion):
+
+	for _ in range(5):
+
+		conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.estadistica_viajes_realizados()==5
+
+def test_estadisticas_viajes_realizados_existen_distinto_pais(conexion):
+
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(33, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(22, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(1, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(13, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(1, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	
+	assert conexion.estadistica_viajes_realizados()==7
+	
+def test_estadisticas_paises_visitados_no_existen(conexion):
+
+	assert conexion.estadistica_paises_visitados()==0
+
+def test_estadisticas_paises_visitados_existe(conexion):
+
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.estadistica_paises_visitados()==1
+
+def test_estadisticas_paises_visitados_existen_mismo_pais(conexion):
+
+	for _ in range(5):
+
+		conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.estadistica_paises_visitados()==1
+
+def test_estadisticas_paises_visitados_existen_distinto_pais(conexion):
+
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(33, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(22, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(1, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	
+	assert conexion.estadistica_paises_visitados()==3
+
+def test_estadisticas_ciudades_visitadas_no_existen(conexion):
+
+	assert conexion.estadistica_ciudades_visitadas()==0
+
+def test_estadisticas_ciudades_visitadas_existe(conexion):
+
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.estadistica_ciudades_visitadas()==1
+
+def test_estadisticas_ciudades_visitadas_existen_mismo_pais(conexion):
+
+	for _ in range(5):
+
+		conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.estadistica_ciudades_visitadas()==1
+
+def test_estadisticas_ciudades_visitadas_existen_distinto_pais(conexion):
+
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(33, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(22, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(1, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(34, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(2, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(13, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(22, "2019-06-22", "2019-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	
+	assert conexion.estadistica_ciudades_visitadas()==6
+
+def test_estadisticas_ultimo_dia_viaje_no_existen(conexion):
+
+	assert conexion.estadistica_dias_ultimo_viaje() is None
+
+@pytest.mark.parametrize(["vuelta"],
+	[("2019-06-22",),("2022-06-22",),("2023-06-22",),("2023-08-06",)]
+)
+def test_estadisticas_ultimo_dia_viaje_existe(conexion, vuelta):
+
+	conexion.insertarViaje(34, "2019-06-22", vuelta, "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	hoy=datetime.now()
+
+	dia_vuelta=datetime.strptime(vuelta, "%Y-%m-%d")
+
+	dias=(hoy-dia_vuelta).days
+
+	assert conexion.estadistica_dias_ultimo_viaje()==dias
+
+@pytest.mark.parametrize(["vueltas", "ultima_vuelta"],
+	[
+		(["2019-06-22", "2024-01-01", "2023-04-13"], "2024-01-01"),
+		(["2019-06-22", "2022-01-01", "2023-04-13"], "2023-04-13"),
+		(["2024-01-01", datetime.now().strftime("%Y-%m-%d"), "2023-04-13"], datetime.now().strftime("%Y-%m-%d")),
+		(["2019-06-22", "2010-01-01", "2019-04-13"], "2019-06-22"),
+		(["2019-06-22", "2019-06-22", "2019-06-22"], "2019-06-22"),
+		([datetime.now().strftime("%Y-%m-%d"), "2024-01-01", "2023-04-13"], datetime.now().strftime("%Y-%m-%d"))
+	]
+)
+def test_estadisticas_ultimo_dia_viaje_existen(conexion, vueltas, ultima_vuelta):
+
+	conexion.insertarViaje(34, "2019-06-22", vueltas[0], "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(34, "2022-06-22", vueltas[1], "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(34, "2023-04-13", vueltas[2], "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	
+	hoy=datetime.now()
+
+	dia_vuelta=datetime.strptime(ultima_vuelta, "%Y-%m-%d")
+
+	dias=(hoy-dia_vuelta).days
+
+	assert conexion.estadistica_dias_ultimo_viaje()==dias

@@ -259,7 +259,7 @@ def crearMapaFolium(ruta:str, paises:List[str], datos_ciudades:Dict, nombre_html
 
 		folium.Marker([datos_ciudad["latitud"], datos_ciudad["longitud"]],
 				tooltip=f"Viaje(s) a {ciudad}",
-				popup=folium.Popup(f"<h1>Viajes a {ciudad}</h1><h4>Fechas Ida y Vuelta Viaje(s):<br> {datos_ciudad['fechas']}</h4>",max_width=500)).add_to(mapa)
+				popup=folium.Popup(f"<h1>Viajes a {ciudad}</h1><h4>Fechas Ida y Vuelta Viaje(s):<br>{datos_ciudad['fechas']}</h4>",max_width=500)).add_to(mapa)
 
 	ruta_templates=os.path.join(ruta, "templates", "templates_mapas")
 

@@ -1,0 +1,52 @@
+{% extends 'inicio.html' %}
+
+{% block titulo %}Estadisticas de los viajes{% endblock titulo %}
+
+{% block principal %}
+
+<div class="contenedor-estadisticas">
+
+    <div class="contenedor-estadistica">
+
+        <div class="contenedor-estadistica-informacion">
+            <h3>Viajes Realizados</h3>
+            <p>{{ numero_viajes_realizados }} viajes</p>
+        </div>
+
+        <div class="contenedor-estadistica-informacion">
+            <h3>Ultimo Viaje Realizado</h3>
+            <p>Hace {{ numero_dias_ultimo_viaje }} dias</p>
+        </div>
+
+
+    </div>
+
+    <div class="contenedor-estadistica">
+
+        <div class="contenedor-estadistica-informacion">
+            <h3>Paises Visitados</h3>
+            <p>{{ numero_paises_visitados }} paises</p>
+        </div>
+
+
+    </div>
+
+    <div class="contenedor-estadistica">
+
+        <div class="contenedor-estadistica-informacion">
+            <h3>Ciudades Visitadas</h3>
+            <p>{{ numero_ciudades_visitadas }} ciudades</p>
+        </div>
+
+    </div>
+
+
+
+    
+</div>
+
+<div class="contenedor-volver">
+    <a href="/" class="volver-button">Volver</a>
+</div>
+
+{% endblock principal %}
