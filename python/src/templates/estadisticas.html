@@ -15,7 +15,20 @@
 
         <div class="contenedor-estadistica-informacion">
             <h3>Ultimo Viaje Realizado</h3>
-            <p>Hace {{ numero_dias_ultimo_viaje }} dias</p>
+            {% if numero_dias_ultimo_viaje>30 %}
+                <p>Va tocando un viaje ya! ({{ numero_dias_ultimo_viaje }} dias)</p>
+            {% elif numero_dias_ultimo_viaje==0 %}
+                <p>BIENVENIDO DE NUEVO! Has venido hoy!</p>
+            {% elif numero_dias_ultimo_viaje<0 %}
+                <p>Proximo viaje planeado en {{ numero_dias_ultimo_viaje*(-1) }} dias!</p>
+            {% else %}
+                <p>Hace {{ numero_dias_ultimo_viaje }} dias de tu ultimo viaje</p>
+            {% endif %}
+        </div>
+
+        <div class="contenedor-estadistica-informacion">
+            <h3>Ciudad Mas Visitada</h3>
+            <p>{{ viajes_ciudad }} viajes a {{ ciudad }} ({{ pais_ciudad }})</p>
         </div>
 
 
@@ -28,6 +41,16 @@
             <p>{{ numero_paises_visitados }} paises</p>
         </div>
 
+        <div class="contenedor-estadistica-informacion">
+            <h3>Viaje Mas Largo Realizado</h3>
+            <p>{{ viaje_mas_largo }} dias</p>
+        </div>
+
+        <div class="contenedor-estadistica-informacion">
+            <h3>Pais Mas Visitado</h3>
+            <p>{{ viajes_pais }} viajes a {{ pais }}</p>
+        </div>
+
 
     </div>
 
@@ -36,6 +59,11 @@
         <div class="contenedor-estadistica-informacion">
             <h3>Ciudades Visitadas</h3>
             <p>{{ numero_ciudades_visitadas }} ciudades</p>
+        </div>
+
+        <div class="contenedor-estadistica-informacion">
+            <h3>Año Mas Viajes Realizados</h3>
+            <p>{{ viajes }} viajes en {{ anno }}</p>
         </div>
 
     </div>

@@ -373,3 +373,88 @@ class Conexion:
 			return (hoy-fecha_datetime).days
 
 		return obtenerDias(ultimo_dia) if ultimo_dia else None
+
+	# Metodo para obtener la estadistica del viaje mas largo
+	def estadistica_viaje_mas_largo(self)->Optional[int]:
+
+		self.c.execute("""SELECT MAX(Vuelta-Ida) AS ViajeMasLargo
+							FROM Viajes""")
+
+		return self.c.fetchone()["viajemaslargo"]
+
+	# Metodo para obtener los años con mas viajes
+	def estadistica_annos_mas_viajes(self)->Optional[List[tuple]]:
+
+		self.c.execute("""SELECT EXTRACT(YEAR FROM Ida) AS Anno, COUNT(*) as ViajesAnno
+							FROM Viajes
+							GROUP BY Anno
+							HAVING COUNT(*)=(SELECT MAX(ViajesAnnoSub)
+												FROM (SELECT EXTRACT(YEAR FROM Ida) AS AnnoSub, COUNT(*) AS ViajesAnnoSub
+														FROM Viajes
+														GROUP BY AnnoSub) AS Subconsulta)
+							ORDER BY Anno DESC""")
+
+		annos_mas_viajes=self.c.fetchall()
+
+		return list(map(lambda registro: (registro["viajesanno"], int(registro["anno"])), annos_mas_viajes)) if annos_mas_viajes else None
+
+	# Metodo para obtener el año con mas viajes
+	def estadistica_anno_mas_viajes(self)->Optional[tuple]:
+
+		annos_mas_viajes=self.estadistica_annos_mas_viajes()
+
+		return annos_mas_viajes[0] if annos_mas_viajes else None
+
+	# Metodo para obtener las ciudades mas visitadas
+	def estadistica_ciudades_mas_viajes(self)->Optional[List[tuple]]:
+
+		self.c.execute("""SELECT c.Ciudad, COUNT(*) AS ViajesCiudad, c.Pais
+							FROM Viajes v
+							JOIN Ciudades c
+							USING (CodCiudad)
+							GROUP BY c.Ciudad, c.Pais
+							HAVING COUNT(*)=(SELECT MAX(ViajesCiudad)
+												FROM (SELECT c.Ciudad, COUNT(*) AS ViajesCiudad
+												FROM Viajes v
+												JOIN Ciudades c
+												USING (CodCiudad)
+												GROUP BY c.Ciudad) AS Subconsulta)
+							ORDER BY c.Ciudad""")
+
+		ciudades_mas_viajes=self.c.fetchall()
+
+		return list(map(lambda registro: (registro["viajesciudad"], registro["ciudad"], registro["pais"]), ciudades_mas_viajes)) if ciudades_mas_viajes else None
+
+	# Metodo para obtener la ciudad mas visitada
+	def estadistica_ciudad_mas_viajes(self)->Optional[tuple]:
+
+		ciudades_mas_viajes=self.estadistica_ciudades_mas_viajes()
+
+		return ciudades_mas_viajes[0] if ciudades_mas_viajes else None
+
+	# Metodo para obtener los paises mas visitadas
+	def estadistica_paises_mas_viajes(self)->Optional[List[tuple]]:
+
+		self.c.execute("""SELECT c.Pais, COUNT(*) AS ViajesPais
+							FROM Viajes v
+							JOIN Ciudades c
+							USING (CodCiudad)
+							GROUP BY c.Pais
+							HAVING COUNT(*)=(SELECT MAX(ViajesPais)
+												FROM (SELECT c.Pais, COUNT(*) AS ViajesPais
+												FROM Viajes v
+												JOIN Ciudades c
+												USING (CodCiudad)
+												GROUP BY c.Pais) AS Subconsulta)
+							ORDER BY c.Pais""")
+
+		paises_mas_viajes=self.c.fetchall()
+
+		return list(map(lambda registro: (registro["viajespais"], registro["pais"]), paises_mas_viajes)) if paises_mas_viajes else None
+
+	# Metodo para obtener el pais mas visitado
+	def estadistica_pais_mas_viajes(self)->Optional[tuple]:
+
+		paises_mas_viajes=self.estadistica_paises_mas_viajes()
+
+		return paises_mas_viajes[0] if paises_mas_viajes else None

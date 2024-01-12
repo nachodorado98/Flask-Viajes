@@ -711,3 +711,252 @@ def test_estadisticas_ultimo_dia_viaje_existen(conexion, vueltas, ultima_vuelta)
 	dias=(hoy-dia_vuelta).days
 
 	assert conexion.estadistica_dias_ultimo_viaje()==dias
+
+def test_estadisticas_viaje_mas_largo_no_existen(conexion):
+
+	assert conexion.estadistica_viaje_mas_largo() is None
+
+@pytest.mark.parametrize(["ida", "vuelta", "dias"],
+	[
+		("2019-06-22", "2019-07-01", 9),
+		("2019-06-22", "2019-06-23", 1),
+		("2019-06-22", "2019-06-25", 3),
+		("2019-04-13", "2019-06-22", 70),
+		("2019-06-22", "2019-06-22", 0)
+	]
+)
+def test_estadisticas_viaje_mas_largo_existe(conexion, ida, vuelta, dias):
+
+	conexion.insertarViaje(34, ida, vuelta, "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.estadistica_viaje_mas_largo()==dias
+
+@pytest.mark.parametrize(["vueltas", "dias"],
+	[
+		(["2019-06-22", "2024-01-01", "2023-04-13", "2024-02-01"], 1654),
+		(["2019-06-22", "2019-06-25", "2019-07-01", "2023-06-23"], 9),
+		(["2019-06-22", "2019-06-22", "2019-06-22", "2023-06-22"], 0),
+		(["2019-07-22", "2020-06-22", "2019-07-01", "2023-06-23"], 366),
+		(["2022-07-22", "2020-02-22", "2019-06-08", "2023-06-23"], 1126),
+		(["2019-06-22", "2019-06-23", "2019-06-22", "2023-06-22"], 1)
+	]
+)
+def test_estadisticas_viaje_mas_largo_existen(conexion, vueltas, dias):
+
+	conexion.insertarViaje(34, "2019-06-22", vueltas[0], "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(34, "2019-06-22", vueltas[1], "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	conexion.insertarViaje(34, "2019-06-22", vueltas[2], "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+	
+	assert conexion.estadistica_viaje_mas_largo()==dias
+
+def test_estadisticas_annos_mas_viajes_no_existen(conexion):
+
+	assert conexion.estadistica_annos_mas_viajes() is None
+
+@pytest.mark.parametrize(["anno"],
+	[(2019,),(2023,),(2024,),(2022,)]
+)
+def test_estadisticas_annos_mas_viajes_existe(conexion, anno):
+
+	conexion.insertarViaje(34, f"{anno}-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.estadistica_annos_mas_viajes()==[(1, anno)]
+
+@pytest.mark.parametrize(["annos", "resultado"],
+	[
+		([2019, 2023, 2023, 2019, 2022, 2019], [(3, 2019)]),
+		([2019, 2023, 2023, 2019, 2022, 2019, 2023], [(3, 2019),(3, 2023)]),
+		([2019, 2023, 2023, 2019, 2022, 2019, 2023, 2019], [(4, 2019)]),
+		([2019, 2023, 2023, 2019, 2022, 2019, 2023, 2019, 2022, 2022, 2023, 2022], [(4, 2019),(4, 2023),(4, 2022)])
+	]
+)
+def test_estadisticas_annos_mas_viajes_existen(conexion, annos, resultado):
+
+	for anno in annos:
+
+		conexion.insertarViaje(34, f"{anno}-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	viajes_anno=conexion.estadistica_annos_mas_viajes()
+
+	assert len(viajes_anno)==len(resultado)
+
+	for viaje_anno in viajes_anno:
+
+		assert viaje_anno in resultado
+
+def test_estadisticas_anno_mas_viajes_no_existen(conexion):
+
+	assert conexion.estadistica_anno_mas_viajes() is None
+
+@pytest.mark.parametrize(["anno"],
+	[(2019,),(2023,),(2024,),(2022,)]
+)
+def test_estadisticas_anno_mas_viajes_existe(conexion, anno):
+
+	conexion.insertarViaje(34, f"{anno}-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.estadistica_anno_mas_viajes()==(1, anno)
+
+@pytest.mark.parametrize(["annos", "resultado"],
+	[
+		([2019, 2023, 2023, 2019, 2022, 2019], (3, 2019)),
+		([2019, 2023, 2023, 2019, 2022, 2019, 2023], (3, 2023)),
+		([2019, 2023, 2023, 2019, 2022, 2019, 2023, 2019], (4, 2019)),
+		([2019, 2023, 2023, 2019, 2022, 2019, 2023, 2019, 2022, 2022, 2023, 2022], (4, 2023))
+	]
+)
+def test_estadisticas_anno_mas_viajes_existen(conexion, annos, resultado):
+
+	for anno in annos:
+
+		conexion.insertarViaje(34, f"{anno}-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.estadistica_anno_mas_viajes()==resultado
+
+def test_estadisticas_ciudades_mas_viajes_no_existen(conexion):
+
+	assert conexion.estadistica_ciudades_mas_viajes() is None
+
+@pytest.mark.parametrize(["cod_ciudad", "ciudad", "pais"],
+	[
+		(34, "London", "Reino Unido"),
+		(1, "Tokyo", "Japón"),
+		(22, "Karachi", "Pakistán"),
+		(13, "New York", "Estados Unidos")
+	]
+)
+def test_estadisticas_ciudades_mas_viajes_existe(conexion, cod_ciudad, ciudad, pais):
+
+	conexion.insertarViaje(cod_ciudad, "2019-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.estadistica_ciudades_mas_viajes()==[(1, ciudad, pais)]
+
+@pytest.mark.parametrize(["cod_ciudades", "resultado"],
+	[
+		([34, 22, 1, 13, 22, 4, 34, 13, 34, 1], [(3, "London", "Reino Unido")]),
+		([34, 22, 1, 13, 22, 4, 34, 13, 34, 1, 22], [(3, "London", "Reino Unido"), (3, "Karachi", "Pakistán")]),
+		([34, 22, 1, 13, 22, 4, 34, 13, 34, 1, 22, 22], [(4, "Karachi", "Pakistán")]),
+		([34, 22, 1, 13, 22, 4, 34, 13, 34, 1, 22, 22, 34, 1, 1], [(4, "London", "Reino Unido"), (4, "Karachi", "Pakistán"), (4, "Tokyo", "Japón")])
+	]
+)
+def test_estadisticas_ciudades_mas_viajes_existen(conexion, cod_ciudades, resultado):
+
+	for cod_ciudad in cod_ciudades:
+
+		conexion.insertarViaje(cod_ciudad, "2019-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	viajes_ciudades=conexion.estadistica_ciudades_mas_viajes()
+
+	assert len(viajes_ciudades)==len(resultado)
+
+	for viaje_ciudad in viajes_ciudades:
+
+		assert viaje_ciudad in resultado
+
+def test_estadisticas_ciudad_mas_viajes_no_existen(conexion):
+
+	assert conexion.estadistica_ciudad_mas_viajes() is None
+
+@pytest.mark.parametrize(["cod_ciudad", "ciudad", "pais"],
+	[
+		(34, "London", "Reino Unido"),
+		(1, "Tokyo", "Japón"),
+		(22, "Karachi", "Pakistán"),
+		(13, "New York", "Estados Unidos")
+	]
+)
+def test_estadisticas_ciudad_mas_viajes_existe(conexion, cod_ciudad, ciudad, pais):
+
+	conexion.insertarViaje(cod_ciudad, "2019-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.estadistica_ciudad_mas_viajes()==(1, ciudad, pais)
+
+@pytest.mark.parametrize(["cod_ciudades", "resultado"],
+	[
+		([34, 22, 1, 13, 22, 4, 34, 13, 34, 1], (3, "London", "Reino Unido")),
+		([34, 22, 1, 13, 22, 4, 34, 13, 34, 1, 22], (3, "Karachi", "Pakistán")),
+		([34, 22, 1, 13, 22, 4, 34, 13, 34, 1, 22, 22], (4, "Karachi", "Pakistán")),
+		([34, 22, 1, 13, 22, 4, 34, 13, 34, 1, 22, 22, 34, 1, 1], (4, "Karachi", "Pakistán"))
+	]
+)
+def test_estadisticas_ciudad_mas_viajes_existen(conexion, cod_ciudades, resultado):
+
+	for cod_ciudad in cod_ciudades:
+
+		conexion.insertarViaje(cod_ciudad, "2019-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.estadistica_ciudad_mas_viajes()==resultado
+
+def test_estadisticas_paises_mas_viajes_no_existen(conexion):
+
+	assert conexion.estadistica_paises_mas_viajes() is None
+
+@pytest.mark.parametrize(["cod_ciudad", "pais"],
+	[
+		(34, "Reino Unido"),
+		(1, "Japón"),
+		(22, "Pakistán"),
+		(13, "Estados Unidos")
+	]
+)
+def test_estadisticas_paises_mas_viajes_existe(conexion, cod_ciudad, pais):
+
+	conexion.insertarViaje(cod_ciudad, "2019-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.estadistica_paises_mas_viajes()==[(1, pais)]
+
+@pytest.mark.parametrize(["cod_ciudades", "resultado"],
+	[
+		([34, 22, 1, 13, 22, 4, 1185, 13, 1185, 1], [(3, "Reino Unido")]),
+		([34, 22, 1, 13, 22, 4, 989, 13, 1185, 1, 22], [(3, "Reino Unido"), (3, "Pakistán")]),
+		([34, 22, 1, 13, 33, 4, 34, 13, 34, 1, 33, 22], [(4, "Pakistán")]),
+		([34, 22, 1, 13, 33, 4, 989, 13, 1185, 1, 236, 375, 603, 1, 1], [(4, "Reino Unido"), (4, "Pakistán"), (4, "Japón")])
+	]
+)
+def test_estadisticas_paises_mas_viajes_existen(conexion, cod_ciudades, resultado):
+
+	for cod_ciudad in cod_ciudades:
+
+		conexion.insertarViaje(cod_ciudad, "2019-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	viajes_paises=conexion.estadistica_paises_mas_viajes()
+
+	assert len(viajes_paises)==len(resultado)
+
+	for viaje_pais in viajes_paises:
+
+		assert viaje_pais in resultado
+
+def test_estadisticas_pais_mas_viajes_no_existen(conexion):
+
+	assert conexion.estadistica_pais_mas_viajes() is None
+
+@pytest.mark.parametrize(["cod_ciudad", "pais"],
+	[
+		(34, "Reino Unido"),
+		(1, "Japón"),
+		(22, "Pakistán"),
+		(13, "Estados Unidos")
+	]
+)
+def test_estadisticas_pais_mas_viajes_existe(conexion, cod_ciudad, pais):
+
+	conexion.insertarViaje(cod_ciudad, "2019-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.estadistica_pais_mas_viajes()==(1, pais)
+
+@pytest.mark.parametrize(["cod_ciudades", "resultado"],
+	[
+		([34, 22, 1, 13, 22, 4, 1185, 13, 1185, 1], (3, "Reino Unido")),
+		([34, 22, 1, 13, 22, 4, 989, 13, 1185, 1, 22], (3, "Pakistán")),
+		([34, 22, 1, 13, 33, 4, 34, 13, 34, 1, 33, 22], (4, "Pakistán")),
+		([34, 22, 1, 13, 33, 4, 989, 13, 1185, 1, 236, 375, 603, 1, 1], (4, "Japón"))
+	]
+)
+def test_estadisticas_pais_mas_viajes_existen(conexion, cod_ciudades, resultado):
+
+	for cod_ciudad in cod_ciudades:
+
+		conexion.insertarViaje(cod_ciudad, "2019-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.estadistica_pais_mas_viajes()==resultado
