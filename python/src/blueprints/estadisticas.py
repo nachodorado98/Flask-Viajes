@@ -2,6 +2,8 @@ from flask import Blueprint, render_template, redirect, url_for
 
 from src.database.conexion import Conexion
 
+from src.utilidades.utils import añadirPuntos
+
 bp_estadisticas=Blueprint("estadisticas", __name__)
 
 @bp_estadisticas.route("/estadisticas", methods=["GET"])
@@ -31,6 +33,10 @@ def obtenerEstadisticas():
 
 	viajes_pais, pais=conexion.estadistica_pais_mas_viajes()
 
+	poblacion, ciudad_mas_grande, pais_ciudad_mas_grande=conexion.estadistica_ciudad_mas_grande()
+
+	distancia, ciudad_mas_lejana, pais_ciudad_mas_lejana=conexion.estadistica_ciudad_mas_lejana()
+
 	conexion.cerrarConexion()
 
 	return render_template("estadisticas.html",
@@ -45,4 +51,8 @@ def obtenerEstadisticas():
 							ciudad=ciudad,
 							pais_ciudad=pais_ciudad,
 							viajes_pais=viajes_pais,
-							pais=pais)
+							pais=pais,
+							poblacion=añadirPuntos(str(poblacion)),
+							ciudad_mas_grande=ciudad_mas_grande,
+							distancia=añadirPuntos(str(distancia)),
+							ciudad_mas_lejana=ciudad_mas_lejana)

@@ -767,7 +767,7 @@ input {
 }
 
 .contenedor-estadistica-informacion {
-    margin-top: 10px;
+    margin-top: 15px;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -776,15 +776,15 @@ input {
 .contenedor-estadistica-informacion h3 {
     text-align: center;
     color: #333;
-    margin-bottom: 12px;
+    margin-bottom: 15px;
     font-size: 25px;
-    margin-top: 10px;
+    margin-top: 12px;
 }
 
 .contenedor-estadistica-informacion p {
     text-align: center;
     color: #333;
-    margin-bottom: 12px;
+    margin-bottom: 15px;
     font-size: 24px;
-    margin-top: 10px;
+    margin-top: 13px;
 }

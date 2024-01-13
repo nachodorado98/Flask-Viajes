@@ -415,10 +415,10 @@ class Conexion:
 							GROUP BY c.Ciudad, c.Pais
 							HAVING COUNT(*)=(SELECT MAX(ViajesCiudad)
 												FROM (SELECT c.Ciudad, COUNT(*) AS ViajesCiudad
-												FROM Viajes v
-												JOIN Ciudades c
-												USING (CodCiudad)
-												GROUP BY c.Ciudad) AS Subconsulta)
+														FROM Viajes v
+														JOIN Ciudades c
+														USING (CodCiudad)
+														GROUP BY c.Ciudad) AS Subconsulta)
 							ORDER BY c.Ciudad""")
 
 		ciudades_mas_viajes=self.c.fetchall()
@@ -442,10 +442,10 @@ class Conexion:
 							GROUP BY c.Pais
 							HAVING COUNT(*)=(SELECT MAX(ViajesPais)
 												FROM (SELECT c.Pais, COUNT(*) AS ViajesPais
-												FROM Viajes v
-												JOIN Ciudades c
-												USING (CodCiudad)
-												GROUP BY c.Pais) AS Subconsulta)
+														FROM Viajes v
+														JOIN Ciudades c
+														USING (CodCiudad)
+														GROUP BY c.Pais) AS Subconsulta)
 							ORDER BY c.Pais""")
 
 		paises_mas_viajes=self.c.fetchall()
@@ -458,3 +458,44 @@ class Conexion:
 		paises_mas_viajes=self.estadistica_paises_mas_viajes()
 
 		return paises_mas_viajes[0] if paises_mas_viajes else None
+
+	# Metodo para obtener la ciudad con mas poblacion (mas grande) visitada
+	def estadistica_ciudad_mas_grande(self)->Optional[tuple]:
+
+		self.c.execute("""SELECT c.Ciudad, c.Pais, c.Poblacion
+							FROM Viajes v
+							JOIN Ciudades c
+							USING (CodCiudad)
+							WHERE c.Poblacion=(SELECT MAX(c.Poblacion) AS MaxPoblacion
+												FROM Viajes v
+												JOIN Ciudades c
+												USING (CodCiudad))""")
+
+		ciudad_mas_grande=self.c.fetchone()
+
+		return (ciudad_mas_grande["poblacion"], ciudad_mas_grande["ciudad"], ciudad_mas_grande["pais"]) if ciudad_mas_grande else None
+
+	# Metodo para obtener la ciudad mas lejana
+	def estadistica_ciudad_mas_lejana(self, cod_ciudad:int=103):
+
+		datos_ciudad=self.obtenerDetalleCiudad(cod_ciudad)
+
+		if datos_ciudad is None:
+
+			return None
+
+		self.c.execute("""SELECT c.Ciudad, c.Pais,
+						    2 * 6371 * ASIN(SQRT(
+						        POWER(SIN((RADIANS(%s::numeric) - RADIANS(c.Latitud::numeric)) / 2), 2) +
+						        COS(RADIANS(%s::numeric)) * COS(RADIANS(c.Latitud::numeric)) *
+						        POWER(SIN((RADIANS(%s::numeric) - RADIANS(c.Longitud::numeric)) / 2), 2)
+						    )) AS Distancia
+							FROM Viajes v
+							JOIN Ciudades c
+							USING (CodCiudad)
+							ORDER BY Distancia DESC""",
+							(datos_ciudad[1], datos_ciudad[1], datos_ciudad[2]))
+
+		ciudad_mas_lejana=self.c.fetchone()
+
+		return (int(ciudad_mas_lejana["distancia"]), ciudad_mas_lejana["ciudad"], ciudad_mas_lejana["pais"]) if ciudad_mas_lejana else None

@@ -960,3 +960,130 @@ def test_estadisticas_pais_mas_viajes_existen(conexion, cod_ciudades, resultado)
 		conexion.insertarViaje(cod_ciudad, "2019-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
 
 	assert conexion.estadistica_pais_mas_viajes()==resultado
+
+def test_estadisticas_ciudad_mas_grande_no_existen(conexion):
+
+	assert conexion.estadistica_ciudad_mas_grande() is None
+
+@pytest.mark.parametrize(["cod_ciudad", "ciudad", "pais"],
+	[
+		(34, "London", "Reino Unido"),
+		(1, "Tokyo", "Japón"),
+		(22, "Karachi", "Pakistán"),
+		(13, "New York", "Estados Unidos")
+	]
+)
+def test_estadisticas_ciudad_mas_grande_existe(conexion, cod_ciudad, ciudad, pais):
+
+	conexion.insertarViaje(cod_ciudad, "2019-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	poblacion, ciudad_grande, pais_ciudad=conexion.estadistica_ciudad_mas_grande()
+
+	assert isinstance(poblacion, int)
+	assert ciudad_grande==ciudad
+	assert pais_ciudad==pais
+
+
+@pytest.mark.parametrize(["cod_ciudades", "ciudad", "pais"],
+	[
+		([34, 122, 3546, 34, 546, 757], "London", "Reino Unido"),
+		([34, 122, 3546, 34, 546, 757, 1], "Tokyo", "Japón"),
+		([34, 122, 22, 3546, 34, 546, 757], "Karachi", "Pakistán"),
+		([34, 122, 3546, 34, 546, 757, 34, 22, 13, 16], "New York", "Estados Unidos")
+	]
+)
+def test_estadisticas_ciudad_mas_grande_existen(conexion, cod_ciudades, ciudad, pais):
+
+	for cod_ciudad in cod_ciudades:
+
+		conexion.insertarViaje(cod_ciudad, "2019-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	poblacion, ciudad_grande, pais_ciudad=conexion.estadistica_ciudad_mas_grande()
+
+	assert isinstance(poblacion, int)
+	assert ciudad_grande==ciudad
+	assert pais_ciudad==pais
+
+def test_estadisticas_ciudad_mas_lejana_no_existen(conexion):
+
+	assert conexion.estadistica_ciudad_mas_lejana() is None
+
+@pytest.mark.parametrize(["cod_ciudad", "ciudad", "pais"],
+	[
+		(34, "London", "Reino Unido"),
+		(1, "Tokyo", "Japón"),
+		(22, "Karachi", "Pakistán"),
+		(13, "New York", "Estados Unidos")
+	]
+)
+def test_estadisticas_ciudad_mas_lejana_existe(conexion, cod_ciudad, ciudad, pais):
+
+	conexion.insertarViaje(cod_ciudad, "2019-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	distancia, ciudad_lejana, pais_ciudad=conexion.estadistica_ciudad_mas_lejana()
+
+	assert isinstance(distancia, int)
+	assert ciudad_lejana==ciudad
+	assert pais_ciudad==pais
+
+@pytest.mark.parametrize(["cod_ciudades", "ciudad", "pais"],
+	[
+		([1343, 34, 103, 160, 938, 35, 987], "London", "Reino Unido"),
+		([35, 34, 1, 22, 13, 938, 103, 160, 16], "Tokyo", "Japón"),
+		([22, 160, 938, 34, 721, 35, 21], "Karachi", "Pakistán"),
+		([13, 34, 788, 160, 938, 35, 21, 160], "New York", "Estados Unidos")
+	]
+)
+def test_estadisticas_ciudad_mas_lejana_existen(conexion, cod_ciudades, ciudad, pais):
+
+	for cod_ciudad in cod_ciudades:
+
+		conexion.insertarViaje(cod_ciudad, "2019-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	distancia, ciudad_lejana, pais_ciudad=conexion.estadistica_ciudad_mas_lejana()
+
+	assert isinstance(distancia, int)
+	assert ciudad_lejana==ciudad
+	assert pais_ciudad==pais
+
+def test_estadisticas_ciudad_mas_lejana_no_existen_origen_no_existe(conexion):
+
+	assert conexion.estadistica_ciudad_mas_lejana(0) is None
+
+@pytest.mark.parametrize(["cod_ciudad", "ciudad", "pais", "origen"],
+	[
+		(34, "London", "Reino Unido", 160),
+		(1, "Tokyo", "Japón", 34),
+		(22, "Karachi", "Pakistán", 35),
+		(13, "New York", "Estados Unidos", 22)
+	]
+)
+def test_estadisticas_ciudad_mas_lejana_existe_origen_existe(conexion, cod_ciudad, ciudad, pais, origen):
+
+	conexion.insertarViaje(cod_ciudad, "2019-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	distancia, ciudad_lejana, pais_ciudad=conexion.estadistica_ciudad_mas_lejana(origen)
+
+	assert isinstance(distancia, int)
+	assert ciudad_lejana==ciudad
+	assert pais_ciudad==pais
+
+@pytest.mark.parametrize(["cod_ciudades", "ciudad", "pais", "origen"],
+	[
+		([13, 34, 788, 160, 938, 35, 21, 160, 22, 16], "Bangkok", "Tailandia", 160),
+		([13, 34, 788, 160, 938, 35, 21, 160, 22, 16], "New York", "Estados Unidos", 22),
+		([13, 34, 788, 160, 938, 35, 21, 160, 22, 16], "New York", "Estados Unidos", 21),
+		([13, 34, 788, 160, 938, 35, 21, 160, 22, 16], "Karachi", "Pakistán", 28)
+	]
+)
+def test_estadisticas_ciudad_mas_lejana_existen_origen_existe(conexion, cod_ciudades, ciudad, pais, origen):
+
+	for cod_ciudad in cod_ciudades:
+
+		conexion.insertarViaje(cod_ciudad, "2019-06-22", "2024-06-22", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	distancia, ciudad_lejana, pais_ciudad=conexion.estadistica_ciudad_mas_lejana(origen)
+
+	assert isinstance(distancia, int)
+	assert ciudad_lejana==ciudad
+	assert pais_ciudad==pais
