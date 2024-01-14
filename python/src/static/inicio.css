@@ -749,42 +749,105 @@ input {
 
 /*------------------------------------------------------ESTADISTICAS-----------------------------------------------*/
 
-.contenedor-estadisticas {
+.estadisticas-container {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 10px;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 10px;
 }
 
-.contenedor-estadistica {
-    display: column;
-    justify-content: space-between;
-    margin-bottom: 15px;
-    flex: 1;
-}
-
-.contenedor-estadistica > div {
-    flex: 1;
-}
-
-.contenedor-estadistica-informacion {
-    margin-top: 15px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.contenedor-estadistica-informacion h3 {
+.estadistica-section {
+    width: 27%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    margin: 15px;
+    padding: 20px;
     text-align: center;
-    color: #333;
-    margin-bottom: 15px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.estadistica-section:nth-child(10) {
+    width: 100%;
+}
+
+.estadistica-section:hover {
+    transform: scale(1.05);
+}
+
+.estadistica-section h2 {
+    color: #ff6b6b;
     font-size: 25px;
-    margin-top: 12px;
+    margin-bottom: 10px;
 }
 
-.contenedor-estadistica-informacion p {
-    text-align: center;
+.estadistica-section p {
+    color: #555;
+    font-size: 22px;
+}
+
+.contenedor-desplegable {
+    display: inline-block;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.boton-desplegable {
+    background-color: #f9f9f9;
     color: #333;
-    margin-bottom: 15px;
-    font-size: 24px;
-    margin-top: 13px;
+    padding: 10px;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.contenido-desplegable {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    left: auto;
+    right: 0;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.contenido-desplegable a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 13px;
+}
+
+.contenido-desplegable a:hover {
+    background-color: #e0e0e0;
+}
+
+.contenedor-desplegable:hover .contenido-desplegable {
+    display: block;
+}
+
+.contenedor-desplegable:hover .boton-desplegable {
+    background-color: #e0e0e0;
+}
+
+.subir-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff6b6b;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+    margin-right: 50px;
+}
+
+.subir-button:hover {
+    background-color: #e74c3c;
+    color: #333;
+    transform: scale(1.05);
 }

@@ -3,86 +3,89 @@
 {% block titulo %}Estadisticas de los viajes{% endblock titulo %}
 
 {% block principal %}
-
-<div class="contenedor-estadisticas">
-
-    <div class="contenedor-estadistica">
-
-        <div class="contenedor-estadistica-informacion">
-            <h3>Viajes Realizados</h3>
-            <p>{{ numero_viajes_realizados }} viajes</p>
-        </div>
-
-        <div class="contenedor-estadistica-informacion">
-            <h3>Ultimo Viaje Realizado</h3>
-            {% if numero_dias_ultimo_viaje>30 %}
-                <p>Va tocando un viaje ya! ({{ numero_dias_ultimo_viaje }} dias)</p>
-            {% elif numero_dias_ultimo_viaje==0 %}
-                <p>BIENVENIDO DE NUEVO! Has venido hoy!</p>
-            {% elif numero_dias_ultimo_viaje<0 %}
-                <p>Proximo viaje planeado en {{ numero_dias_ultimo_viaje*(-1) }} dias!</p>
-            {% else %}
-                <p>Hace {{ numero_dias_ultimo_viaje }} dias de tu ultimo viaje</p>
-            {% endif %}
-        </div>
-
-        <div class="contenedor-estadistica-informacion">
-            <h3>Ciudad Mas Visitada</h3>
-            <p>{{ viajes_ciudad }} viajes a {{ ciudad }} ({{ pais_ciudad }})</p>
-        </div>
-
-        <div class="contenedor-estadistica-informacion">
-            <h3>Ciudad Mas Lejana Visitada</h3>
-            <p>{{ ciudad_mas_lejana }} - {{ distancia }} KM</p>
-        </div>
+<div class="estadisticas-container">
 
 
-
+    <div class="estadistica-section">
+        <h2>Viajes Realizados</h2>
+        <p>{{ numero_viajes_realizados }} viajes</p>
     </div>
 
-    <div class="contenedor-estadistica">
-
-        <div class="contenedor-estadistica-informacion">
-            <h3>Paises Visitados</h3>
-            <p>{{ numero_paises_visitados }} paises</p>
-        </div>
-
-        <div class="contenedor-estadistica-informacion">
-            <h3>Viaje Mas Largo Realizado</h3>
-            <p>{{ viaje_mas_largo }} dias</p>
-        </div>
-
-        <div class="contenedor-estadistica-informacion">
-            <h3>Pais Mas Visitado</h3>
-            <p>{{ viajes_pais }} viajes a {{ pais }}</p>
-        </div>
-
-
+    <div class="estadistica-section">
+        <h2>Paises Visitados</h2>
+        <p>{{ numero_paises_visitados }} paises</p>
     </div>
 
-    <div class="contenedor-estadistica">
-
-        <div class="contenedor-estadistica-informacion">
-            <h3>Ciudades Visitadas</h3>
-            <p>{{ numero_ciudades_visitadas }} ciudades</p>
-        </div>
-
-        <div class="contenedor-estadistica-informacion">
-            <h3>Año Mas Viajes Realizados</h3>
-            <p>{{ viajes }} viajes en {{ anno }}</p>
-        </div>
-
-        <div class="contenedor-estadistica-informacion">
-            <h3>Ciudad Mas Grande Visitada</h3>
-            <p>{{ ciudad_mas_grande }} - {{ poblacion }} habitantes</p>
-        </div>
-
+    <div class="estadistica-section">
+        <h2>Ciudades Visitadas</h2>
+        <p>{{ numero_ciudades_visitadas }} ciudades</p>
     </div>
 
-    
+
+
+    <div class="estadistica-section">
+        <h2>Ultimo Viaje Realizado</h2>
+        {% if numero_dias_ultimo_viaje>30 %}
+            <p>Va tocando un viaje ya! ({{ numero_dias_ultimo_viaje }} dias)</p>
+        {% elif numero_dias_ultimo_viaje==0 %}
+            <p>BIENVENIDO! Has venido hoy! ({{ numero_dias_ultimo_viaje }} dias)</p>
+        {% elif numero_dias_ultimo_viaje<0 %}
+            <p>Proximo viaje planeado en {{ numero_dias_ultimo_viaje*(-1) }} dias!</p>
+        {% else %}
+            <p>Hace {{ numero_dias_ultimo_viaje }} dias de tu ultimo viaje</p>
+        {% endif %}
+    </div>
+
+    <div class="estadistica-section">
+        <h2>Viaje Mas Largo Realizado</h2>
+        <p>{{ viaje_mas_largo }} dias</p>
+    </div>
+
+    <div class="estadistica-section">
+        <h2>Año Mas Viajes Realizados</h2>
+        <p>{{ viajes }} viajes en {{ anno }}</p>
+    </div>
+
+
+
+    <div class="estadistica-section">
+        <h2>Ciudad Mas Visitada</h2>
+        <p>{{ viajes_ciudad }} viajes a {{ ciudad }} ({{ pais_ciudad }})</p>
+    </div>
+
+    <div class="estadistica-section">
+        <h2>Pais Mas Visitado</h2>
+        <p>{{ viajes_pais }} viajes a {{ pais }}</p>
+    </div>
+
+    <div class="estadistica-section">
+        <h2>Ciudad Mas Grande Visitada</h2>
+        <p>{{ ciudad_mas_grande }} - {{ poblacion }} habitantes</p>
+    </div>
+
+
+
+    <div class="estadistica-section">
+        <h2>Ciudad Mas Lejana Visitada</h2>
+
+            <div class="contenedor-desplegable">
+                <button class="boton-desplegable">Ciudad de Origen: {{ nombre_ciudad_elegida }} ▼</button>
+                <div class="contenido-desplegable">
+
+                    {% for ciudad in ciudades_origen %}
+                        <a href="/estadisticas?codigo_ciudad={{ ciudad[0] }}">{{ ciudad[1] }}</a>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+        <p>{{ ciudad_mas_lejana }} - {{ distancia }} KM</p>
+    </div>
+
 </div>
 
-<div class="contenedor-volver">
+<div class="volver-section">
+    <a href="/estadisticas" class="subir-button">Subir</a>
     <a href="/" class="volver-button">Volver</a>
 </div>
 

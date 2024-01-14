@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, request
 
 from src.database.conexion import Conexion
 
@@ -35,7 +35,17 @@ def obtenerEstadisticas():
 
 	poblacion, ciudad_mas_grande, pais_ciudad_mas_grande=conexion.estadistica_ciudad_mas_grande()
 
-	distancia, ciudad_mas_lejana, pais_ciudad_mas_lejana=conexion.estadistica_ciudad_mas_lejana()
+	ciudades_origen=conexion.ciudades_origen()
+
+	codigo_ciudad_elegida=request.args.get("codigo_ciudad", default=103, type=int)
+
+	nombre_ciudad_elegida=conexion.nombre_ciudad(codigo_ciudad_elegida)
+
+	if nombre_ciudad_elegida is None:
+
+		return redirect(url_for("inicio.inicio"))
+
+	distancia, ciudad_mas_lejana, pais_ciudad_mas_lejana=conexion.estadistica_ciudad_mas_lejana(codigo_ciudad_elegida)
 
 	conexion.cerrarConexion()
 
@@ -55,4 +65,6 @@ def obtenerEstadisticas():
 							poblacion=añadirPuntos(str(poblacion)),
 							ciudad_mas_grande=ciudad_mas_grande,
 							distancia=añadirPuntos(str(distancia)),
-							ciudad_mas_lejana=ciudad_mas_lejana)
+							ciudad_mas_lejana=ciudad_mas_lejana,
+							ciudades_origen=ciudades_origen,
+							nombre_ciudad_elegida=nombre_ciudad_elegida)

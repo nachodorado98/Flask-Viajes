@@ -1087,3 +1087,45 @@ def test_estadisticas_ciudad_mas_lejana_existen_origen_existe(conexion, cod_ciud
 	assert isinstance(distancia, int)
 	assert ciudad_lejana==ciudad
 	assert pais_ciudad==pais
+
+def test_ciudades_origen_poblacion_defecto(conexion):
+
+	ciudades=conexion.ciudades_origen()
+
+	assert len(ciudades)==67
+
+@pytest.mark.parametrize(["poblacion", "numero_ciudades"],
+	[
+		(100000000, 52),
+		(1000000, 148),
+		(5000000, 82),
+		(20000000, 57),
+	]
+)
+def test_ciudades_origen_poblacion_variable(conexion, poblacion, numero_ciudades):
+
+	ciudades=conexion.ciudades_origen(poblacion)
+
+	assert len(ciudades)==numero_ciudades
+
+@pytest.mark.parametrize(["codigo_ciudad"],
+	[(0,), (100000,), (-1,), (24354366,)]
+)
+def test_nombre_ciudad_no_existe(conexion, codigo_ciudad):
+
+	assert conexion.nombre_ciudad(codigo_ciudad) is None
+
+@pytest.mark.parametrize(["codigo_ciudad", "nombre"],
+	[
+		(1, "Tokyo"), 
+		(10000, "Nakapiripirit"), 
+		(22, "Karachi"),
+		(13, "New York"),
+		(103, "Madrid"),
+		(34, "London"),
+		(160, "Barcelona")
+	]
+)
+def test_nombre_ciudad_existe(conexion, codigo_ciudad, nombre):
+
+	assert conexion.nombre_ciudad(codigo_ciudad)==nombre

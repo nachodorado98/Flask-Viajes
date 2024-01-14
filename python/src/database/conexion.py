@@ -499,3 +499,31 @@ class Conexion:
 		ciudad_mas_lejana=self.c.fetchone()
 
 		return (int(ciudad_mas_lejana["distancia"]), ciudad_mas_lejana["ciudad"], ciudad_mas_lejana["pais"]) if ciudad_mas_lejana else None
+
+	# Metodo para obtener las ciudades de origen posibles
+	def ciudades_origen(self, poblacion:int=10000000)->Optional[List[tuple]]:
+
+		self.c.execute("""SELECT CodCiudad, Ciudad
+							FROM Ciudades
+							WHERE (tipo='Capital'
+									AND Poblacion>%s)
+							OR (tipo in ('Capital', 'Capital Comunidad', 'Capital Provincia')
+								AND pais='España')
+							ORDER BY Ciudad""",
+							(poblacion,))
+
+		ciudades_origen=self.c.fetchall()
+
+		return list(map(lambda ciudad: (ciudad["codciudad"], ciudad["ciudad"]), ciudades_origen)) if ciudades_origen else None
+
+	# Metodo para obtener los detalles de una ciudad
+	def nombre_ciudad(self, codciudad:int)->Optional[str]:
+
+		self.c.execute("""SELECT Ciudad
+							FROM Ciudades
+							WHERE CodCiudad=%s""",
+							(codciudad,))
+
+		ciudad=self.c.fetchone()
+
+		return ciudad["ciudad"] if ciudad else None
