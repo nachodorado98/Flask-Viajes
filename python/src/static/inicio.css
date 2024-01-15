@@ -768,11 +768,15 @@ input {
     transition: transform 0.3s ease-in-out;
 }
 
-.estadistica-section:nth-child(10) {
+.estadistica-section:nth-child(4) {
     width: 70%;
 }
 
-.estadistica-section:nth-child(11) {
+.estadistica-section:nth-child(8) {
+    width: 70%;
+}
+
+.estadistica-section:nth-child(12) {
     width: 80%;
 }
 
@@ -780,11 +784,15 @@ input {
     transform: scale(1.05);
 }
 
-.estadistica-section:nth-child(10):hover {
+.estadistica-section:nth-child(4):hover {
     transform: scale(1.01);
 }
 
-.estadistica-section:nth-child(11):hover {
+.estadistica-section:nth-child(8):hover {
+    transform: scale(1.01);
+}
+
+.estadistica-section:nth-child(12):hover {
     transform: scale(1.01);
 }
 

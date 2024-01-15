@@ -317,3 +317,27 @@ def limpiarDatosGrafica(datos:List[tuple])->Dict:
 	annos, meses, viajes=zip(*((dato[0], meses_espanol[dato[1]], dato[2]) for dato in datos))
 
 	return {"annos": list(annos), "meses": list(meses), "viajes_por_mes": list(viajes)}
+
+# Funcion para obtener la fecha de inicio del año minimo y la fecha de fin del año maximo
+def fecha_inicio_minimo_fin_maximo(minimo:int, maximo:int)->tuple[str]:
+
+	fecha_inicio_minimo=datetime(minimo, 1, 1)
+
+	fecha_fin_maximo=datetime(maximo, 12, 1)
+
+	return fecha_inicio_minimo.strftime("%Y-%m-%d"), fecha_fin_maximo.strftime("%Y-%m-%d")
+
+# Funcion para limpiar los datos que se muestran en la grafica de lienas
+def limpiarDatosGraficaLineas(datos:List[tuple])->Dict:
+
+	annos=sorted(list(set([dato[0] for dato in datos])))
+
+	datos_anno_viajes={anno:[dato[2] for dato in datos if dato[0]==anno] for anno in annos}
+
+	datasets=[{"label":anno_clave, "data":datos_viajes} for anno_clave, datos_viajes in datos_anno_viajes.items()]
+
+	datos_lineas={"labels":['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+							'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+					"datasets":datasets}
+
+	return datos_lineas

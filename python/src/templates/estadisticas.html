@@ -24,6 +24,15 @@
 
 
     <div class="estadistica-section">
+        <h2>Evolutivo Viajes Ultimo Año</h2>
+        <canvas id="grafico_barras"  height="80"></canvas>
+        <script>var datos_grafica_barras={{ datos_grafica_barras | tojson | safe }};</script>
+        <script src="{{ url_for('static', filename='grafico_barras.js') }}"></script>
+    </div>
+
+
+
+    <div class="estadistica-section">
         <h2>Ultimo Viaje Realizado</h2>
         {% if numero_dias_ultimo_viaje>30 %}
             <p>Va tocando un viaje ya! ({{ numero_dias_ultimo_viaje }} dias)</p>
@@ -49,6 +58,15 @@
 
 
     <div class="estadistica-section">
+        <h2>Viajes Realizados Cada Año</h2>
+        <canvas id="grafico_lineas"  height="80"></canvas>
+        <script>var datos_grafica_lineas={{ datos_grafica_lineas | tojson | safe }};</script>
+        <script src="{{ url_for('static', filename='grafico_lineas.js') }}"></script>
+    </div>
+
+
+
+    <div class="estadistica-section">
         <h2>Ciudad Mas Visitada</h2>
         <p>{{ viajes_ciudad }} viajes a {{ ciudad }} ({{ pais_ciudad }})</p>
     </div>
@@ -61,15 +79,6 @@
     <div class="estadistica-section">
         <h2>Ciudad Mas Grande Visitada</h2>
         <p>{{ ciudad_mas_grande }} - {{ poblacion }} habitantes</p>
-    </div>
-
-
-
-    <div class="estadistica-section">
-        <h2>Evolutivo Viajes Ultimo Año</h2>
-        <canvas id="grafico_barras"></canvas>
-        <script>var datos_grafica={{ datos_grafica | tojson | safe }};</script>
-        <script src="{{ url_for('static', filename='grafico_barras.js') }}"></script>
     </div>
 
 

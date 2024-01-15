@@ -2,7 +2,8 @@ from flask import Blueprint, render_template, redirect, url_for, request
 
 from src.database.conexion import Conexion
 
-from src.utilidades.utils import añadirPuntos, fechas_limite_grafico, limpiarDatosGrafica
+from src.utilidades.utils import añadirPuntos, fechas_limite_grafico, limpiarDatosGrafica, fecha_inicio_minimo_fin_maximo
+from src.utilidades.utils import limpiarDatosGraficaLineas
 
 bp_estadisticas=Blueprint("estadisticas", __name__)
 
@@ -49,9 +50,17 @@ def obtenerEstadisticas():
 
 	ano_anterior, ano_actual=fechas_limite_grafico()
 
-	datos=conexion.viajes_por_meses(ano_anterior, ano_actual)
+	datos_grafico_barras=conexion.viajes_por_meses(ano_anterior, ano_actual)
 
-	datos_grafica=limpiarDatosGrafica(datos)
+	datos_barras=limpiarDatosGrafica(datos_grafico_barras)
+
+	minimo, maximo=conexion.anno_minimo_maximo_ida()
+
+	fecha_inicio, fecha_fin=fecha_inicio_minimo_fin_maximo(minimo, maximo)
+
+	datos_grafica_lineas=conexion.viajes_por_meses(fecha_inicio, fecha_fin)
+
+	datos_lineas=limpiarDatosGraficaLineas(datos_grafica_lineas)
 
 	conexion.cerrarConexion()
 
@@ -74,4 +83,5 @@ def obtenerEstadisticas():
 							ciudad_mas_lejana=ciudad_mas_lejana,
 							ciudades_origen=ciudades_origen,
 							nombre_ciudad_elegida=nombre_ciudad_elegida,
-							datos_grafica=datos_grafica)
+							datos_grafica_barras=datos_barras,
+							datos_grafica_lineas=datos_lineas)

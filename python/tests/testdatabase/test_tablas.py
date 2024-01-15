@@ -1197,3 +1197,32 @@ def test_viajes_meses_existen_viajes_rango_incorrecto(conexion, idas, resultados
 	for resultado in resultados:
 
 		assert resultado not in viajes_meses
+
+def test_anno_minimo_maximo_ida_no_existen_viajes(conexion):
+
+	assert conexion.anno_minimo_maximo_ida() is None
+
+@pytest.mark.parametrize(["anno"],
+	[(2019,),(2023,),(2021,),(2010,),(2022,),(2024,)]
+)
+def test_anno_minimo_maximo_ida_existe_viaje(conexion, anno):
+
+	conexion.insertarViaje(34, f"{anno}-06-22", "2024-01-15", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.anno_minimo_maximo_ida()==(anno, anno)
+
+@pytest.mark.parametrize(["annos", "minimo", "maximo"],
+	[
+		([2019, 2023, 2021, 2010, 2022, 2024], 2010, 2024),
+		([2019, 2023, 2021, 2019, 2023, 2024], 2019, 2024),
+		([2009, 2023, 2021, 2010, 2022, 2023], 2009, 2023),
+		([2019, 2019, 2019, 2019, 2019, 2019], 2019, 2019)
+	]
+)
+def test_anno_minimo_maximo_ida_existen_viajes(conexion, annos, minimo, maximo):
+
+	for anno in annos:
+
+		conexion.insertarViaje(34, f"{anno}-06-22", "2024-01-15", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert conexion.anno_minimo_maximo_ida()==(minimo, maximo)

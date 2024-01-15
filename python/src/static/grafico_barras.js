@@ -3,10 +3,10 @@ document.addEventListener('DOMContentLoaded', function () {
     var myChart = new Chart(ctx, {
         type: "bar",
         data: {
-            labels: datos_grafica.meses,
+            labels: datos_grafica_barras.meses,
             datasets: [{
                 label: "Viajes por Mes",
-                data: datos_grafica.viajes_por_mes,
+                data: datos_grafica_barras.viajes_por_mes,
                 backgroundColor: "rgba(255, 132, 132, 0.2)",
                 borderColor: "rgba(255, 132, 132, 1)",
                 borderWidth: 1

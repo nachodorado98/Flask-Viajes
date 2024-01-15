@@ -11,7 +11,7 @@ from src.utilidades.utils import comprobarImagen, añadirPuntos, bandera_existe,
 from src.utilidades.utils import es_horizontal, comprobarHorizontal, obtenerNuevasDimensiones, validarPaginaWeb
 from src.utilidades.utils import obtenerNombreCiudades, obtenerLatLongCiudad, limpiarFechasCiudad, obtenerDatosCiudadViaje
 from src.utilidades.utils import leerGeoJSON, crearMapaFolium, eliminarPosiblesMapasFolium, fecha_mes_ano_ano_anterior
-from src.utilidades.utils import fechas_limite_grafico, limpiarDatosGrafica
+from src.utilidades.utils import fechas_limite_grafico, limpiarDatosGrafica, fecha_inicio_minimo_fin_maximo, limpiarDatosGraficaLineas
 
 @pytest.mark.parametrize(["ida","vuelta"],
 	[
@@ -720,3 +720,40 @@ def test_limpiar_datos_grafica(datos):
 
 	assert len(datos_limpios["annos"])==len(datos_limpios["meses"])
 	assert len(datos_limpios["meses"])==len(datos_limpios["viajes_por_mes"])
+
+@pytest.mark.parametrize(["minimo", "maximo"],
+	[(2023, 2023),(2019, 2023),(2021, 2023),(2010, 2023),(2024, 2023)]
+)
+def test_fecha_inicio_minimo_fin_maximo(minimo, maximo):
+
+	assert fecha_inicio_minimo_fin_maximo(minimo, maximo)==(f"{minimo}-01-01", f"{maximo}-12-01")
+
+@pytest.mark.parametrize(["labels"],
+	[
+		(["2019"],),
+		(["2019", "2024", "2016"],),
+		(["2019", "2010", "2021", "2012"],)
+	]
+)
+def test_limpiar_datos_grafica_lineas(labels):
+
+	datos=[]
+
+	for label in labels:
+
+		datos+=[(label, "January", 0), (label, "February", 4), (label, "March", 1),
+				(label, "April", 10), (label, "May", 3), (label, "June", 2),
+				(label, "July", 0), (label, "August", 10), (label, "September", 30),
+				(label, "October", 4), (label, "November", 3), (label, "December", 0)]
+
+	datos_limpios=limpiarDatosGraficaLineas(datos)
+
+	claves=datos_limpios.keys()
+	assert "labels" in claves
+	assert "datasets" in claves
+	assert len(datos_limpios["labels"])==12
+
+	for dataset in datos_limpios["datasets"]:
+
+		assert dataset["label"] in labels
+		assert len(dataset["data"])==12

@@ -545,3 +545,15 @@ class Conexion:
 		viajes_meses=self.c.fetchall()
 
 		return list(map(lambda viajes: (viajes["anno"], viajes["nombremes"].strip(), viajes["numeroviajes"]), viajes_meses)) if viajes_meses else None
+
+	# Metodo para obtener los años de la fecha minima y maxima de la ida
+	def anno_minimo_maximo_ida(self)->Optional[tuple]:
+
+		self.c.execute("""SELECT EXTRACT(YEAR FROM MIN(Ida)) AS Minimo, EXTRACT(YEAR FROM MAX(Ida)) AS Maximo
+							FROM viajes""")
+
+		annos=self.c.fetchone()
+
+		minimo, maximo=annos["minimo"], annos["maximo"]
+
+		return None if maximo is None or minimo is None else (int(minimo), int(maximo))
