@@ -2,6 +2,7 @@ import pytest
 import re
 import os
 import shutil
+from datetime import datetime
 
 from src.utilidades.utils import fechas_correctas, web_correcta, comentario_incorrecto, limpiarCadena, crearNombreImagen
 from src.utilidades.utils import extraerExtension, generarArchivoImagen, cambiarFormatoFecha, descambiarFormatoFecha
@@ -9,7 +10,8 @@ from src.utilidades.utils import crearCarpeta, obtenerAncho, obtenerAlto, redime
 from src.utilidades.utils import comprobarImagen, añadirPuntos, bandera_existe, es_cuadrada, comprobarCuadrada
 from src.utilidades.utils import es_horizontal, comprobarHorizontal, obtenerNuevasDimensiones, validarPaginaWeb
 from src.utilidades.utils import obtenerNombreCiudades, obtenerLatLongCiudad, limpiarFechasCiudad, obtenerDatosCiudadViaje
-from src.utilidades.utils import leerGeoJSON, crearMapaFolium, eliminarPosiblesMapasFolium
+from src.utilidades.utils import leerGeoJSON, crearMapaFolium, eliminarPosiblesMapasFolium, fecha_mes_ano_ano_anterior
+from src.utilidades.utils import fechas_limite_grafico, limpiarDatosGrafica
 
 @pytest.mark.parametrize(["ida","vuelta"],
 	[
@@ -674,3 +676,47 @@ def test_crear_mapa_paises_existen_ciudad_existen(paises, siglas, ciudades, fech
 			assert f"<h4>Fechas Ida y Vuelta Viaje(s):<br> {fechas}</h4>"
 
 	eliminarPosiblesMapasFolium(ruta_relativa)
+
+@pytest.mark.parametrize(["fecha", "fecha_mes_ano", "fecha_mes_ano_anterior"],
+	[
+		("2019-06-22", "2018-06-01", "2019-06-01"),
+		("2020-07-02", "2019-07-01", "2020-07-01"),
+		("2024-01-30", "2023-01-01", "2024-01-01"),
+		("2022-04-01", "2021-04-01", "2022-04-01"),
+	]
+)
+def test_fechas_mes_ano_ano_anterior(fecha, fecha_mes_ano, fecha_mes_ano_anterior):
+
+	assert fecha_mes_ano_ano_anterior(fecha)==(fecha_mes_ano, fecha_mes_ano_anterior)
+
+def test_fechas_limite_grafico():
+
+	hoy=datetime.now()
+
+	limite_mes_ano=datetime(hoy.year, hoy.month, 1).strftime("%Y-%m-%d")
+
+	limite_mes_ano_anterior=datetime(hoy.year-1, hoy.month, 1).strftime("%Y-%m-%d")
+
+	assert fechas_limite_grafico()==(limite_mes_ano_anterior, limite_mes_ano)
+
+@pytest.mark.parametrize(["datos"],
+	[
+		([("2022", "January", 0), ("2023", "February", 4), ("2019", "March", 1)],),
+		([("2019", "April", 10), ("2019", "May", 3), ("2019", "June", 2)],),
+		([("2025", "July", 0), ("2023", "August", 10), ("2024", "September", 30)],),
+		([("2021", "October", 4), ("1998", "November", 3), ("1999", "December", 0)],),
+		([("2022", "January", 0), ("2023", "February", 4), ("2019", "March", 1), ("2025", "July", 0), ("2023", "August", 10), ("2024", "September", 30)],),
+	]
+)
+def test_limpiar_datos_grafica(datos):
+
+	datos_limpios=limpiarDatosGrafica(datos)
+
+	claves=datos_limpios.keys()
+
+	assert "annos" in claves
+	assert "meses" in claves
+	assert "viajes_por_mes" in claves
+
+	assert len(datos_limpios["annos"])==len(datos_limpios["meses"])
+	assert len(datos_limpios["meses"])==len(datos_limpios["viajes_por_mes"])

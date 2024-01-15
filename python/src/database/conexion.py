@@ -527,3 +527,21 @@ class Conexion:
 		ciudad=self.c.fetchone()
 
 		return ciudad["ciudad"] if ciudad else None
+
+	# Metodo para obtener los viajes realizados por mes entre unas fechas concretas
+	def viajes_por_meses(self, fecha_inicio:str, fecha_fin:str)->Optional[List[tuple]]:
+
+		self.c.execute("""SELECT to_char(MES, 'YYYY-MM') AS Meses,
+							to_char(MES, 'YYYY') AS Anno,
+							to_char(MES, 'Month') AS NombreMes,
+							COUNT(v.Ida) AS NumeroViajes
+							FROM generate_series(%s::date, %s::date, '1 month'::interval) AS MES
+							LEFT JOIN Viajes v
+							ON to_char(v.Ida, 'YYYY-MM')=to_char(MES, 'YYYY-MM')
+							GROUP BY Meses, Anno, NombreMes
+							ORDER BY Meses""",
+							(fecha_inicio, fecha_fin))
+
+		viajes_meses=self.c.fetchall()
+
+		return list(map(lambda viajes: (viajes["anno"], viajes["nombremes"].strip(), viajes["numeroviajes"]), viajes_meses)) if viajes_meses else None

@@ -1129,3 +1129,71 @@ def test_nombre_ciudad_no_existe(conexion, codigo_ciudad):
 def test_nombre_ciudad_existe(conexion, codigo_ciudad, nombre):
 
 	assert conexion.nombre_ciudad(codigo_ciudad)==nombre
+
+@pytest.mark.parametrize(["inicio", "fin"],
+	[
+		("2023-08-06", "2022-01-13"),
+		("2023-08-06", "2023-01-13"),
+		("2022-08-06", "2022-01-13"),
+		("2019-06-01", "2019-05-31"),
+	]
+)
+def test_viajes_meses_fechas_incorrectas_no_existen_viajes(conexion, inicio, fin):
+
+	assert conexion.viajes_por_meses(inicio, fin) is None
+
+@pytest.mark.parametrize(["inicio", "fin", "meses"],
+	[
+		("2023-08-06", "2023-08-13", 1),
+		("2019-06-22", "2019-06-22", 1),
+		("2019-06-22", "2019-08-22", 3),
+		("2019-06-22", "2020-06-13", 12),
+		("2019-06-22", "2020-06-22", 13),
+		("2022-05-01", "2023-04-07", 12),
+		("2022-05-02", "2023-04-01", 11)
+	]
+)
+def test_viajes_meses_no_existen_viajes(conexion, inicio, fin, meses):
+
+	viajes_meses=conexion.viajes_por_meses(inicio, fin)
+
+	assert len(viajes_meses)==meses
+
+@pytest.mark.parametrize(["idas", "resultados"],
+	[
+		(["2019-06-06", "2019-06-06", "2019-06-06"], [("2019", "June", 3)]),
+		(["2019-06-06", "2019-06-06", "2019-07-06"], [("2019", "June", 2), ("2019", "July", 1)]),
+		(["2019-06-06", "2019-08-06", "2019-07-06"], [("2019", "June", 1), ("2019", "July", 1), ("2019", "August", 1)]),
+	]
+)
+def test_viajes_meses_existen_viajes_rango_correcto(conexion, idas, resultados):
+
+	for ida in idas:
+
+		conexion.insertarViaje(34, ida, "2024-01-15", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	viajes_meses=conexion.viajes_por_meses("2019-06-22", "2019-10-23")
+
+	for resultado in resultados:
+
+		assert resultado in viajes_meses
+
+@pytest.mark.parametrize(["idas", "resultados"],
+	[
+		(["2019-06-06", "2019-06-06", "2019-06-06", "2019-05-22"], [("2019", "May", 1)]),
+		(["2019-06-06", "2019-06-06", "2019-06-06", "2019-05-22", "2019-01-13"], [("2019", "May", 1), ("2019", "January", 1)]),
+		(["2019-06-06", "2019-06-06", "2019-02-06", "2019-05-22", "2019-01-13"], [("2019", "May", 1), ("2019", "January", 1), ("2019", "February", 1)]),
+		(["2019-05-06", "2019-05-06", "2019-05-16", "2019-05-22", "2019-05-13"], [("2019", "May", 5)]),
+	]
+)
+def test_viajes_meses_existen_viajes_rango_incorrecto(conexion, idas, resultados):
+
+	for ida in idas:
+
+		conexion.insertarViaje(34, ida, "2024-01-15", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	viajes_meses=conexion.viajes_por_meses("2019-06-22", "2019-10-23")
+
+	for resultado in resultados:
+
+		assert resultado not in viajes_meses

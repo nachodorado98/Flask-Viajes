@@ -66,6 +66,15 @@
 
 
     <div class="estadistica-section">
+        <h2>Evolutivo Viajes Ultimo Año</h2>
+        <canvas id="grafico_barras"></canvas>
+        <script>var datos_grafica={{ datos_grafica | tojson | safe }};</script>
+        <script src="{{ url_for('static', filename='grafico_barras.js') }}"></script>
+    </div>
+
+
+
+    <div class="estadistica-section">
         <h2>Ciudad Mas Lejana Visitada</h2>
 
             <div class="contenedor-desplegable">

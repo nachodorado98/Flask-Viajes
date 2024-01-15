@@ -277,3 +277,43 @@ def eliminarPosiblesMapasFolium(ruta:str)->None:
 	for mapa in posibles_mapas:
 
 		os.remove(os.path.join(ruta_templates, mapa))
+
+# Funcion para obtener la fecha del mes y la fecha un año antes
+def fecha_mes_ano_ano_anterior(fecha:str)->tuple[str]:
+
+	fecha_datetime=datetime.strptime(fecha, "%Y-%m-%d")
+
+	anno, mes=fecha_datetime.year, fecha_datetime.month
+
+	fecha_mes_ano=datetime(anno, mes, 1)
+
+	fecha_mes_ano_anterior=datetime(anno-1, mes, 1)
+
+	return fecha_mes_ano_anterior.strftime("%Y-%m-%d"), fecha_mes_ano.strftime("%Y-%m-%d")
+
+# Funcion para obtener las fechas limite de inicio y fin del grafico
+def fechas_limite_grafico()->tuple[str]:
+
+	hoy=datetime.now().strftime("%Y-%m-%d")
+
+	return fecha_mes_ano_ano_anterior(hoy)
+
+# Funcion para limpiar los datos que se muestran en la grafica
+def limpiarDatosGrafica(datos:List[tuple])->Dict:
+
+	meses_espanol={"January":"Enero",
+					"February":"Febrero",
+					"March":"Marzo",
+					"April":"Abril",
+					"May":"Mayo",
+					"June":"Junio",
+					"July":"Julio",
+					"August":"Agosto",
+					"September":"Septiembre",
+					"October":"Octubre",
+					"November":"Noviembre",
+					"December":"Diciembre"}
+
+	annos, meses, viajes=zip(*((dato[0], meses_espanol[dato[1]], dato[2]) for dato in datos))
+
+	return {"annos": list(annos), "meses": list(meses), "viajes_por_mes": list(viajes)}
