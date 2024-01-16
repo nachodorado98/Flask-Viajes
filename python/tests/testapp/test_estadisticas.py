@@ -1,5 +1,8 @@
 import pytest
 from datetime import datetime
+import os
+import shutil
+import time
 
 def test_pagina_estadisticas_no_existe_viaje(cliente, conexion):
 
@@ -686,3 +689,207 @@ def test_pagina_estadisticas_existen_viajes_ciudad_mas_lejana_origen_distinto(cl
 	assert respuesta.status_code==200
 	assert "Estadisticas de los viajes" in contenido
 	assert f"{ciudad_mas_lejana} -" in contenido
+
+def test_pagina_estadisticas_existe_viaje_sin_imagen(cliente, conexion):
+
+	data={"pais":"Pais",
+				"ciudad":"Madrid",
+				"ida":"22/06/2019",
+				"vuelta":"23/06/2019",
+				"hotel":"hotel",
+				"web":"www.google.com",
+				"transporte":"t",
+				"comentario":"Sin Comentario",
+				"archivo_imagen":"Sin Imagen"}
+
+	cliente.post("/insertar_viaje", data=data)
+
+	respuesta=cliente.get(f"/estadisticas")
+
+	contenido=respuesta.data.decode()
+
+	assert respuesta.status_code==200
+	assert "Estadisticas de los viajes" in contenido
+	assert "Vaya, no hay imagenes recientes que mostrar..." in contenido
+
+def test_pagina_estadisticas_existe_viaje_con_imagen_no_existen(cliente, conexion):
+
+	data={"pais":"Pais",
+				"ciudad":"Madrid",
+				"ida":"22/06/2019",
+				"vuelta":"23/06/2019",
+				"hotel":"hotel",
+				"web":"www.google.com",
+				"transporte":"t",
+				"comentario":"Sin Comentario",
+				"archivo_imagen":"imagen_no_existe.jpg"}
+
+	cliente.post("/insertar_viaje", data=data)
+
+	respuesta=cliente.get(f"/estadisticas")
+
+	contenido=respuesta.data.decode()
+
+	assert respuesta.status_code==200
+	assert "Estadisticas de los viajes" in contenido
+	assert "Vaya, no hay imagenes recientes que mostrar..." in contenido
+
+# Funcion para copiar la imagen de los tests
+def copiarImagenNombre(nombre_imagen:str):
+
+	ruta_imagen=os.path.join(os.getcwd(), "testapp", "imagen_tests.jpg")
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	ruta_relativa_carpeta=os.path.join(ruta_relativa, "static", "imagenes")
+
+	ruta_destino=os.path.join(ruta_relativa_carpeta, f"{nombre_imagen}.jpg")
+
+	shutil.copy(ruta_imagen, ruta_destino)
+
+	assert os.path.exists(ruta_destino)
+
+# Funcion complementaria para vaciar la carpeta de las imagenes
+def vaciarCarpeta(ruta:str)->None:
+
+	if os.path.exists(ruta):
+
+		for archivo in os.listdir(ruta):
+
+			os.remove(os.path.join(ruta, archivo))
+
+@pytest.mark.parametrize(["nombre_imagen"],
+	[("imagen1",),("imagen2",),("hhjfffh",),("madrid_espana",)]
+)
+def test_pagina_estadisticas_existe_viaje_con_imagen_existe(cliente, conexion, nombre_imagen):
+
+	copiarImagenNombre(nombre_imagen)
+
+	data={"pais":"Pais",
+				"ciudad":"Madrid",
+				"ida":"22/06/2019",
+				"vuelta":"23/06/2019",
+				"hotel":"hotel",
+				"web":"www.google.com",
+				"transporte":"t",
+				"comentario":"Sin Comentario",
+				"archivo_imagen":f"{nombre_imagen}.jpg"}
+
+	cliente.post("/insertar_viaje", data=data)
+
+	respuesta=cliente.get(f"/estadisticas")
+
+	contenido=respuesta.data.decode()
+
+	assert respuesta.status_code==200
+	assert "Estadisticas de los viajes" in contenido
+	assert "Vaya, no hay imagenes recientes que mostrar..." not in contenido
+	assert f"/static/imagenes/{nombre_imagen}.jpg" in contenido
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	ruta_relativa_carpeta=os.path.join(ruta_relativa, "static", "imagenes")
+
+	vaciarCarpeta(ruta_relativa_carpeta)
+
+@pytest.mark.parametrize(["numero_imagenes"],
+	[(5,),(2,),(3,),(1,),(4,)]
+)
+def test_pagina_estadisticas_existe_viaje_con_imagen_existen_todas(cliente, conexion, numero_imagenes):
+
+	for numero in range(numero_imagenes):
+
+		nombre_imagen=f"imagen{numero}"
+
+		copiarImagenNombre(nombre_imagen)
+
+		data={"pais":"Pais",
+					"ciudad":"Madrid",
+					"ida":"22/06/2019",
+					"vuelta":"23/06/2019",
+					"hotel":"hotel",
+					"web":"www.google.com",
+					"transporte":"t",
+					"comentario":"Sin Comentario",
+					"archivo_imagen":f"{nombre_imagen}.jpg"}
+
+		cliente.post("/insertar_viaje", data=data)
+
+	respuesta=cliente.get(f"/estadisticas")
+
+	contenido=respuesta.data.decode()
+
+	assert respuesta.status_code==200
+	assert "Estadisticas de los viajes" in contenido
+	assert "Vaya, no hay imagenes recientes que mostrar..." not in contenido
+
+	for numero in range(numero_imagenes):
+
+		nombre_imagen=f"imagen{numero}"
+
+		assert f"/static/imagenes/{nombre_imagen}.jpg" in contenido
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	ruta_relativa_carpeta=os.path.join(ruta_relativa, "static", "imagenes")
+
+	vaciarCarpeta(ruta_relativa_carpeta)
+
+@pytest.mark.parametrize(["numero_imagenes", "numero_imagenes_no_existen"],
+	[(5, 4),(2, 6),(3, 7),(1, 10),(4, 1)]
+)
+def test_pagina_estadisticas_existe_viaje_con_imagen_existen_algunas(cliente, conexion, numero_imagenes, numero_imagenes_no_existen):
+
+	for numero in range(numero_imagenes):
+
+		nombre_imagen=f"imagen{numero}"
+
+		copiarImagenNombre(nombre_imagen)
+
+		data={"pais":"Pais",
+					"ciudad":"Madrid",
+					"ida":"22/06/2019",
+					"vuelta":"23/06/2019",
+					"hotel":"hotel",
+					"web":"www.google.com",
+					"transporte":"t",
+					"comentario":"Sin Comentario",
+					"archivo_imagen":f"{nombre_imagen}.jpg"}
+
+		cliente.post("/insertar_viaje", data=data)
+
+	for _ in range(numero_imagenes_no_existen):
+
+		data={"pais":"Pais",
+			"ciudad":"Madrid",
+			"ida":"22/05/2019",
+			"vuelta":"23/06/2019",
+			"hotel":"hotel",
+			"web":"www.google.com",
+			"transporte":"t",
+			"comentario":"Sin Comentario",
+			"archivo_imagen":"imagen_no_existe.jpg"}
+
+		cliente.post("/insertar_viaje", data=data)
+
+	respuesta=cliente.get(f"/estadisticas")
+
+	contenido=respuesta.data.decode()
+
+	assert respuesta.status_code==200
+	assert "Estadisticas de los viajes" in contenido
+	assert "Vaya, no hay imagenes recientes que mostrar..." not in contenido
+
+	for numero in range(numero_imagenes):
+
+		nombre_imagen=f"imagen{numero}"
+
+		assert f"/static/imagenes/{nombre_imagen}.jpg" in contenido
+
+	assert "imagen_no_existe.jpg" not in contenido
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	ruta_relativa_carpeta=os.path.join(ruta_relativa, "static", "imagenes")
+
+	vaciarCarpeta(ruta_relativa_carpeta)

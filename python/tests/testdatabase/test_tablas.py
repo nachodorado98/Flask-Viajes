@@ -1226,3 +1226,29 @@ def test_anno_minimo_maximo_ida_existen_viajes(conexion, annos, minimo, maximo):
 		conexion.insertarViaje(34, f"{anno}-06-22", "2024-01-15", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
 
 	assert conexion.anno_minimo_maximo_ida()==(minimo, maximo)
+
+def test_obtener_imagenes_no_existen(conexion):
+
+	assert conexion.obtenerImagenes()==[]
+
+@pytest.mark.parametrize(["registros"],
+	[(1,),(5,),(3,),(10,),(13,),(22,)]
+)
+def test_obtener_imagenes_existen_sin_imagen(conexion, registros):
+
+	for _ in range(registros):
+
+		conexion.insertarViaje(34, "2019-06-22", "2024-01-15", "Hotel", "www.google.com", "Transporte", "comentario", "Sin Imagen")
+
+	assert conexion.obtenerImagenes()==[]
+
+@pytest.mark.parametrize(["registros", "numero_imagenes"],
+	[(1, 1),(5, 5),(3, 3),(10, 5),(13, 5),(22,5)]
+)
+def test_obtener_imagenes_existen_con_imagen(conexion, registros, numero_imagenes):
+
+	for _ in range(registros):
+
+		conexion.insertarViaje(34, "2019-06-22", "2024-01-15", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
+
+	assert len(conexion.obtenerImagenes())==numero_imagenes

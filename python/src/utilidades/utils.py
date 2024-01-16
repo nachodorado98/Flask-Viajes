@@ -341,3 +341,12 @@ def limpiarDatosGraficaLineas(datos:List[tuple])->Dict:
 					"datasets":datasets}
 
 	return datos_lineas
+
+# Funcion para comprobar que las imagenes existen
+def comprobarImagenesExisten(imagenes:List[tuple])->List[Optional[tuple]]:
+
+	ruta=os.path.dirname(os.path.join(os.path.dirname(__file__)))
+
+	ruta_carpeta_imagenes=os.path.join(ruta, "static", "imagenes")
+
+	return list(filter(lambda imagen: os.path.exists(os.path.join(ruta_carpeta_imagenes, imagen[0])), imagenes))

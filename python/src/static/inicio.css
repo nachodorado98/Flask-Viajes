@@ -780,6 +780,10 @@ input {
     width: 80%;
 }
 
+.estadistica-section:nth-child(13) {
+    width: 90%;
+}
+
 .estadistica-section:hover {
     transform: scale(1.05);
 }
@@ -793,6 +797,10 @@ input {
 }
 
 .estadistica-section:nth-child(12):hover {
+    transform: scale(1.01);
+}
+
+.estadistica-section:nth-child(13):hover {
     transform: scale(1.01);
 }
 
@@ -817,7 +825,7 @@ input {
     background-color: #f9f9f9;
     color: #333;
     padding: 10px;
-    font-size: 20px;
+    font-size: 23px;
     border: none;
     cursor: pointer;
 }
@@ -831,13 +839,13 @@ input {
     z-index: 1;
     left: auto;
     right: 0;
-    max-height: 120px;
+    max-height: 90px;
     overflow-y: auto;
 }
 
 .contenido-desplegable a {
     color: #333;
-    padding: 12px 16px;
+    padding: 8px 10px;
     text-decoration: none;
     display: block;
     font-size: 13px;
@@ -853,6 +861,23 @@ input {
 
 .contenedor-desplegable:hover .boton-desplegable {
     background-color: #e0e0e0;
+}
+
+.imagenes-horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.imagen-container {
+    text-align: center;
+    margin: 5px;
+    margin-right: 50px;
+}
+
+.imagen-container p {
+    margin-top: 5px;
+    font-size: 20px;
 }
 
 .subir-button {

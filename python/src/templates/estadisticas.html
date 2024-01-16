@@ -100,6 +100,28 @@
         <p>{{ ciudad_mas_lejana }} - {{ distancia }} KM</p>
     </div>
 
+
+
+    <div class="estadistica-section">
+        <h2>Imagenes Viajes Recientes</h2>
+
+        {% if not imagenes_existen %}
+            <p>Vaya, no hay imagenes recientes que mostrar...</p>
+        {% else %}
+            <div class="imagenes-horizontal">
+
+            {% for imagen, ciudad, pais in imagenes_existen %}
+                <div class="imagen-container">
+                    <p><img src="{{ url_for('static', filename='imagenes/' + imagen) }}" alt="Imagen"  width="200" height="134"></p>
+                    <p>{{ ciudad }}</p>
+                </div>
+            {% endfor %}
+
+            </div>
+        {% endif %}
+
+    </div>
+
 </div>
 
 <div class="volver-section">

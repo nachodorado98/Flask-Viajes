@@ -12,6 +12,7 @@ from src.utilidades.utils import es_horizontal, comprobarHorizontal, obtenerNuev
 from src.utilidades.utils import obtenerNombreCiudades, obtenerLatLongCiudad, limpiarFechasCiudad, obtenerDatosCiudadViaje
 from src.utilidades.utils import leerGeoJSON, crearMapaFolium, eliminarPosiblesMapasFolium, fecha_mes_ano_ano_anterior
 from src.utilidades.utils import fechas_limite_grafico, limpiarDatosGrafica, fecha_inicio_minimo_fin_maximo, limpiarDatosGraficaLineas
+from src.utilidades.utils import comprobarImagenesExisten
 
 @pytest.mark.parametrize(["ida","vuelta"],
 	[
@@ -757,3 +758,99 @@ def test_limpiar_datos_grafica_lineas(labels):
 
 		assert dataset["label"] in labels
 		assert len(dataset["data"])==12
+
+@pytest.mark.parametrize(["imagenes"],
+	[
+		([('imagen.jpg', 'London', 'Reino Unido'), ('imagen.jpg', 'London', 'Reino Unido')],),
+		([],),
+		([('imagen.jpg', 'London', 'Reino Unido')],),
+		([('imagen.jpg', 'London', 'Reino Unido'), ('imagen1.jpg', 'London', 'Reino Unido'), ('imagen2.jpg', 'London', 'Reino Unido'), ('imagen3.jpg', 'London', 'Reino Unido')],),
+	]
+)
+def test_comprobar_existen_imagenes_no_existen(imagenes):
+
+	assert len(comprobarImagenesExisten(imagenes))==0
+
+# Funcion para copiar la imagen de los tests
+def copiarImagenNombre(nombre_imagen:str):
+
+	ruta_imagen=os.path.join(os.getcwd(), "testapp", "imagen_tests.jpg")
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	ruta_relativa_carpeta=os.path.join(ruta_relativa, "static", "imagenes")
+
+	ruta_destino=os.path.join(ruta_relativa_carpeta, f"{nombre_imagen}.jpg")
+
+	shutil.copy(ruta_imagen, ruta_destino)
+
+	assert os.path.exists(ruta_destino)
+
+@pytest.mark.parametrize(["nombre_imagen"],
+	[("imagen1",),("imagen2",),("hhjfffh",),("madrid_espana",)]
+)		
+def test_comprobar_existen_imagenes_existe(nombre_imagen):
+
+	copiarImagenNombre(nombre_imagen)
+
+	imagenes=[(f'{nombre_imagen}.jpg', 'London', 'Reino Unido'), ('imagen.jpg', 'London', 'Reino Unido'), ('imagen.jpg', 'London', 'Reino Unido')]
+
+	assert len(comprobarImagenesExisten(imagenes))==1
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	ruta_relativa_carpeta=os.path.join(ruta_relativa, "static", "imagenes")
+
+	vaciarCarpeta(ruta_relativa_carpeta)
+
+@pytest.mark.parametrize(["numero_imagenes", "resultado"],
+	[(5, 5),(10, 10),(2, 2),(22, 22)]
+)		
+def test_comprobar_existen_imagenes_existen_todas(numero_imagenes, resultado):
+
+	imagenes=[]
+
+	for numero in range(numero_imagenes):
+
+		nombre_imagen=f"imagen{numero}"
+
+		copiarImagenNombre(nombre_imagen)
+
+		imagenes.append((f"{nombre_imagen}.jpg", 'London', 'Reino Unido'))
+
+	assert len(comprobarImagenesExisten(imagenes))==resultado
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	ruta_relativa_carpeta=os.path.join(ruta_relativa, "static", "imagenes")
+
+	vaciarCarpeta(ruta_relativa_carpeta)
+
+@pytest.mark.parametrize(["numero_imagenes", "numero_imagenes_no_existen", "resultado"],
+	[(5, 7, 5),(10, 1, 10),(2, 3, 2),(22, 4, 22)]
+)		
+def test_comprobar_existen_imagenes_existen_algunas(numero_imagenes, numero_imagenes_no_existen, resultado):
+
+	imagenes=[]
+
+	for numero in range(numero_imagenes):
+
+		nombre_imagen=f"imagen{numero}"
+
+		copiarImagenNombre(nombre_imagen)
+
+		imagenes.append((f"{nombre_imagen}.jpg", 'London', 'Reino Unido'))
+
+	for _ in range(numero_imagenes_no_existen):
+
+		imagenes.append(("imagen_no_existe.jpg", 'London', 'Reino Unido'))
+
+	assert len(imagenes)==numero_imagenes+numero_imagenes_no_existen
+
+	assert len(comprobarImagenesExisten(imagenes))==resultado
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	ruta_relativa_carpeta=os.path.join(ruta_relativa, "static", "imagenes")
+
+	vaciarCarpeta(ruta_relativa_carpeta)

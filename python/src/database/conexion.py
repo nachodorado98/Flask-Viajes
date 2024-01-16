@@ -557,3 +557,19 @@ class Conexion:
 		minimo, maximo=annos["minimo"], annos["maximo"]
 
 		return None if maximo is None or minimo is None else (int(minimo), int(maximo))
+
+	# Metodo para obtener las imagenes de los ultimos viajes
+	def obtenerImagenes(self, limite_imagenes:int=5)->List[Optional[tuple]]:
+
+		self.c.execute("""SELECT v.Imagen, c.Ciudad, c.Pais
+							FROM Ciudades c
+							JOIN Viajes v
+							USING (CodCiudad)
+							WHERE v.Imagen!='Sin Imagen'
+							ORDER BY v.Ida DESC
+							LIMIT %s""",
+							(limite_imagenes,))
+
+		imagenes=self.c.fetchall()
+
+		return list(map(lambda imagen: (imagen["imagen"], imagen["ciudad"], imagen["pais"]), imagenes))
