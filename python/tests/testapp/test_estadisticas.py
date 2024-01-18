@@ -893,3 +893,98 @@ def test_pagina_estadisticas_existe_viaje_con_imagen_existen_algunas(cliente, co
 	ruta_relativa_carpeta=os.path.join(ruta_relativa, "static", "imagenes")
 
 	vaciarCarpeta(ruta_relativa_carpeta)
+
+@pytest.mark.parametrize(["transporte"],
+	[("transporte",),("avion",),("hola",),("t",)]
+)
+def test_pagina_estadisticas_existe_viaje_trasporte_sin_imagen(cliente, conexion, transporte):
+
+	data={"pais":"Pais",
+					"ciudad":"Madrid",
+					"ida":"22/06/2019",
+					"vuelta":"23/06/2019",
+					"hotel":"hotel",
+					"web":"www.google.com",
+					"transporte":transporte,
+					"comentario":"Sin Comentario",
+					"archivo_imagen":"imagen.jpg"}
+
+	cliente.post("/insertar_viaje", data=data)
+
+	respuesta=cliente.get(f"/estadisticas")
+
+	contenido=respuesta.data.decode()
+
+	assert respuesta.status_code==200
+	assert "Estadisticas de los viajes" in contenido
+	assert f"<p>{transporte}</p>" in contenido
+	assert f"/static/imagenes_transportes/{transporte}.jpg" not in contenido
+
+@pytest.mark.parametrize(["transporte", "transporte_imagen"],
+	[
+		("Avion", "Avion"),
+		("Andando", "Pie"),
+		("Autobus EMT", "AutobusEMT"),
+		("Autobus verde", "AutobusVerde"),
+		("La Renfe", "Renfe"),
+		("Autobus", "Autobus"),
+		("Tren/AVE", "Tren"),
+		("Coche", "Coche")
+	]
+)
+def test_pagina_estadisticas_existe_viaje_trasporte_con_imagen(cliente, conexion, transporte, transporte_imagen):
+
+	data={"pais":"Pais",
+					"ciudad":"Madrid",
+					"ida":"22/06/2019",
+					"vuelta":"23/06/2019",
+					"hotel":"hotel",
+					"web":"www.google.com",
+					"transporte":transporte,
+					"comentario":"Sin Comentario",
+					"archivo_imagen":"imagen.jpg"}
+
+	cliente.post("/insertar_viaje", data=data)
+
+	respuesta=cliente.get(f"/estadisticas")
+
+	contenido=respuesta.data.decode()
+
+	assert respuesta.status_code==200
+	assert "Estadisticas de los viajes" in contenido
+	assert f"<p>{transporte}</p>" not in contenido
+	assert f"/static/imagenes_transportes/{transporte_imagen}.png" in contenido
+
+@pytest.mark.parametrize(["transportes", "transportes_imagen"],
+	[
+		(["Avion","Avion","Coche","Autobus verde","Autobus"],["Avion","AutobusVerde","Autobus"]),
+		(["Avion","Avion","Coche","Coche","Autobus verde","Autobus","La Renfe","La Renfe"],["Avion","Coche","Renfe"]),
+		(["Avion","Avion","Coche","Coche","Autobus verde","Autobus","La Renfe","La Renfe","Autobus"],["Avion","Coche","Autobus"])
+	]
+)
+def test_pagina_estadisticas_existen_viajes_trasporte_con_imagen(cliente, conexion, transportes, transportes_imagen):
+
+	for transporte in transportes:
+
+		data={"pais":"Pais",
+						"ciudad":"Madrid",
+						"ida":"22/06/2019",
+						"vuelta":"23/06/2019",
+						"hotel":"hotel",
+						"web":"www.google.com",
+						"transporte":transporte,
+						"comentario":"Sin Comentario",
+						"archivo_imagen":"imagen.jpg"}
+
+		cliente.post("/insertar_viaje", data=data)
+
+	respuesta=cliente.get(f"/estadisticas")
+
+	contenido=respuesta.data.decode()
+
+	assert respuesta.status_code==200
+	assert "Estadisticas de los viajes" in contenido
+
+	for transporte_imagen in transportes_imagen:
+
+		assert f"/static/imagenes_transportes/{transporte_imagen}.png" in contenido

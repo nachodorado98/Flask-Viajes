@@ -110,9 +110,9 @@
         {% else %}
             <div class="imagenes-horizontal">
 
-            {% for imagen, ciudad, pais in imagenes_existen %}
+            {% for imagen, ciudad, pais, alto in imagenes_existen %}
                 <div class="imagen-container">
-                    <p><img src="{{ url_for('static', filename='imagenes/' + imagen) }}" alt="Imagen"  width="200" height="134"></p>
+                    <p><img src="{{ url_for('static', filename='imagenes/' + imagen) }}" alt="Imagen"  width="200" height="{{ alto }}"></p>
                     <p>{{ ciudad }}</p>
                 </div>
             {% endfor %}
@@ -122,11 +122,34 @@
 
     </div>
 
+
+
+    <div class="estadistica-section">
+        <h2>Top 3 Transportes Utilizados</h2>
+            <div class="imagenes-transporte-horizontal">
+
+                {% for transporte, numero_viajes in transportes_mas_usados_imagenes %}
+                <div class="imagen-transporte-container">
+
+                    {% if transporte.endswith(".png") %}
+                        <p><img src="{{ url_for('static', filename='imagenes_transportes/' + transporte) }}" alt="Imagen"  width="130" height="130"></p>
+                    {% else %}
+                        <p>{{ transporte }}</p>
+                    {% endif %}
+
+                    <p>{{ numero_viajes }} viajes</p>
+                </div>
+                {% endfor %}
+
+            </div>
+    </div>
+
 </div>
 
-<div class="volver-section">
-    <a href="/estadisticas" class="subir-button">Subir</a>
-    <a href="/" class="volver-button">Volver</a>
+<div class="contenedor-estadisticas-volver">
+    <a class="subir-button" onclick="subirScroll()">Subir</a>
+    <a href="/" class="volver-estadisticas-button">Volver</a>
 </div>
+<script src="{{ url_for('static', filename='scroll.js') }}"></script>
 
 {% endblock principal %}

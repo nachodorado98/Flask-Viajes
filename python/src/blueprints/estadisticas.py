@@ -3,7 +3,8 @@ from flask import Blueprint, render_template, redirect, url_for, request
 from src.database.conexion import Conexion
 
 from src.utilidades.utils import añadirPuntos, fechas_limite_grafico, limpiarDatosGrafica, fecha_inicio_minimo_fin_maximo
-from src.utilidades.utils import limpiarDatosGraficaLineas, comprobarImagenesExisten
+from src.utilidades.utils import limpiarDatosGraficaLineas, comprobarImagenesExisten, obtenerImagenesExistentesDimensionadas
+from src.utilidades.utils import transportes_nombre_imagenes
 
 bp_estadisticas=Blueprint("estadisticas", __name__)
 
@@ -66,6 +67,12 @@ def obtenerEstadisticas():
 
 	imagenes_existen=comprobarImagenesExisten(imagenes)
 
+	imagenes_existen_dimensionadas=obtenerImagenesExistentesDimensionadas(imagenes_existen)
+
+	transportes_mas_usados=conexion.obtenerTransportesMasUsados()
+
+	transportes_mas_usados_imagenes=transportes_nombre_imagenes(transportes_mas_usados)
+
 	conexion.cerrarConexion()
 
 	return render_template("estadisticas.html",
@@ -89,4 +96,5 @@ def obtenerEstadisticas():
 							nombre_ciudad_elegida=nombre_ciudad_elegida,
 							datos_grafica_barras=datos_barras,
 							datos_grafica_lineas=datos_lineas,
-							imagenes_existen=imagenes_existen)
+							imagenes_existen=imagenes_existen_dimensionadas,
+							transportes_mas_usados_imagenes=transportes_mas_usados_imagenes)

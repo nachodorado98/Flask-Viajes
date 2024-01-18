@@ -350,3 +350,26 @@ def comprobarImagenesExisten(imagenes:List[tuple])->List[Optional[tuple]]:
 	ruta_carpeta_imagenes=os.path.join(ruta, "static", "imagenes")
 
 	return list(filter(lambda imagen: os.path.exists(os.path.join(ruta_carpeta_imagenes, imagen[0])), imagenes))
+
+# Funcion para obtener las imagenes que existen con la dimension de altura que deben tener
+def obtenerImagenesExistentesDimensionadas(imagenes_existen:List[Optional[tuple]], alto:int=200)->List[Optional[tuple]]:
+
+	ruta=os.path.dirname(os.path.join(os.path.dirname(__file__)))
+
+	ruta_carpeta=os.path.join(ruta, "static", "imagenes")
+
+	return [(nombre_imagen, ciudad, pais, redimension_imagen_alto(os.path.join(ruta_carpeta, nombre_imagen), alto)) for nombre_imagen, ciudad, pais in imagenes_existen]
+
+# Funcion para obtener los nombres de las imagenes de los transportes
+def transportes_nombre_imagenes(transportes:List[tuple])->List[tuple]:
+
+	diccionario_transportes={"Avion":"Avion",
+							"Autobus":"Autobus",
+							"Autobus EMT":"AutobusEMT",
+							"Autobus verde":"AutobusVerde",
+							"Tren/AVE":"Tren",
+							"La Renfe":"Renfe",
+							"Andando":"Pie",
+							"Coche":"Coche"}
+
+	return [(transporte, viajes) if diccionario_transportes.get(transporte) is None else (f"{diccionario_transportes.get(transporte)}.png", viajes) for transporte, viajes in transportes]

@@ -784,6 +784,10 @@ input {
     width: 90%;
 }
 
+.estadistica-section:nth-child(14) {
+    width: 70%;
+}
+
 .estadistica-section:hover {
     transform: scale(1.05);
 }
@@ -801,6 +805,10 @@ input {
 }
 
 .estadistica-section:nth-child(13):hover {
+    transform: scale(1.01);
+}
+
+.estadistica-section:nth-child(14):hover {
     transform: scale(1.01);
 }
 
@@ -867,6 +875,7 @@ input {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: flex-end;
 }
 
 .imagen-container {
@@ -878,6 +887,46 @@ input {
 .imagen-container p {
     margin-top: 5px;
     font-size: 20px;
+}
+
+.imagenes-transporte-horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.imagen-transporte-container {
+    text-align: center;
+    margin: 5px;
+    margin-right: 120px;
+}
+
+.imagen-transporte-container p {
+    margin-top: 5px;
+    font-size: 20px;
+}
+
+.contenedor-estadisticas-volver {
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 50px;
+}
+
+.volver-estadisticas-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff6b6b;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.volver-estadisticas-button:hover {
+    background-color: #e74c3c;
+    color: #333;
+    transform: scale(1.05);
 }
 
 .subir-button {

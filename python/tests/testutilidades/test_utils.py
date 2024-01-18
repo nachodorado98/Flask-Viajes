@@ -12,7 +12,7 @@ from src.utilidades.utils import es_horizontal, comprobarHorizontal, obtenerNuev
 from src.utilidades.utils import obtenerNombreCiudades, obtenerLatLongCiudad, limpiarFechasCiudad, obtenerDatosCiudadViaje
 from src.utilidades.utils import leerGeoJSON, crearMapaFolium, eliminarPosiblesMapasFolium, fecha_mes_ano_ano_anterior
 from src.utilidades.utils import fechas_limite_grafico, limpiarDatosGrafica, fecha_inicio_minimo_fin_maximo, limpiarDatosGraficaLineas
-from src.utilidades.utils import comprobarImagenesExisten
+from src.utilidades.utils import comprobarImagenesExisten, obtenerImagenesExistentesDimensionadas, transportes_nombre_imagenes
 
 @pytest.mark.parametrize(["ida","vuelta"],
 	[
@@ -854,3 +854,64 @@ def test_comprobar_existen_imagenes_existen_algunas(numero_imagenes, numero_imag
 	ruta_relativa_carpeta=os.path.join(ruta_relativa, "static", "imagenes")
 
 	vaciarCarpeta(ruta_relativa_carpeta)
+
+def test_obtener_imagenes_existentes_dimensionadas_no_existen():
+
+	assert len(obtenerImagenesExistentesDimensionadas([]))==0
+
+@pytest.mark.parametrize(["numero_imagenes", "resultado"],
+	[(5, 5),(10, 10),(2, 2),(22, 22)]
+)		
+def test_obtener_imagenes_existentes_dimensionadas_existen(numero_imagenes, resultado):
+
+	imagenes=[]
+
+	for numero in range(numero_imagenes):
+
+		nombre_imagen=f"imagen{numero}"
+
+		copiarImagenNombre(nombre_imagen)
+
+		imagenes.append((f"{nombre_imagen}.jpg", 'London', 'Reino Unido'))
+
+	imagenes_dimensionadas=obtenerImagenesExistentesDimensionadas(imagenes)
+
+	assert len(imagenes_dimensionadas)==resultado
+
+	for imagen_dimensionada in imagenes_dimensionadas:
+
+		assert len(imagen_dimensionada)==4
+
+	ruta_relativa=os.path.join(os.path.abspath(".."), "src")
+
+	ruta_relativa_carpeta=os.path.join(ruta_relativa, "static", "imagenes")
+
+	vaciarCarpeta(ruta_relativa_carpeta)
+
+def test_transporte_nombre_imagenes_no_existen():
+
+	assert transportes_nombre_imagenes([])==[]
+
+@pytest.mark.parametrize(["transportes", "transportes_nuevos", "transportes_antiguos"],
+	[
+		([("Avion", 1),("La Renfe", 5)], [("Avion.png", 1),("Renfe.png", 5)], []),
+		([("Avion", 1),("La Renfe", 5), ("transporte", 22)], [("Avion.png", 1),("Renfe.png", 5)], [("transporte", 22)]),
+		([("Avion", 1),("La Renfe", 5), ("transporte", 22), ("Andando", 0)], [("Avion.png", 1),("Renfe.png", 5), ("Pie.png", 0)], [("transporte", 22)]),
+		([("Avion", 1),("La Renfe", 5), ("transporte", 22), ("Andando", 0), ("Hola", 13)], [("Avion.png", 1),("Renfe.png", 5), ("Pie.png", 0)], [("transporte", 22), ("Hola", 13)]),
+	]
+)
+def test_transporte_nombre_imagenes_existen(transportes, transportes_nuevos, transportes_antiguos):
+
+	assert len(transportes_nuevos)+len(transportes_antiguos)==len(transportes)
+
+	transportes_imagenes=transportes_nombre_imagenes(transportes)
+
+	assert len(transportes)==len(transportes_imagenes)
+
+	for transporte_nuevo in transportes_nuevos:
+
+		assert transporte_nuevo in transportes_imagenes
+
+	for transporte_antiguo in transportes_antiguos:
+
+		assert transporte_antiguo in transportes_imagenes

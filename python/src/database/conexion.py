@@ -573,3 +573,17 @@ class Conexion:
 		imagenes=self.c.fetchall()
 
 		return list(map(lambda imagen: (imagen["imagen"], imagen["ciudad"], imagen["pais"]), imagenes))
+
+	# Metodo para obtener los transportes mas usados
+	def obtenerTransportesMasUsados(self, limite:int=3)->Optional[List[tuple]]:
+
+		self.c.execute("""SELECT Transporte, COUNT(Transporte) AS NumeroViajes
+							FROM Viajes
+							GROUP BY Transporte
+							ORDER BY NumeroViajes DESC, Transporte
+							LIMIT %s""",
+							(limite,))
+
+		transportes=self.c.fetchall()
+
+		return list(map(lambda transporte: (transporte["transporte"], transporte["numeroviajes"]), transportes)) if transportes else None

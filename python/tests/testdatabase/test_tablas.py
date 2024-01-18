@@ -1252,3 +1252,37 @@ def test_obtener_imagenes_existen_con_imagen(conexion, registros, numero_imagene
 		conexion.insertarViaje(34, "2019-06-22", "2024-01-15", "Hotel", "www.google.com", "Transporte", "comentario", "imagen.jpg")
 
 	assert len(conexion.obtenerImagenes())==numero_imagenes
+
+def test_obtener_transportes_mas_usados_no_existen_viajes(conexion):
+
+	assert conexion.obtenerTransportesMasUsados() is None
+
+@pytest.mark.parametrize(["transporte"],
+	[("transporte",),("avion",),("coche",),("bus",)]
+)
+def test_obtener_transportes_mas_usados_existe(conexion, transporte):
+
+	conexion.insertarViaje(34, "2019-06-22", "2024-01-15", "Hotel", "www.google.com", transporte, "comentario", "imagen.jpg")
+
+	assert conexion.obtenerTransportesMasUsados()==[(transporte, 1)]
+
+@pytest.mark.parametrize(["transportes", "resultados"],
+	[
+		(["transporte", "avion", "coche", "bus", "renfe", "tren"], [("avion",1),("bus",1),("coche",1)]),
+		(["transporte", "avion", "coche", "bus", "bus", "tren"], [("bus",2),("avion",1),("coche",1)]),
+		(["transporte", "avion", "avion", "bus", "avion", "tren"], [("avion",3),("bus",1),("transporte",1)]),
+		(["transporte", "avion", "transporte", "bus", "avion", "tren"], [("avion",2),("transporte",2),("bus",1)]),
+		(["transporte", "avion", "avion", "transporte", "transporte", "avion", "avion"], [("avion",4),("transporte",3)])
+	]
+)
+def test_obtener_transportes_mas_usados_existen(conexion, transportes, resultados):
+
+	for transporte in transportes:
+
+		conexion.insertarViaje(34, "2019-06-22", "2024-01-15", "Hotel", "www.google.com", transporte, "comentario", "imagen.jpg")
+
+	transportes=conexion.obtenerTransportesMasUsados()
+
+	for resultado in resultados:
+
+		assert resultado in transportes
