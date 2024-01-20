@@ -62,7 +62,7 @@ h2 {
 .contenedor-tabla {
     margin-top: 5px;
     overflow-y: auto;
-    max-height: 490px;
+    max-height: 430px;
 }
 
 table {
@@ -165,6 +165,79 @@ tbody tr:hover {
     color: #333;
     transform: scale(1.05);
     background-color: #e74c3c;
+}
+
+.seccion-orden-viajes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+
+.botones-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 5px;
+    margin-top: 15px;
+    margin-bottom: 50px;
+}
+
+.ordenar-button {
+    background-color: #ff6b6b;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 30px;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-top: ;
+}
+
+.ordenar-button:hover {
+    background-color: #e74c3c;
+}
+
+.botones-section {
+    width: 75%;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    margin: 5px 10px;
+    padding: 5px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.contenedor-orden-viajes {
+    width: 100%;
+    text-align: center;
+}
+
+.orden-viajes-button,
+.orden-ciudades-button,
+.orden-paises-button,
+.orden-fechas-button {
+    display: inline-block;
+    padding: 8px 20px;
+    background-color: #ff6b6b;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 27px;
+    margin-right: 70px;
+}
+
+.orden-viajes-button:hover,
+.orden-ciudades-button:hover,
+.orden-paises-button:hover,
+.orden-fechas-button:hover {
+    background-color: #e74c3c;
+    color: #333;
+    transform: scale(1.05);
 }
 
 .pie-pagina {

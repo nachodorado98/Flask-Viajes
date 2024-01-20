@@ -61,6 +61,24 @@
             </div>
         {% endif %}
 
+        {% if viajes %}
+        <div class="botones-container">
+            <button id="botonOrdenar" class="ordenar-button">Ordenar Viajes realizados</button>
+            <div class="botones-section" id="contenedorOrdenar" style="display: none;">
+                <div class="seccion-orden-viajes">
+                    <div class="contenedor-orden-viajes">
+                        <a href="/" class="orden-viajes-button">Viaje</a>
+                        <a href="/?ciudad=True" class="orden-ciudades-button">Ciudad</a>
+                        <a href="/?pais=True" class="orden-paises-button">Pais</a>
+                        <a href="/?fecha=True" class="orden-fechas-button">Fecha</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="{{ url_for('static', filename='desplegar_ordenar.js') }}"></script>
+        {% else %}
+        {% endif %}
+
         {% endblock principal %}
 
     </main>

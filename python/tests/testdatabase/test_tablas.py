@@ -1286,3 +1286,22 @@ def test_obtener_transportes_mas_usados_existen(conexion, transportes, resultado
 	for resultado in resultados:
 
 		assert resultado in transportes
+
+@pytest.mark.parametrize(["campo", "orden"],
+	[
+		("c.Ciudad", [3480, 5768, 4187]),
+		("c.Pais", [5768, 3480, 4187]),
+		("v.Ida", [3480, 5768, 4187]),
+	]
+)
+def test_obtener_viajes_orden(conexion, campo, orden):
+
+	conexion.insertarViaje(4187, "2024-01-01", "2024-01-15", "Hotel", "www.google.com", "Avion", "comentario", "imagen.jpg")
+	conexion.insertarViaje(5768, "2023-11-28", "2024-01-15", "Hotel", "www.google.com", "Avion", "comentario", "imagen.jpg")
+	conexion.insertarViaje(3480, "2023-10-04", "2024-01-15", "Hotel", "www.google.com", "Autobus", "comentario", "imagen.jpg")
+
+	viajes_orden=conexion.obtenerViajes(campo)
+
+	for viaje_orden, ciudad in zip(viajes_orden, orden):
+
+		assert ciudad in viaje_orden

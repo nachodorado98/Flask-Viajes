@@ -32,13 +32,13 @@ class Conexion:
 		self.bbdd.commit()
 
 	# Metodo para obtener los viajes recorridas
-	def obtenerViajes(self)->Optional[List[tuple]]:
+	def obtenerViajes(self, ordenar:str="v.Id_Viaje")->Optional[List[tuple]]:
 
-		self.c.execute("""SELECT v.Id_Viaje, c.Ciudad, c.CodCiudad, c.Pais, v.Ida, v.Vuelta
+		self.c.execute(f"""SELECT v.Id_Viaje, c.Ciudad, c.CodCiudad, c.Pais, v.Ida, v.Vuelta
 							FROM Viajes v
 							JOIN Ciudades c
 							USING (CodCiudad)
-							ORDER BY v.Id_Viaje""")
+							ORDER BY {ordenar}""")
 
 		viajes=self.c.fetchall()
 
